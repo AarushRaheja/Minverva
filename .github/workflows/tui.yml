@@ -1,0 +1,22 @@
+name: tui
+
+on:
+  push:
+    paths: ["tui/**", ".github/workflows/tui.yml"]
+  pull_request:
+    paths: ["tui/**", ".github/workflows/tui.yml"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tui
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: tui
+      - run: cargo build --locked || cargo build
+      - run: cargo test
