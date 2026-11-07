@@ -1,4 +1,8 @@
-# nova-hacks: a manager SLM and four domain specialists
+# Minverva: a manager SLM and four domain specialists
+
+> Main repository from 2026-11-07, imported from `NOVA-SLM/nova-hacks` (`free-compute-ui` @ `6bbc9da`).
+> Where things stand: [`docs/STATUS.md`](docs/STATUS.md). How to branch, commit and open PRs:
+> [`CONTRIBUTING.md`](CONTRIBUTING.md). How the code got here: [`docs/LAYERS.md`](docs/LAYERS.md).
 
 One **manager SLM** reads a project brief, splits it into tasks, and hands each task to the
 specialist that owns it:
@@ -69,9 +73,16 @@ uv run slm bench sample --n 2 --full   # a generated brief plus its reference de
 | `slm/baselines/` | Monolith (one model, one pass) and single-generalist arms |
 | `slm/llm/` | `LLMClient.complete/acomplete`, fake, vLLM multi-LoRA, hosted |
 | `slm/trace.py` | Append-only JSONL trace (`llm`/`plan`/`route`/`task`/`final`); every metric is from traces |
-| `modal_apps/` | `slm-data`, `slm-train`, `slm-serve` (one server, four adapters), `slm-manager` |
+| `modal_apps/` | `slm-data`, `slm-train`, `slm-serve` (one server, four adapters), `slm-manager`, `slm-ollama` |
+| `slm/arch/` | Architecture experiments: arms, runs, reports (`python -m slm.arch`) |
+| `slm/ui/` | Web workbench (`slm ui`) and Textual workbench (`slm code`) |
+| `evaluation/` | Coding-agent evaluation harness with sandboxed, independent grading |
+| `tui/` | Terminal monitor for traces and `slm.arch` results (Rust, ratatui) |
+| `docs/` | `STATUS.md`, `LAYERS.md`, and `results/` write-ups |
 
 ## Status
+
+Detailed, current picture: [`docs/STATUS.md`](docs/STATUS.md).
 
 - [x] Architecture frozen: four domains, task catalog, integrator checks, traces
 - [x] Gold pipeline: gold plan + gold artifacts integrate with every check green (`uv run pytest`)
