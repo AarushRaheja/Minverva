@@ -13,6 +13,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
       - run: uv sync
-      # test_grading.py drives the evaluation sandbox through macOS `sandbox-exec`, which Linux runners
-      # don't have; run it locally on a Mac (`uv run pytest evaluation/tests`).
-      - run: uv run pytest -q --deselect evaluation/tests/test_grading.py
+      # macOS-only, run them locally on a Mac (`uv run pytest evaluation/tests`):
+      # test_grading.py drives the sandbox through `sandbox-exec`; the spend test writes to /private/tmp.
+      - run: >
+          uv run pytest -q
+          --deselect evaluation/tests/test_grading.py
+          --deselect evaluation/tests/test_spend.py::test_a_trial_that_would_not_fit_does_not_start

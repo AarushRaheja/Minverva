@@ -8,8 +8,8 @@ picture.
 - **Pipeline end to end, no model needed.** `uv run slm run --project 0` plans with the gold plan,
   dispatches 13 tasks over 5 dependency levels to oracle specialists, and the integrator passes every
   seam check (18 files written).
-- **Tests.** `uv run pytest`: 378 pass, 18 skip on Linux. `evaluation/tests/test_grading.py` needs macOS
-  `sandbox-exec` and only runs on a Mac.
+- **Tests.** `uv run pytest`: 377 pass, 18 skip in Linux CI. Two pieces are macOS-only and skipped there:
+  `evaluation/tests/test_grading.py` (`sandbox-exec`) and one spend test that writes to `/private/tmp`.
 - **Three ways to watch it:** web workbench (`uv run slm ui`), Textual workbench (`uv run slm code`),
   terminal monitor (`cd tui && cargo run --release`). The `tui` monitor was checked against real
   `slm run` traces and real `slm.arch` result rows.
