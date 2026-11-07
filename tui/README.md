@@ -61,7 +61,7 @@ also writes each view as colored HTML, handy for screenshots.
 - Branch `tui/ratatui-ui`; everything lives under `tui/` (plus `.github/workflows/tui.yml`), so it
   merges cleanly into `main` and into `free-compute-ui`. The trace schema is identical on both.
 - `cargo build` and `cargo test` are clean (Rust 1.97, ratatui 0.30, crossterm 0.29); CI runs them on
-  every push that touches `tui/`. `Cargo.lock` is generated on first build.
+  every push that touches `tui/`, against the committed `Cargo.lock`.
 - Tests: trace parsing (including pydantic's null-everywhere lines), task/verdict derivation,
   arms summary + paired deltas, run-check rescoring, arch trace → files mapping, and every view
   rendered at two sizes.
