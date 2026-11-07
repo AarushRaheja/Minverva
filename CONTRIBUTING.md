@@ -1,7 +1,7 @@
 # Working in Minverva
 
 Minverva is the main repository. It started as a snapshot of `NOVA-SLM/nova-hacks` branch
-`free-compute-ui` @ `6bbc9da` (tag `import/nova-hacks-2026-11-07`); nova-hacks is read-only history now.
+`free-compute-ui` @ `6bbc9da` (Minverva commit `b925d12`, "import: ..."); nova-hacks is read-only history now.
 
 ## Branches
 
