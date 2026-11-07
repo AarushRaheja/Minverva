@@ -1,0 +1,118 @@
+{
+  "$defs": {
+    "Interaction": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "action": {
+          "title": "Action",
+          "type": "string"
+        },
+        "expected": {
+          "title": "Expected",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "action",
+        "expected"
+      ],
+      "title": "Interaction",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "project_id": {
+      "pattern": "^[a-z0-9_-]+$",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "application_type": {
+      "title": "Application Type",
+      "type": "string"
+    },
+    "user_goal": {
+      "title": "User Goal",
+      "type": "string"
+    },
+    "audience": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Audience",
+      "type": "array"
+    },
+    "style": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Style",
+      "type": "object"
+    },
+    "sections": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Sections",
+      "type": "array"
+    },
+    "interactions": {
+      "items": {
+        "$ref": "#/$defs/Interaction"
+      },
+      "title": "Interactions",
+      "type": "array"
+    },
+    "acceptance_criteria": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Acceptance Criteria",
+      "type": "array"
+    },
+    "constraints": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "boolean"
+          }
+        ]
+      },
+      "title": "Constraints",
+      "type": "object"
+    },
+    "unspecified_requirements": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unspecified Requirements",
+      "type": "array"
+    }
+  },
+  "required": [
+    "project_id",
+    "application_type",
+    "user_goal",
+    "audience",
+    "style",
+    "sections",
+    "interactions",
+    "acceptance_criteria"
+  ],
+  "title": "Specification",
+  "type": "object"
+}

@@ -67,3 +67,25 @@ def test_trace_round_trip(tmp_path: Path):
     tr.record(kind="final", caller="x", callee="y", output="pass", project_id="p")
     ev = tr.events()
     assert ev[0].kind == "final" and ev[0].output == "pass"
+
+
+def test_build_writes_nested_rows_that_compile_to_the_gold_plans(tmp_path):
+    from slm.manager.spec import SPEC_SYSTEM, ProjectSpec, to_plan
+
+    man = build_all(root=str(tmp_path), scale=0.05)
+    train = load_projects("train", root=str(tmp_path))
+    lines = (tmp_path / "data" / "manager" / "spec-train.jsonl").read_text().splitlines()
+    assert len(lines) == len(train) == man["manager"]["spec_train"]
+    for line, p in zip(lines, train, strict=True):
+        row = json.loads(line)
+        assert row["system"] == SPEC_SYSTEM and p.description in row["prompt"]
+        assert to_plan(ProjectSpec.model_validate_json(row["completion"])) == p.plan
+    assert (tmp_path / "data" / "manager" / "spec-dev.jsonl").exists()
+
+
+def test_built_splits_have_distinct_briefs_and_do_not_overlap(tmp_path):
+    man = build_all(root=str(tmp_path), scale=0.1)
+    briefs = {s: {p.description for p in load_projects(s, root=str(tmp_path))} for s in ("train", "dev", "test")}
+    for s, b in briefs.items():
+        assert len(b) == man["projects"][s]["total"] == man["projects"][s]["distinct_briefs"]
+    assert not briefs["train"] & briefs["dev"] and not briefs["train"] & briefs["test"]

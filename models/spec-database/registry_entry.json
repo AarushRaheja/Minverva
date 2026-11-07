@@ -1,0 +1,12 @@
+{
+  "adapter_name": "spec-database",
+  "domain": "database",
+  "seed": 901,
+  "path": "/vol/adapters/901/spec-database",
+  "train_examples": 200,
+  "gate_task_ok": 1.0,
+  "train_seconds": 66.10256862640381,
+  "gpu": "A10",
+  "data_version": 4,
+  "escalated": false
+}

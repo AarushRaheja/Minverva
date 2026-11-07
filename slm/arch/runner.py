@@ -42,6 +42,8 @@ Arms:
 
 RNN topologies map to arms as: one-to-one = mgr-G4-serial (no memory), one-to-many = mgr-1toN, many-to-one =
 mgr-Nto1, many-to-many synced = mgr-rnn, encoder-decoder (many-to-many unsynced) = mgr-seq2seq.
+  nested-rnn     mgr-rnn on a plan from the trained nested manager (saved plans; its calls aren't counted)
+  team-nested    trained nested manager -> trained specialists, built outside the harness and graded from disk
   base-opus      `mono` on Claude Opus through the claude CLI: same prompt, same grading
   base-codex     `mono` on Codex through the codex CLI
 
@@ -79,10 +81,11 @@ from slm.trace import TraceEvent, Tracer
 
 LOCAL_ARMS = ("mono", "mgr-G1", "mgr-G2", "mgr-G4", "mgr-G9", "gold-G4", "mgr-G4-batch", "mgr-G4-repair",
               "mgr-G4-serial", "mgr-G4-runfix", "mgr-G4-promptfix", "mgr-G4-shell", "mgr-G4-contract", "mgr-G4-context", "mgr-rnn", "mgr-gru", "mgr-lstm", "mgr-1toN", "mgr-Nto1", "mgr-seq2seq", "mgr-slim1", "mgr-slim2",
-              "mgr-slim3", "mgr-combo-s0", "mgr-combo-s1", "mgr-combo-s2", "mgr-combo-s3")
+              "mgr-slim3", "mgr-combo-s0", "mgr-combo-s1", "mgr-combo-s2", "mgr-combo-s3", "nested-rnn")
 BASELINES = ("base-opus", "base-codex")
 ARMS = (*LOCAL_ARMS, *BASELINES)
-IMPORTED_ARMS = ("opus-multiagent",)  # built outside this harness, then graded from disk with `slm.arch grade-dir`
+MANAGED_PREFIXES = ("mgr-", "nested-")
+IMPORTED_ARMS = ("opus-multiagent", "team-nested")  # built outside this harness, then graded from disk with `slm.arch grade-dir`
 PLAN_LEVEL = -1
 REPAIR_LEVEL = 1000
 ENCODER_LEVEL = -2
@@ -455,7 +458,7 @@ class ComboClient(SlimClient, LSTMClient):
 
 
 COMBO_ARMS = {f"mgr-combo-s{n}": n for n in range(4)}
-RECURRENT_ARMS = {"mgr-rnn": RecurrentClient, "mgr-gru": GatedClient, "mgr-lstm": LSTMClient,
+RECURRENT_ARMS = {"mgr-rnn": RecurrentClient, "nested-rnn": RecurrentClient, "mgr-gru": GatedClient, "mgr-lstm": LSTMClient,
                   "mgr-1toN": OneToManyClient, "mgr-seq2seq": EncoderDecoderClient}
 
 
@@ -692,7 +695,7 @@ async def run_arm(arm: str, project: Project, client: LLMClient, tracer: Tracer,
     Returns one Result, or two for mgr-G4-repair (mgr-G4 before the repair round, then after)."""
     if arm not in ARMS:
         raise ValueError(f"unknown arm {arm!r}; choose from {ARMS}")
-    if arm.startswith("mgr-") and ps is None:
+    if arm.startswith(MANAGED_PREFIXES) and ps is None:
         raise ValueError(f"{arm} needs the project's PlanStats")
     plan_events = plan_events or []
     res = Result(arm=arm, project_id=project.id, template_id=project.template_id)
@@ -700,7 +703,7 @@ async def run_arm(arm: str, project: Project, client: LLMClient, tracer: Tracer,
     n0 = len(tracer.events()) if tracer.path.exists() else 0
     t0 = time.time()
     out = [res]
-    use_ps = ps if arm.startswith("mgr-") else None
+    use_ps = ps if arm.startswith(MANAGED_PREFIXES) else None
     if use_ps is not None:
         res.plan_valid, res.plan_recall, res.plan_precision = ps.valid, ps.recall, ps.precision
         res.plan_s, res.error = ps.seconds, ps.error

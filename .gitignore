@@ -6,3 +6,11 @@ __pycache__/
 out/
 .claude/
 .playwright-mcp/
+
+# Minerva
+node_modules/
+dist/
+.cache/
+runs/
+# Adapter weights live on the Modal volume slm-vol; models/SHA256SUMS records what is expected.
+models/**/*.safetensors

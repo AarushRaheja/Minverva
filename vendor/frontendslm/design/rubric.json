@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "name": "Clean product UI visual and intent rubric",
+  "score_type": "Model-estimated proxy; not human preference or validated beauty prediction",
+  "anchors": {
+    "0": "Unusable or no assessable interface",
+    "1": "Major visual breakdowns obscure the task",
+    "2": "Rough or unfinished; weak hierarchy, arbitrary spacing, or generic uncomposed output",
+    "3": "Competent and readable, with visible inconsistencies or limited polish",
+    "4": "Coherent, polished, intentional, and well fitted to the task and declared style",
+    "5": "Exceptional clarity and craft with distinctive, appropriate detail"
+  },
+  "criteria": {
+    "hierarchy": "The task, current context, primary action and supporting information have an intelligible order of emphasis.",
+    "typography": "Readable body text, deliberate scale and weight, restrained font choices, and appropriate line lengths.",
+    "spacing_alignment": "Consistent spacing and shared alignments; related elements grouped together; neither cramped nor arbitrarily empty.",
+    "color_restraint": "Purposeful palette, clear emphasis and legible states; quiet decoration without low-contrast text.",
+    "composition_coherence": "A complete, balanced composition for this task, with consistent surfaces and controls; useful content rather than filler.",
+    "responsive_composition": "Mobile is intentionally recomposed, with clear priority and usable controls, rather than a squeezed desktop.",
+    "intent_alignment": "The visible design expresses the actual requested descriptors and audience needs; generic prettiness does not substitute for intent."
+  },
+  "important_distinctions": [
+    "Do not infer working interactions, accessibility conformance or user satisfaction from pixels.",
+    "Do not reward decoration, gradients, complexity or a dashboard shell by themselves.",
+    "A focused form can be excellent without a sidebar; a workflow screen should not become a bare test control surrounded by accidental empty space.",
+    "Explicit user descriptors override generic style defaults. Report ambiguity rather than silently replacing unusual descriptors.",
+    "Keep failed measurements as hard blockers regardless of visual score."
+  ],
+  "sources": [
+    "https://www.nngroup.com/articles/visual-design-in-ux-study-guide/",
+    "https://www.nngroup.com/articles/principles-visual-design/",
+    "https://www.nngroup.com/articles/testing-visual-design/",
+    "https://www.nngroup.com/articles/microsoft-desirability-toolkit/",
+    "https://artsandlanguage.risd.edu/visual-communication",
+    "https://dschool.stanford.edu/tools/design-thinking-bootleg",
+    "https://hcii.cmu.edu/research-areas/experience-design",
+    "https://linear.app/now/behind-the-latest-design-refresh",
+    "https://docs.stripe.com/stripe-apps/design"
+  ],
+  "source_usage": "Principles summarized and interpreted for this project; no copied guide text, screenshots or source material used for model training."
+}

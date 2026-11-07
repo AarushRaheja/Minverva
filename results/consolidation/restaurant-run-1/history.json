@@ -1,0 +1,54 @@
+{
+ "rounds": [
+  {
+   "round": 0,
+   "generation_error": null,
+   "seconds": 366.936134814,
+   "output_tokens": 10807,
+   "unchanged_from_previous": false,
+   "score": {
+    "build_pass": false,
+    "complete_render": false,
+    "interaction_pass": false,
+    "no_overflow": false,
+    "no_serious_a11y": false,
+    "no_runtime_failures": true,
+    "nonempty": false,
+    "release_eligible": false,
+    "intermediate_states": 0,
+    "complete_state_measurements": false,
+    "state_accessibility_pass": false,
+    "state_overflow_pass": false,
+    "no_console_errors": true,
+    "audit_pass": false
+   },
+   "backend_faults": [],
+   "critic_verdict": null
+  },
+  {
+   "round": 1,
+   "generation_error": null,
+   "seconds": 212.90146194300002,
+   "output_tokens": 5796,
+   "unchanged_from_previous": false,
+   "score": {
+    "build_pass": false,
+    "complete_render": false,
+    "interaction_pass": false,
+    "no_overflow": false,
+    "no_serious_a11y": false,
+    "no_runtime_failures": true,
+    "nonempty": false,
+    "release_eligible": false,
+    "intermediate_states": 0,
+    "complete_state_measurements": false,
+    "state_accessibility_pass": false,
+    "state_overflow_pass": false,
+    "no_console_errors": true,
+    "audit_pass": false
+   },
+   "backend_faults": [],
+   "critic_verdict": null
+  }
+ ]
+}

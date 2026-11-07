@@ -1,0 +1,38 @@
+[
+ {
+  "name": "make preview, Python 3.12: embedded pgserver",
+  "ok": true,
+  "seconds": 16.6,
+  "detail": []
+ },
+ {
+  "name": "make preview, Python 3.14: system Postgres",
+  "ok": true,
+  "seconds": 14.6,
+  "detail": []
+ },
+ {
+  "name": "bare uvicorn: nothing set up or built",
+  "ok": true,
+  "seconds": 9.4,
+  "detail": []
+ },
+ {
+  "name": "own server, database does not exist yet",
+  "ok": true,
+  "seconds": 6.4,
+  "detail": []
+ },
+ {
+  "name": "unreachable server: stops, keeps secret",
+  "ok": true,
+  "seconds": 1.4,
+  "detail": []
+ },
+ {
+  "name": "production with no DATABASE_URL: refuses",
+  "ok": true,
+  "seconds": 1.4,
+  "detail": []
+ }
+]

@@ -1,0 +1,12 @@
+{
+  "adapter_name": "spec-frontend",
+  "domain": "frontend",
+  "seed": 901,
+  "path": "/vol/adapters/901/spec-frontend",
+  "train_examples": 200,
+  "gate_task_ok": 1.0,
+  "train_seconds": 104.73265385627747,
+  "gpu": "A10",
+  "data_version": 4,
+  "escalated": false
+}

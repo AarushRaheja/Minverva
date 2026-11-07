@@ -1,40 +1,35 @@
 # Status
 
-Last updated 2026-11-07, at the import into Minverva. Update this file in the PR that changes the
-picture.
+Last updated 2026-11-07, at the import of the Minerva pipeline. Update this file in the PR that changes the
+picture. The detailed record of the pipeline (what has been shown, decisions, open issues) is in
+[`consolidation/STATUS.md`](consolidation/STATUS.md), [`consolidation/DECISIONS.md`](consolidation/DECISIONS.md)
+and [`consolidation/ISSUES.md`](consolidation/ISSUES.md).
 
 ## Works today
 
-- **Pipeline end to end, no model needed.** `uv run slm run --project 0` plans with the gold plan,
-  dispatches 13 tasks over 5 dependency levels to oracle specialists, and the integrator passes every
-  seam check (18 files written).
-- **Tests.** `uv run pytest`: 377 pass, 18 skip in Linux CI. Two pieces are macOS-only and skipped there:
-  `evaluation/tests/test_grading.py` (`sandbox-exec`) and one spend test that writes to `/private/tmp`.
-- **Three ways to watch it:** web workbench (`uv run slm ui`), Textual workbench (`uv run slm code`),
-  terminal monitor (`cd tui && cargo run --release`). The `tui` monitor was checked against real
-  `slm run` traces and real `slm.arch` result rows.
-- **Evaluation harness** (`evaluation/`): private benchmark tasks, controls, sandboxed grading, Modal
-  spend limit ($20.85 counted from 2026-11-01).
+- **`minerva build`, offline.** `uv run minerva build "Track invoices" --engine offline` plans with a gold
+  template, writes the gold backend, audits the plain reference UI on real Postgres, FastAPI and a browser, runs
+  the sign-up journey and writes `runs/<date>-<slug>/project/` plus `REPORT.md`
+  (status `functional_with_defects`, correctly, since no Critic runs offline).
+- **Tests.** `uv run pytest`: 527 passed, 26 skipped on macOS after the import (Minverva's previous 403 tests are
+  all still in the suite, unchanged or extended). `MINERVA_STACK=1 uv run pytest tests/test_minerva.py` runs the
+  real-stack tests.
+- **The old flow.** `uv run slm run --project 0`, `uv run slm ui`, `uv run slm code` and the `slm.arch` results.
+
+## Shown once on real models (Modal)
+
+- One full run ($0.58): the manager and backend worked; both generated UIs failed `tsc`, so it shipped the
+  labelled fallback UI. One more run stopped at a false seam failure ($0.15). See
+  [`consolidation/STATUS.md`](consolidation/STATUS.md).
 
 ## Not done yet
 
-- **No trained specialists for the web-project task.** The repo's own checklist (README) still has
-  data, adapters, manager SFT and results unchecked. L4 added a free-GPU training loop
-  (`slm/train/backprop.py`, `notebooks/train_free.ipynb`), but no adapter registry is in the repo.
-- **No committed results.** `docs/LAYERS.md` points at `docs/ARCHITECTURE_RESULTS.md`, which was never
-  committed. The code refers to recorded `slm.arch` runs (local `qwen3.5:4b` via Ollama), but none of
-  their `out/arch` results are in the repo.
-- **The headline comparison is open:** manager + specialists vs single generalist vs monolith on
-  deliverable pass rate and latency (`PLAN.md`, H1-H3).
+- **A generated UI that passes the audit** on a real run.
+- **Apps beyond title-only rows** (consolidation ISSUES #3).
+- **The headline comparison:** manager + specialists vs single generalist vs monolith (`PLAN.md`, H1-H3).
 
-## Known caveats (from docs/LAYERS.md)
+## Known caveats
 
-- Gold artifacts are templates with the entity name swapped in, so specialist training gates will look
-  better than the model is.
-- `VLLMLoRAClient` defaults to `max_tokens=128`; callers must pass about 1024.
-
-## Next, in order
-
-1. Whoever has the recorded `slm.arch` runs: commit them as `docs/results/` write-ups.
-2. Train the four `spec-*` adapters and the manager; publish the registry.
-3. Run `evaluation run functional-gate`, then `final-heldout`, and fill in PLAN.md's table.
+- Gold artifacts are templates with the entity name swapped in; trained backend output is often byte-identical to
+  them.
+- `initdb` needs a UTF-8 locale; run the stack tests with `LANG=en_US.UTF-8` if your shell has none.

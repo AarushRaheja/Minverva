@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 import time
 from pathlib import Path
 
@@ -26,12 +27,47 @@ SEED = 20261103
 MIN_PROJECTS_FOR_VERDICT = 5
 
 
+def oneline_heldout(n: int = 10) -> list:
+    """One-line briefs from test app ideas nothing trained on, one per idea, with no OAuth request."""
+    from slm.bench.build import SEED as DATA_SEED
+    from slm.bench.variety import generate_varied
+
+    picked: dict = {}
+    for p in generate_varied(160, "test", DATA_SEED):
+        if p.template_id not in picked and not any(t.kind == "oauth" for t in p.plan.tasks):
+            picked[p.template_id] = p
+    return list(picked.values())[:n]
+
+
 def projects(per_template: int):
     from slm.bench.catalog import HELDOUT_TEMPLATES, TRAIN_TEMPLATES
+    if os.environ.get("SLM_ARCH_BRIEFS") == "oneline":
+        return oneline_heldout()
     from slm.bench.projects import generate_balanced
 
     return (generate_balanced(per_template * len(TRAIN_TEMPLATES), "dev", SEED)
             + generate_balanced(per_template * len(HELDOUT_TEMPLATES), "test", SEED))
+
+
+def load_nested_plans(path: str, project_list: list) -> dict:
+    """project id -> PlanStats, from saved nested manager output compiled as the team's pipeline compiles it."""
+    from slm.arch.runner import PlanStats
+    from slm.manager.score import score_plan
+    from slm.manager.spec import ProjectSpec, normalize_spec, to_plan
+
+    if not path:
+        raise typer.BadParameter("nested-rnn needs --nested-plans")
+    outputs = {r["project_id"]: r["output"] for r in _load(Path(path))}
+    stats = {}
+    for p in project_list:
+        try:
+            plan, error = to_plan(normalize_spec(ProjectSpec.model_validate_json(outputs[p.id]))), None
+        except (KeyError, ValueError) as e:
+            plan, error = None, f"plan: {type(e).__name__}: {str(e)[:200]}"
+        s = score_plan(plan, p.plan)
+        stats[p.id] = PlanStats(plan=plan, valid=s.valid, recall=s.task_recall, precision=s.task_precision, seconds=0.0,
+                                calls=0, tok_in=0, tok_out=0, error=error)
+    return stats
 
 
 def _load(path: Path) -> list[dict]:
@@ -106,6 +142,7 @@ def run(
     opus_model: str = "claude-opus-5-5",
     codex_model: str = typer.Option("", help="codex model id; empty uses the CLI's default"),
     out: str = "out/arch",
+    nested_plans: str = typer.Option("", help="JSONL of saved nested manager output, required by nested-rnn"),
 ):
     """Run every arm on every project (resumable). Manager plans are cached per project."""
     from slm.arch.runner import PlanStats, make_plan
@@ -120,6 +157,7 @@ def run(
     bad = [a for a in arm_list if a not in ARMS]
     if bad:
         raise typer.BadParameter(f"unknown arms {bad}; choose from {ARMS}")
+    nested = load_nested_plans(nested_plans, projects(per_template)) if "nested-rnn" in arm_list else {}
     down = {a for a in arm_list if a in clis and not clis[a].available()}
     for a in sorted(down):
         typer.echo(f"skipping {a}: `{clis[a].binary}` is not installed")
@@ -160,7 +198,8 @@ def run(
         tracer = Tracer(run_id=f"{a}--{p.id}", trace_dir=root / "traces")
         t0 = time.time()
         try:
-            results = asyncio.run(run_arm(a, p, client, tracer, plans.get(p.id), plan_events))
+            results = asyncio.run(run_arm(a, p, client, tracer, nested[p.id] if a == "nested-rnn" else plans.get(p.id),
+                                          [] if a == "nested-rnn" else plan_events))
         except BackendUnavailable as e:  # not the model's fault: no result, and later runs can retry
             typer.echo(f"[{i}/{len(todo)}] {a} {p.template_id}: stopping this arm, no result recorded: {e}")
             down.add(a)

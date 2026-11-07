@@ -1,0 +1,15 @@
+{
+  "architect": {
+    "model": "Qwen/Qwen3-4B-Thinking-2507",
+    "revision": "768f209d9ea81521153ed38c47d515654e938aea",
+    "license": "apache-2.0",
+    "trust_remote_code": false,
+    "output_mode": "thinking"
+  },
+  "critic": {
+    "model": "Qwen/Qwen3-VL-4B-Instruct",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17",
+    "license": "apache-2.0",
+    "trust_remote_code": false
+  }
+}

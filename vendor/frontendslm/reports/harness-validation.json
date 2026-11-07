@@ -1,0 +1,21 @@
+{
+  "fixture_count": 20,
+  "viewport_checks": 100,
+  "interaction_checks": 40,
+  "critical_or_serious_axe_occurrences": 0,
+  "harness_errors": [],
+  "negative_controls": {
+    "overflow": {
+      "expected_failed_gate": "no_overflow",
+      "detected": true
+    },
+    "interaction": {
+      "expected_failed_gate": "interaction_pass",
+      "detected": true
+    },
+    "compile": {
+      "expected_failed_gate": "build_pass",
+      "detected": true
+    }
+  }
+}

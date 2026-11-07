@@ -2,7 +2,8 @@
 
 Layout:
   data/projects/{train,dev,test}.jsonl    Project lines (brief + gold plan)
-  data/manager/{train,dev}.jsonl          manager SFT rows {system, prompt, completion}
+  data/manager/{train,dev}.jsonl          flat manager SFT rows {system, prompt, completion}
+  data/manager/spec-{train,dev}.jsonl     nested manager SFT rows, same shape (ProjectSpec JSON)
   data/domains/{domain}.jsonl             TrainExample lines: train projects = "train",
                                           dev projects = "eval" (the gate the trainer reports)
   data/manifest.json                      counts, seed, git sha, per-domain totals
@@ -15,13 +16,14 @@ from collections import Counter
 from pathlib import Path
 
 from slm.bench.catalog import gold_artifact
-from slm.bench.projects import generate_balanced
-from slm.contracts import DOMAINS, PATHS, VOL, Project, TrainExample, specialist_prompt
-from slm.manager.data import sft_rows
+from slm.bench.variety import generate_varied
+from slm.contracts import DOMAINS, PATHS, VOL, Project, TrainExample
+from slm.manager.data import sft_rows, spec_sft_rows
+from slm.manager.spec import gold_spec, spec_task_prompts
 
 SEED = 20261101
-DATA_VERSION = 2  # v2: specialist prompts from slm/specialists.py; valid TS import in gold forms
-SETS = {"train": 120, "dev": 16, "test": 32}
+DATA_VERSION = 5  # v4: specialists get one nested task with its subtasks and tests. v5: guard prompt names the routes
+SETS = {"train": 1000, "dev": 100, "test": 160}
 
 
 def _path(key: str, root: str, **kw) -> Path:
@@ -52,9 +54,10 @@ def domain_examples(projects: list[Project], split: str) -> dict[str, list[Train
     for p in projects:
         if p.plan is None:
             continue
+        prompts = spec_task_prompts(gold_spec(p.plan))
         for t in p.plan.tasks:
             out[t.domain].append(TrainExample(
-                domain=t.domain, kind=t.kind, target=t.target, prompt=specialist_prompt(p.plan, t),
+                domain=t.domain, kind=t.kind, target=t.target, prompt=prompts[t.id],
                 completion=gold_artifact(p.plan, t).model_dump_json(),
                 split=split,  # type: ignore[arg-type]
                 project_id=p.id,
@@ -72,11 +75,12 @@ def build_all(root: str = VOL, git_sha: str = "unknown", scale: float = 1.0) -> 
                  "projects": {}, "domains": {}, "domains_meta": {"tasks": {}}}
     by_split: dict[str, list[Project]] = {}
     for split, n in SETS.items():
-        projects = generate_balanced(s(n), split, SEED)
+        projects = generate_varied(s(n), split, SEED)
         by_split[split] = projects
         _write_jsonl(_path("projects", root, name=split), projects)
         man["projects"][split] = {
             "total": len(projects),
+            "distinct_briefs": len({p.description for p in projects}),
             "per_template": dict(sorted(Counter(p.template_id for p in projects).items())),
             "tasks": dict(sorted(Counter(p.n_tasks for p in projects).items())),
             "depth": dict(sorted(Counter(p.depth for p in projects).items())),
@@ -85,7 +89,11 @@ def build_all(root: str = VOL, git_sha: str = "unknown", scale: float = 1.0) -> 
     rows = sft_rows(by_split["train"])
     _write_dicts(_path("manager_data", root, name="train"), rows)
     _write_dicts(_path("manager_data", root, name="dev"), sft_rows(by_split["dev"]))
-    man["manager"] = {"train": len(rows), "dev": len(by_split["dev"])}
+    spec_rows = spec_sft_rows(by_split["train"])
+    _write_dicts(_path("manager_data", root, name="spec-train"), spec_rows)
+    _write_dicts(_path("manager_data", root, name="spec-dev"), spec_sft_rows(by_split["dev"]))
+    man["manager"] = {"train": len(rows), "dev": len(by_split["dev"]),
+                      "spec_train": len(spec_rows), "spec_dev": len(by_split["dev"])}
 
     train_ex = domain_examples(by_split["train"], "train")
     eval_ex = domain_examples(by_split["dev"], "eval")

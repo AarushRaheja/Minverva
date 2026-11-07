@@ -1,0 +1,186 @@
+{
+ "overall": {
+  "n": 100,
+  "parsed": 1.0,
+  "compiled": 1.0,
+  "isomorphic": 0.72,
+  "task_recall": 0.9422968960863698,
+  "task_precision": 0.9361359649122807,
+  "symbol_coverage": 0.9388800001451102,
+  "tests_scoped": 1.0,
+  "known_refs": 0.9457837731179474
+ },
+ "failures": [
+  {
+   "project_id": "proj-dev-charter_boats-s20261101-89",
+   "parsed": true,
+   "compiled": true,
+   "task_recall": 0.312,
+   "output": "{\"name\":\"boat charter app\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"boat charter app: a React frontend calls FastAPI routers through a typed client; Postgres stores 4 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a skippers through its form, then open /skippers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new skippers are stored and listed on /skippers.\",\"verifies\":[\"form:SkippersForm\",\"client:skippers\",\"endpoint:POST /api/skippers\",\"table:skipper"
+  },
+  {
+   "project_id": "proj-dev-camp_desk-s20261101-52",
+   "parsed": true,
+   "compiled": true,
+   "task_recall": 0.467,
+   "output": "{\"name\":\"summer camp desk\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"summer camp desk: a React frontend calls FastAPI routers through a typed client; Postgres stores 4 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a camper through its form, then open /campers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new camper is stored and listed on /campers.\",\"verifies\":[\"form:CampersForm\",\"client:campers\",\"endpoint:POST /api/campers\",\"table:campers\",\"route:/"
+  },
+  {
+   "project_id": "proj-dev-camp_desk-s20261101-12",
+   "parsed": true,
+   "compiled": true,
+   "task_recall": 0.5,
+   "output": "{\"name\":\"summer camp desk\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"summer camp desk: a React frontend calls FastAPI routers through a typed client; Postgres stores 4 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a camper through its form, then open /campers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new camper is stored and listed on /campers.\",\"verifies\":[\"form:CampersForm\",\"client:campers\",\"endpoint:POST /api/campers\",\"table:campers\",\"route:/"
+  },
+  {
+   "project_id": "proj-dev-camp_desk-s20261101-28",
+   "parsed": true,
+   "compiled": true,
+   "task_recall": 0.5,
+   "output": "{\"name\":\"summer camp desk\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"summer camp desk: a React frontend calls FastAPI routers through a typed client; Postgres stores 4 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a camper through its form, then open /campers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new camper is stored and listed on /campers.\",\"verifies\":[\"form:CampersForm\",\"client:campers\",\"endpoint:POST /api/campers\",\"table:campers\",\"route:/"
+  },
+  {
+   "project_id": "proj-dev-camp_desk-s20261101-84",
+   "parsed": true,
+   "compiled": true,
+   "task_recall": 0.5,
+   "output": "{\"name\":\"summer camp desk\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"summer camp desk: a React frontend calls FastAPI routers through a typed client; Postgres stores 2 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a camper through its form, then open /campers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new camper is stored and listed on /campers.\",\"verifies\":[\"form:CampersForm\",\"client:campers\",\"endpoint:POST /api/campers\",\"table:campers\",\"route:/"
+  },
+  {
+   "project_id": "proj-dev-camp_desk-s20261101-92",
+   "parsed": true,
+   "compiled": true,
+   "task_recall": 0.579,
+   "output": "{\"name\":\"summer camp desk\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"summer camp desk: a React frontend calls FastAPI routers through a typed client; Postgres stores 5 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a camper through its form, then open /campers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new camper is stored and listed on /campers.\",\"verifies\":[\"form:CampersForm\",\"client:campers\",\"endpoint:POST /api/campers\",\"table:campers\",\"route:/"
+  },
+  {
+   "project_id": "proj-dev-charter_boats-s20261101-9",
+   "parsed": true,
+   "compiled": true,
+   "task_recall": 0.615,
+   "output": "{\"name\":\"boat charter app\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"boat charter app: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a skippers through its form, then open /skippers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new skippers are stored and listed on /skippers.\",\"verifies\":[\"form:SkippersForm\",\"client:skippers\",\"endpoint:POST /api/skippers\",\"table:skipper"
+  },
+  {
+   "project_id": "proj-dev-charter_boats-s20261101-33",
+   "parsed": true,
+   "compiled": true,
+   "task_recall": 0.615,
+   "output": "{\"name\":\"boat charter app\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"boat charter app: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a skippers through its form, then open /skippers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new skippers are stored and listed on /skippers.\",\"verifies\":[\"form:SkippersForm\",\"client:skippers\",\"endpoint:POST /api/skippers\",\"table:skipper"
+  },
+  {
+   "project_id": "proj-dev-camp_desk-s20261101-68",
+   "parsed": true,
+   "compiled": true,
+   "task_recall": 0.615,
+   "output": "{\"name\":\"summer camp desk\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"summer camp desk: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a camper through its form, then open /campers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new camper is stored and listed on /campers.\",\"verifies\":[\"form:CampersForm\",\"client:campers\",\"endpoint:POST /api/campers\",\"table:campers\",\"route:/"
+  },
+  {
+   "project_id": "proj-dev-charter_boats-s20261101-65",
+   "parsed": true,
+   "compiled": true,
+   "task_recall": 0.667,
+   "output": "{\"name\":\"boat charter app\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"boat charter app: a React frontend calls FastAPI routers through a typed client; Postgres stores 4 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a skippers through its form, then open /skippers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new skippers are stored and listed on /skippers.\",\"verifies\":[\"form:SkippersForm\",\"client:skippers\",\"endpoint:POST /api/skippers\",\"table:skipper"
+  }
+ ],
+ "generation_seconds": 72.3,
+ "length_stops": 0,
+ "output_tokens": 353800,
+ "greedy_retry": {
+  "overall": {
+   "n": 100,
+   "parsed": 1.0,
+   "compiled": 1.0,
+   "isomorphic": 0.72,
+   "task_recall": 0.9422968960863698,
+   "task_precision": 0.9361359649122807,
+   "symbol_coverage": 0.9388800001451102,
+   "tests_scoped": 1.0,
+   "known_refs": 0.9457837731179474
+  },
+  "failures": [
+   {
+    "project_id": "proj-dev-charter_boats-s20261101-89",
+    "parsed": true,
+    "compiled": true,
+    "task_recall": 0.312,
+    "output": "{\"name\":\"boat charter app\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"boat charter app: a React frontend calls FastAPI routers through a typed client; Postgres stores 4 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a skippers through its form, then open /skippers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new skippers are stored and listed on /skippers.\",\"verifies\":[\"form:SkippersForm\",\"client:skippers\",\"endpoint:POST /api/skippers\",\"table:skipper"
+   },
+   {
+    "project_id": "proj-dev-camp_desk-s20261101-52",
+    "parsed": true,
+    "compiled": true,
+    "task_recall": 0.467,
+    "output": "{\"name\":\"summer camp desk\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"summer camp desk: a React frontend calls FastAPI routers through a typed client; Postgres stores 4 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a camper through its form, then open /campers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new camper is stored and listed on /campers.\",\"verifies\":[\"form:CampersForm\",\"client:campers\",\"endpoint:POST /api/campers\",\"table:campers\",\"route:/"
+   },
+   {
+    "project_id": "proj-dev-camp_desk-s20261101-12",
+    "parsed": true,
+    "compiled": true,
+    "task_recall": 0.5,
+    "output": "{\"name\":\"summer camp desk\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"summer camp desk: a React frontend calls FastAPI routers through a typed client; Postgres stores 4 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a camper through its form, then open /campers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new camper is stored and listed on /campers.\",\"verifies\":[\"form:CampersForm\",\"client:campers\",\"endpoint:POST /api/campers\",\"table:campers\",\"route:/"
+   },
+   {
+    "project_id": "proj-dev-camp_desk-s20261101-28",
+    "parsed": true,
+    "compiled": true,
+    "task_recall": 0.5,
+    "output": "{\"name\":\"summer camp desk\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"summer camp desk: a React frontend calls FastAPI routers through a typed client; Postgres stores 4 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a camper through its form, then open /campers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new camper is stored and listed on /campers.\",\"verifies\":[\"form:CampersForm\",\"client:campers\",\"endpoint:POST /api/campers\",\"table:campers\",\"route:/"
+   },
+   {
+    "project_id": "proj-dev-camp_desk-s20261101-84",
+    "parsed": true,
+    "compiled": true,
+    "task_recall": 0.5,
+    "output": "{\"name\":\"summer camp desk\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"summer camp desk: a React frontend calls FastAPI routers through a typed client; Postgres stores 2 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a camper through its form, then open /campers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new camper is stored and listed on /campers.\",\"verifies\":[\"form:CampersForm\",\"client:campers\",\"endpoint:POST /api/campers\",\"table:campers\",\"route:/"
+   },
+   {
+    "project_id": "proj-dev-camp_desk-s20261101-92",
+    "parsed": true,
+    "compiled": true,
+    "task_recall": 0.579,
+    "output": "{\"name\":\"summer camp desk\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"summer camp desk: a React frontend calls FastAPI routers through a typed client; Postgres stores 5 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a camper through its form, then open /campers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new camper is stored and listed on /campers.\",\"verifies\":[\"form:CampersForm\",\"client:campers\",\"endpoint:POST /api/campers\",\"table:campers\",\"route:/"
+   },
+   {
+    "project_id": "proj-dev-charter_boats-s20261101-9",
+    "parsed": true,
+    "compiled": true,
+    "task_recall": 0.615,
+    "output": "{\"name\":\"boat charter app\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"boat charter app: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a skippers through its form, then open /skippers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new skippers are stored and listed on /skippers.\",\"verifies\":[\"form:SkippersForm\",\"client:skippers\",\"endpoint:POST /api/skippers\",\"table:skipper"
+   },
+   {
+    "project_id": "proj-dev-charter_boats-s20261101-33",
+    "parsed": true,
+    "compiled": true,
+    "task_recall": 0.615,
+    "output": "{\"name\":\"boat charter app\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"boat charter app: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a skippers through its form, then open /skippers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new skippers are stored and listed on /skippers.\",\"verifies\":[\"form:SkippersForm\",\"client:skippers\",\"endpoint:POST /api/skippers\",\"table:skipper"
+   },
+   {
+    "project_id": "proj-dev-camp_desk-s20261101-68",
+    "parsed": true,
+    "compiled": true,
+    "task_recall": 0.615,
+    "output": "{\"name\":\"summer camp desk\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"summer camp desk: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a camper through its form, then open /campers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new camper is stored and listed on /campers.\",\"verifies\":[\"form:CampersForm\",\"client:campers\",\"endpoint:POST /api/campers\",\"table:campers\",\"route:/"
+   },
+   {
+    "project_id": "proj-dev-charter_boats-s20261101-65",
+    "parsed": true,
+    "compiled": true,
+    "task_recall": 0.667,
+    "output": "{\"name\":\"boat charter app\",\"stack\":\"fastapi+react+postgres\",\"architecture\":\"boat charter app: a React frontend calls FastAPI routers through a typed client; Postgres stores 4 tables; cookie sessions protect the API and every page.\",\"system_tests\":[{\"id\":\"ST-1\",\"scope\":\"system\",\"description\":\"Sign in, create a skippers through its form, then open /skippers.\",\"preconditions\":[\"The app is running on an empty database\",\"A registered user\"],\"expected\":\"The new skippers are stored and listed on /skippers.\",\"verifies\":[\"form:SkippersForm\",\"client:skippers\",\"endpoint:POST /api/skippers\",\"table:skipper"
+   }
+  ]
+ },
+ "retried": 0,
+ "run": "m-spec-nested",
+ "split": "dev",
+ "n": 100,
+ "seconds": 242.5,
+ "usd_estimate": 0.266,
+ "gpu": "H100",
+ "heldout": {
+  "n": 101,
+  "compiled": 91,
+  "length_stops": 6,
+  "seconds": 79.4
+ }
+}

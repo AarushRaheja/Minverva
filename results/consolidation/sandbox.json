@@ -1,0 +1,52 @@
+[
+ {
+  "name": "clean_control",
+  "ok": true,
+  "seconds": 131.8,
+  "gate_failures": [],
+  "harness_error": null,
+  "stack": [],
+  "build_log": "",
+  "view_errors": {}
+ },
+ {
+  "name": "ignores_typed_title",
+  "ok": true,
+  "seconds": 56.2,
+  "gate_failures": [
+   "interaction_pass",
+   "release_eligible",
+   "audit_pass"
+  ],
+  "harness_error": null,
+  "stack": [],
+  "build_log": "",
+  "view_errors": {}
+ },
+ {
+  "name": "low_contrast",
+  "ok": true,
+  "seconds": 49.9,
+  "gate_failures": [
+   "no_serious_a11y",
+   "release_eligible",
+   "state_accessibility_pass",
+   "audit_pass"
+  ],
+  "harness_error": null,
+  "stack": [],
+  "build_log": "",
+  "view_errors": {}
+ },
+ {
+  "name": "backend_no_auth",
+  "ok": true,
+  "seconds": 5.2,
+  "faults": [
+   "list_needs_session:/api/invoices: 200",
+   "create_needs_session:/api/invoices: 200",
+   "list_needs_session:/api/clients: 200"
+  ],
+  "harness_error": null
+ }
+]

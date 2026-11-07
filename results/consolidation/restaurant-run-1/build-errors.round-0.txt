@@ -1,0 +1,10 @@
+
+> generated-app@0.1.0 build
+> tsc --noEmit && vite build
+
+src/App.tsx(94,30): error TS2345: Argument of type '{ message: string; status: number; }' is not assignable to parameter of type 'SetStateAction<ApiError | null>'.
+  Property 'name' is missing in type '{ message: string; status: number; }' but required in type 'ApiError'.
+src/App.tsx(113,25): error TS2345: Argument of type '{ message: string; status: number; }' is not assignable to parameter of type 'SetStateAction<ApiError | null>'.
+  Property 'name' is missing in type '{ message: string; status: number; }' but required in type 'ApiError'.
+src/App.tsx(132,32): error TS2345: Argument of type '{ message: string; status: number; }' is not assignable to parameter of type 'SetStateAction<ApiError | null>'.
+  Property 'name' is missing in type '{ message: string; status: number; }' but required in type 'ApiError'.

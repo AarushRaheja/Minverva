@@ -1,0 +1,7 @@
+[
+  {"id":"calm_dense","brief":"Design a calm but information-dense operations console for experienced dispatchers. Show 30 active jobs without making them scroll through large cards. Avoid playful styling and decorative gradients."},
+  {"id":"warm_editorial","brief":"A reading app for long essays: warm, editorial, quiet, like a well-set journal. Not a SaaS dashboard. Reading comfort comes first; offer a day/night switch."},
+  {"id":"playful_professional","brief":"A playful but professional booking form for a children's science museum. Parents need a quick, reassuring way to reserve a visit. Avoid cartoon overload or childish tiny type."},
+  {"id":"unknown_descriptor","brief":"Create a project workspace for researchers. Make it zorbly. That word is our team's private design descriptor; no definition is provided yet."},
+  {"id":"premium_light","brief":"A premium, airy, light-mode catalog for handmade ceramics. Avoid dark luxury styling, gold accents, and dense dashboard layouts. Help shoppers compare dimensions and add an item to their cart."}
+]

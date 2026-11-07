@@ -1,0 +1,1775 @@
+[
+ {
+  "id": "seed-01",
+  "brief": "Build a multi-tenant enterprise SaaS workspace with granular row-level security and dynamic database schema isolation.",
+  "plan_error": "1 validation error for Task\n  Value error, task t3: target must be a slug, got 'DomainTable1' [type=value_error, input_value={'id': 't3', 'domain': 'd...API needs.', 'deps': []}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error"
+ },
+ {
+  "id": "seed-02",
+  "brief": "Develop a global CDN edge worker runtime supporting V8 isolate sandboxing and dynamic response header caching.",
+  "name": "global CDN edge worker runtime",
+  "entities": [
+   "domain"
+  ],
+  "form": [
+   "domain"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 9,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 15,
+  "own_total": 15,
+  "tests": 18,
+  "compiled": 17,
+  "attempts": 8,
+  "arch": "global CDN edge worker runtime: a React frontend calls FastAPI routers through a typed client; Postgres stores 2 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create an account, then open /domains.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, domain.",
+  "brief_terms": {
+   "global": [
+    true,
+    true
+   ],
+   "cdn": [
+    true,
+    true
+   ],
+   "edge": [
+    true,
+    true
+   ],
+   "worker": [
+    true,
+    true
+   ],
+   "runtime": [
+    true,
+    true
+   ],
+   "isolate": [
+    false,
+    false
+   ],
+   "sandboxing": [
+    false,
+    false
+   ],
+   "response": [
+    true,
+    true
+   ],
+   "header": [
+    true,
+    true
+   ],
+   "caching.": [
+    false,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-03",
+  "brief": "Design an event-driven usage-based billing platform with sliding-window metering and dynamic invoice generation.",
+  "name": "event-driven usage-based billing platform with sliding-window metering and dynamic invoice generation",
+  "entities": [
+   "event_invoice",
+   "transaction"
+  ],
+  "form": [
+   "event_invoice"
+  ],
+  "oauth": true,
+  "repaired": false,
+  "tasks": 13,
+  "bad_json": 0,
+  "integrator": false,
+  "failures": [
+   "provides:t9:route:/event_invoices",
+   "uses:t10:endpoint:GET /api/transactions"
+  ],
+  "py": [],
+  "ts": [
+   "src/frontend/EventInvoicePage.tsx(2,30): error TS2307: Cannot find module './AuthRequired' or its corresponding type dec",
+   "src/frontend/EventInvoicePage.tsx(7,27): error TS2304: Cannot find name 'useState'.",
+   "src/frontend/EventInvoicePage.tsx(7,36): error TS2304: Cannot find name 'Row'.",
+   "src/frontend/EventInvoicePage.tsx(9,3): error TS2304: Cannot find name 'useEffect'.",
+   "src/frontend/EventInvoicePage.tsx(20,22): error TS7006: Parameter 'row' implicitly has an 'any' type.",
+   "src/frontend/TransactionPage.tsx(2,30): error TS2307: Cannot find module './AuthRequired' or its corresponding type decl"
+  ],
+  "own_pass": 14,
+  "own_total": 17,
+  "tests": 25,
+  "compiled": 22,
+  "attempts": 16,
+  "arch": "event-driven usage-based billing platform with sliding-window metering and dynamic invoice generation",
+  "sys": [
+   "Sign in, create an invoice through its form, then open /invoices.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, event_invoice, transaction.",
+  "brief_terms": {
+   "event-driven": [
+    true,
+    true
+   ],
+   "usage-based": [
+    true,
+    true
+   ],
+   "billing": [
+    true,
+    true
+   ],
+   "platform": [
+    true,
+    true
+   ],
+   "sliding-window": [
+    true,
+    true
+   ],
+   "metering": [
+    true,
+    true
+   ],
+   "invoice": [
+    true,
+    true
+   ],
+   "generation.": [
+    true,
+    true
+   ]
+  }
+ },
+ {
+  "id": "seed-04",
+  "brief": "Create a distributed rate-limiting proxy using sliding-window counters and Redis cluster consensus locks.",
+  "name": "distributed rate-limiting proxy",
+  "entities": [
+   "entry"
+  ],
+  "form": [
+   "entry"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 9,
+  "bad_json": 0,
+  "integrator": false,
+  "failures": [
+   "uses:t5:endpoint:GET /api/entrys",
+   "uses:t5:endpoint:POST /api/entrys",
+   "uses:t6:endpoint:GET /api/entrys",
+   "frontend_endpoints_resolve"
+  ],
+  "py": [],
+  "ts": [
+   "src/network/entry_client.ts(9,44): error TS2304: Cannot find name 'NewEntry'."
+  ],
+  "own_pass": 8,
+  "own_total": 9,
+  "tests": 18,
+  "compiled": 18,
+  "attempts": 12,
+  "arch": "distributed rate-limiting proxy: a React frontend calls FastAPI routers through a typed client; Postgres stores 2 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create an entry through its form, then open /entries.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, entry.",
+  "brief_terms": {
+   "distributed": [
+    true,
+    true
+   ],
+   "rate-limiting": [
+    true,
+    true
+   ],
+   "proxy": [
+    true,
+    true
+   ],
+   "sliding-window": [
+    false,
+    false
+   ],
+   "counters": [
+    false,
+    false
+   ],
+   "redis": [
+    false,
+    false
+   ],
+   "cluster": [
+    false,
+    false
+   ],
+   "consensus": [
+    false,
+    false
+   ],
+   "locks.": [
+    false,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-05",
+  "brief": "Construct an Identity Provider (IdP) supporting SAML 2.0/OIDC federation, FIDO2 WebAuthn, and token revocation.",
+  "name": "Construct an Identity Provider (IdP) supporting SAML 2.0/OIDC federation, FIDO2 WebAuthn, and token revocation.",
+  "entities": [
+   "account"
+  ],
+  "form": [
+   "account"
+  ],
+  "oauth": true,
+  "repaired": false,
+  "tasks": 10,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 0,
+  "own_total": 0,
+  "tests": 20,
+  "compiled": 0,
+  "attempts": 9,
+  "arch": "identity_provider: an IdP with SAML 2.0/OIDC federation, FIDO2 WebAuthn, and token revocation; frontend: React pages; database: Postgres schemas; network: FastAPI routers and typed TypeScript clients; auth: cookie sessions, OAuth hand-off, route guard; frontend: React pages, create forms, app shell.",
+  "sys": [
+   "Sign in, create an account, then revoke the account.",
+   "Visit every page route without signing in.",
+   "Start the OAuth sign-in flow from a signed-out browser."
+  ],
+  "sum_db": "Postgres tables: users, account.",
+  "brief_terms": {
+   "identity": [
+    true,
+    true
+   ],
+   "provider": [
+    true,
+    true
+   ],
+   "idp": [
+    true,
+    true
+   ],
+   "saml": [
+    true,
+    true
+   ],
+   "2.0": [
+    true,
+    true
+   ],
+   "oidc": [
+    true,
+    true
+   ],
+   "federation": [
+    true,
+    true
+   ],
+   "fido2": [
+    true,
+    true
+   ],
+   "webauthn": [
+    true,
+    true
+   ],
+   "token": [
+    true,
+    true
+   ],
+   "revocation.": [
+    true,
+    true
+   ]
+  }
+ },
+ {
+  "id": "seed-06",
+  "brief": "Build a real-time stream processing engine executing complex event processing (CEP) over partitioned Kafka streams.",
+  "name": "real-time stream processing engine",
+  "entities": [
+   "cep_task",
+   "partition_definition"
+  ],
+  "form": [
+   "cep_task"
+  ],
+  "oauth": true,
+  "repaired": false,
+  "tasks": 13,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 21,
+  "own_total": 21,
+  "tests": 26,
+  "compiled": 26,
+  "attempts": 12,
+  "arch": "real-time stream processing engine: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create a CEP task through its form, then open /cep_tasks.",
+   "Visit every page route without signing in.",
+   "Start the OAuth sign-in flow from a signed-out browser."
+  ],
+  "sum_db": "Postgres tables: users, cep_task, partition_definition.",
+  "brief_terms": {
+   "stream": [
+    true,
+    true
+   ],
+   "processing": [
+    true,
+    true
+   ],
+   "engine": [
+    true,
+    true
+   ],
+   "complex": [
+    false,
+    false
+   ],
+   "event": [
+    false,
+    true
+   ],
+   "cep": [
+    true,
+    true
+   ],
+   "partitioned": [
+    false,
+    false
+   ],
+   "kafka": [
+    false,
+    false
+   ],
+   "streams.": [
+    false,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-07",
+  "brief": "Design a distributed transactional key-value store using Raft consensus and a multi-version concurrency control (MVCC) engine.",
+  "name": "distributed transactional key-value store",
+  "entities": [
+   "bucket",
+   "raft_log"
+  ],
+  "form": [
+   "bucket"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 12,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 23,
+  "own_total": 23,
+  "tests": 24,
+  "compiled": 24,
+  "attempts": 11,
+  "arch": "distributed transactional key-value store: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create a bucket through its form, then open /buckets.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, bucket, raft_log.",
+  "brief_terms": {
+   "distributed": [
+    true,
+    true
+   ],
+   "transactional": [
+    true,
+    true
+   ],
+   "key-value": [
+    true,
+    true
+   ],
+   "store": [
+    true,
+    true
+   ],
+   "raft": [
+    true,
+    true
+   ],
+   "consensus": [
+    false,
+    false
+   ],
+   "multi-version": [
+    false,
+    false
+   ],
+   "concurrency": [
+    false,
+    false
+   ],
+   "control": [
+    false,
+    false
+   ],
+   "mvcc": [
+    false,
+    false
+   ],
+   "engine.": [
+    false,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-08",
+  "brief": "Develop a high-throughput vector database supporting concurrent HNSW index builds and metadata filtering.",
+  "name": "high-throughput vector database",
+  "entities": [
+   "vector_index",
+   "metadata_filter"
+  ],
+  "form": [
+   "metadata_filter"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 12,
+  "bad_json": 0,
+  "integrator": false,
+  "failures": [
+   "provides:t8:route:/vector_indexes"
+  ],
+  "py": [],
+  "ts": [],
+  "own_pass": 18,
+  "own_total": 18,
+  "tests": 24,
+  "compiled": 24,
+  "attempts": 13,
+  "arch": "high-throughput vector database: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create a metadata filter through its form, then open /metadata_filters.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, vector_index, metadata_filter.",
+  "brief_terms": {
+   "high-throughput": [
+    true,
+    true
+   ],
+   "vector": [
+    true,
+    true
+   ],
+   "database": [
+    true,
+    true
+   ],
+   "concurrent": [
+    false,
+    false
+   ],
+   "hnsw": [
+    false,
+    false
+   ],
+   "index": [
+    true,
+    true
+   ],
+   "builds": [
+    false,
+    false
+   ],
+   "metadata": [
+    true,
+    true
+   ],
+   "filtering.": [
+    false,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-09",
+  "brief": "Construct an object storage engine implementing Reed-Solomon erasure coding, chunk hashing, and self-healing node repair.",
+  "name": "object storage engine",
+  "entities": [
+   "chunk",
+   "node_repair"
+  ],
+  "form": [
+   "chunk"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 12,
+  "bad_json": 0,
+  "integrator": false,
+  "failures": [
+   "provides:t9:route:/node_repairs"
+  ],
+  "py": [],
+  "ts": [],
+  "own_pass": 15,
+  "own_total": 15,
+  "tests": 24,
+  "compiled": 22,
+  "attempts": 13,
+  "arch": "object storage engine: a FastAPI router provides 3 REST interfaces; a React frontend consumes 2 forms; Postgres stores 4 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create a chunk, then open /chunks.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, chunk, node_repair, and its dependencies.",
+  "brief_terms": {
+   "object": [
+    true,
+    true
+   ],
+   "storage": [
+    true,
+    true
+   ],
+   "engine": [
+    true,
+    true
+   ],
+   "reed-solomon": [
+    false,
+    false
+   ],
+   "erasure": [
+    false,
+    false
+   ],
+   "coding": [
+    false,
+    false
+   ],
+   "chunk": [
+    true,
+    true
+   ],
+   "hashing": [
+    false,
+    false
+   ],
+   "self-healing": [
+    false,
+    false
+   ],
+   "node": [
+    true,
+    true
+   ],
+   "repair.": [
+    true,
+    true
+   ]
+  }
+ },
+ {
+  "id": "seed-10",
+  "brief": "Create a distributed SQL query coordinator featuring vectorized SIMD execution over partitioned Parquet datasets.",
+  "name": "Create a distributed SQL query coordinator featuring vectorized SIMD execution over partitioned Parquet datasets.",
+  "entities": [
+   "table_town"
+  ],
+  "form": [
+   "table_town"
+  ],
+  "oauth": true,
+  "repaired": false,
+  "tasks": 10,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 6,
+  "own_total": 6,
+  "tests": 19,
+  "compiled": 18,
+  "attempts": 9,
+  "arch": "src/database/table_users.sql, src/auth/session.py, src/network/query_api.py, src/frontend/EntityPage.jsx",
+  "sys": [
+   "Sign in, create a table through its form, then open /tables.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, table_town.",
+  "brief_terms": {
+   "distributed": [
+    true,
+    true
+   ],
+   "sql": [
+    true,
+    true
+   ],
+   "query": [
+    true,
+    true
+   ],
+   "coordinator": [
+    true,
+    true
+   ],
+   "vectorized": [
+    true,
+    true
+   ],
+   "simd": [
+    true,
+    true
+   ],
+   "execution": [
+    true,
+    true
+   ],
+   "partitioned": [
+    true,
+    true
+   ],
+   "parquet": [
+    true,
+    true
+   ],
+   "datasets.": [
+    true,
+    true
+   ]
+  }
+ },
+ {
+  "id": "seed-11",
+  "brief": "Design a distributed LLM training orchestrator with Pipeline Parallelism, DeepSpeed ZeRO-3, and gradient accumulation.",
+  "name": "distributed LLM training orchestrator",
+  "entities": [
+   "pipeline",
+   "deepspeed_zero_three"
+  ],
+  "form": [
+   "pipeline"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 12,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 21,
+  "own_total": 21,
+  "tests": 24,
+  "compiled": 24,
+  "attempts": 11,
+  "arch": "distributed LLM training orchestrator: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create a pipeline through its form, then open /pipelines.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, pipeline, deepspeed_zero_three.",
+  "brief_terms": {
+   "distributed": [
+    true,
+    true
+   ],
+   "llm": [
+    true,
+    true
+   ],
+   "training": [
+    true,
+    true
+   ],
+   "orchestrator": [
+    true,
+    true
+   ],
+   "pipeline": [
+    true,
+    true
+   ],
+   "parallelism": [
+    false,
+    false
+   ],
+   "deepspeed": [
+    true,
+    true
+   ],
+   "zero-3": [
+    false,
+    false
+   ],
+   "gradient": [
+    false,
+    false
+   ],
+   "accumulation.": [
+    false,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-12",
+  "brief": "Build an autonomous AI agent sandbox environment supporting state checkpointing, tool sandboxing, and session resumption.",
+  "name": "autonomous AI agent sandbox environment",
+  "entities": [
+   "state_checkpoint",
+   "tool_sandbox"
+  ],
+  "form": [
+   "state_checkpoint"
+  ],
+  "oauth": true,
+  "repaired": false,
+  "tasks": 13,
+  "bad_json": 0,
+  "integrator": false,
+  "failures": [
+   "uses:t8:endpoint:GET /api/state_checkpoints",
+   "uses:t8:endpoint:POST /api/state_checkpoints",
+   "provides:t9:route:/state_checkpoints",
+   "uses:t9:endpoint:GET /api/state_checkpoints",
+   "frontend_endpoints_resolve"
+  ],
+  "py": [],
+  "ts": [],
+  "own_pass": 15,
+  "own_total": 18,
+  "tests": 25,
+  "compiled": 25,
+  "attempts": 16,
+  "arch": "autonomous AI agent sandbox environment: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create a state checkpoint through its form, then open /state_checkpoints.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, state_checkpoint, tool_sandbox.",
+  "brief_terms": {
+   "autonomous": [
+    true,
+    true
+   ],
+   "agent": [
+    true,
+    true
+   ],
+   "sandbox": [
+    true,
+    true
+   ],
+   "environment": [
+    true,
+    true
+   ],
+   "state": [
+    true,
+    true
+   ],
+   "checkpointing": [
+    false,
+    false
+   ],
+   "tool": [
+    true,
+    true
+   ],
+   "sandboxing": [
+    false,
+    false
+   ],
+   "session": [
+    true,
+    true
+   ],
+   "resumption.": [
+    false,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-13",
+  "brief": "Develop an enterprise ML feature store supporting point-in-time joins and synchronized online-offline storage backends.",
+  "name": "enterprise ML feature store",
+  "entities": [
+   "feature",
+   "sync_backend"
+  ],
+  "form": [
+   "feature"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 12,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 23,
+  "own_total": 23,
+  "tests": 24,
+  "compiled": 24,
+  "attempts": 11,
+  "arch": "enterprise ML feature store: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create a feature through its form, then open /features.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, feature, sync_backend.",
+  "brief_terms": {
+   "enterprise": [
+    true,
+    true
+   ],
+   "feature": [
+    true,
+    true
+   ],
+   "store": [
+    true,
+    true
+   ],
+   "point-in-time": [
+    false,
+    false
+   ],
+   "joins": [
+    false,
+    false
+   ],
+   "synchronized": [
+    false,
+    false
+   ],
+   "online-offline": [
+    false,
+    false
+   ],
+   "storage": [
+    false,
+    false
+   ],
+   "backends.": [
+    true,
+    true
+   ]
+  }
+ },
+ {
+  "id": "seed-14",
+  "brief": "Create an automated model quantization pipeline compiling PyTorch computational graphs to edge NPU binaries.",
+  "name": "automated model quantization pipeline",
+  "entities": [
+   "model"
+  ],
+  "form": [
+   "model"
+  ],
+  "oauth": true,
+  "repaired": false,
+  "tasks": 10,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 15,
+  "own_total": 15,
+  "tests": 19,
+  "compiled": 17,
+  "attempts": 9,
+  "arch": "automated model quantization pipeline compiling PyTorch computational graphs to edge NPU binaries",
+  "sys": [
+   "Sign in, create a model, then open /models.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, model.",
+  "brief_terms": {
+   "model": [
+    true,
+    true
+   ],
+   "quantization": [
+    true,
+    true
+   ],
+   "pipeline": [
+    true,
+    true
+   ],
+   "compiling": [
+    true,
+    false
+   ],
+   "pytorch": [
+    true,
+    false
+   ],
+   "computational": [
+    true,
+    false
+   ],
+   "graphs": [
+    true,
+    false
+   ],
+   "edge": [
+    true,
+    false
+   ],
+   "npu": [
+    true,
+    true
+   ],
+   "binaries.": [
+    true,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-15",
+  "brief": "Develop a high-performance asynchronous IO event loop framework for Linux utilizing zero-copy io_uring ring buffers.",
+  "name": "high-performance asynchronous IO event loop framework for Linux utilizing zero-copy io_uring ring buffers",
+  "entities": [
+   "event",
+   "ring_buffer"
+  ],
+  "form": [
+   "event"
+  ],
+  "oauth": true,
+  "repaired": false,
+  "tasks": 13,
+  "bad_json": 0,
+  "integrator": false,
+  "failures": [
+   "requires_satisfied",
+   "tables_defined"
+  ],
+  "py": [],
+  "ts": [],
+  "own_pass": 8,
+  "own_total": 8,
+  "tests": 25,
+  "compiled": 19,
+  "attempts": 12,
+  "arch": "high-performance asynchronous IO event loop framework for Linux utilizing zero-copy io_uring ring buffers",
+  "sys": [
+   "Sign in, create an account, then open /accounts.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, account_token.",
+  "brief_terms": {
+   "high-performance": [
+    true,
+    true
+   ],
+   "asynchronous": [
+    true,
+    true
+   ],
+   "event": [
+    true,
+    true
+   ],
+   "loop": [
+    true,
+    true
+   ],
+   "framework": [
+    true,
+    true
+   ],
+   "linux": [
+    true,
+    true
+   ],
+   "zero-copy": [
+    true,
+    true
+   ],
+   "uring": [
+    true,
+    true
+   ],
+   "ring": [
+    true,
+    true
+   ],
+   "buffers.": [
+    true,
+    true
+   ]
+  }
+ },
+ {
+  "id": "seed-16",
+  "brief": "Build a lightweight WebAssembly (WASM) runtime engine featuring JIT compilation and sandboxed WASI host bindings.",
+  "plan_error": "1 validation error for ProjectSpec\n  Invalid JSON: EOF while parsing a list at line 181889 column 0 [type=json_invalid, input_value='{\"name\":\"Build a lightwe...n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/json_invalid"
+ },
+ {
+  "id": "seed-17",
+  "brief": "Construct a real-time audio DSP processing framework managing low-latency circular buffers and VST3 plugin hosting.",
+  "name": "real-time audio dsp framework",
+  "entities": [
+   "buffer",
+   "vst3_plugin"
+  ],
+  "form": [
+   "buffer"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 12,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 23,
+  "own_total": 23,
+  "tests": 24,
+  "compiled": 24,
+  "attempts": 11,
+  "arch": "real-time audio DSP framework: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create a buffer through its form, then open /buffers.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, buffer, vst3_plugin.",
+  "brief_terms": {
+   "audio": [
+    true,
+    true
+   ],
+   "dsp": [
+    true,
+    true
+   ],
+   "processing": [
+    false,
+    false
+   ],
+   "framework": [
+    true,
+    true
+   ],
+   "low-latency": [
+    false,
+    false
+   ],
+   "circular": [
+    false,
+    false
+   ],
+   "buffers": [
+    true,
+    true
+   ],
+   "vst3": [
+    true,
+    true
+   ],
+   "plugin": [
+    true,
+    true
+   ],
+   "hosting.": [
+    false,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-18",
+  "brief": "Design a custom PCIe NVMe controller driver for embedded Linux handling multi-queue I/O pairs and thermal throttling.",
+  "name": "custom PCIe NVMe controller driver",
+  "entities": [
+   "nvme_device",
+   "thermal_profile"
+  ],
+  "form": [
+   "nvme_device"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 12,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 23,
+  "own_total": 23,
+  "tests": 24,
+  "compiled": 24,
+  "attempts": 11,
+  "arch": "custom PCIe NVMe controller driver: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create an nvme_device through its form, then open /nvme_devices.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, nvme_device, thermal_profile.",
+  "brief_terms": {
+   "pcie": [
+    true,
+    true
+   ],
+   "nvme": [
+    true,
+    true
+   ],
+   "controller": [
+    true,
+    true
+   ],
+   "driver": [
+    true,
+    true
+   ],
+   "embedded": [
+    false,
+    false
+   ],
+   "linux": [
+    false,
+    false
+   ],
+   "multi-queue": [
+    false,
+    false
+   ],
+   "pairs": [
+    false,
+    false
+   ],
+   "thermal": [
+    true,
+    true
+   ],
+   "throttling.": [
+    false,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-19",
+  "brief": "Build a peer-to-peer overlay network utilizing WireGuard cryptographic primitives and STUN/TURN NAT traversal.",
+  "name": "peer-to-peer overlay network",
+  "entities": [
+   "account_provider",
+   "account_request"
+  ],
+  "form": [
+   "user"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 13,
+  "bad_json": 0,
+  "integrator": false,
+  "failures": [
+   "requires_satisfied"
+  ],
+  "py": [],
+  "ts": [],
+  "own_pass": 15,
+  "own_total": 15,
+  "tests": 25,
+  "compiled": 23,
+  "attempts": 12,
+  "arch": "peer-to-peer overlay network: a React frontend calls FastAPI routers through a typed client; Postgres stores 2 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create an account, then open /users.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, account_provider, and every entity.",
+  "brief_terms": {
+   "peer-to-peer": [
+    true,
+    true
+   ],
+   "overlay": [
+    true,
+    true
+   ],
+   "network": [
+    true,
+    true
+   ],
+   "wireguard": [
+    false,
+    false
+   ],
+   "cryptographic": [
+    false,
+    false
+   ],
+   "primitives": [
+    false,
+    false
+   ],
+   "stun": [
+    false,
+    false
+   ],
+   "turn": [
+    true,
+    true
+   ],
+   "nat": [
+    false,
+    false
+   ],
+   "traversal.": [
+    false,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-20",
+  "brief": "Design a Web Application Firewall (WAF) performing AST-based payload analysis and real-time SQLi detection.",
+  "name": "Web Application Firewall",
+  "entities": [
+   "policy"
+  ],
+  "form": [
+   "policy"
+  ],
+  "oauth": true,
+  "repaired": false,
+  "tasks": 10,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 9,
+  "own_total": 9,
+  "tests": 19,
+  "compiled": 19,
+  "attempts": 9,
+  "arch": "web_app: frontend; api: database; mfa: auth; network: network",
+  "sys": [
+   "Sign in, create a policy through its form, then open /policies.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, policy.",
+  "brief_terms": {
+   "web": [
+    true,
+    true
+   ],
+   "application": [
+    true,
+    true
+   ],
+   "firewall": [
+    true,
+    true
+   ],
+   "waf": [
+    false,
+    false
+   ],
+   "ast-based": [
+    false,
+    false
+   ],
+   "payload": [
+    false,
+    true
+   ],
+   "analysis": [
+    false,
+    false
+   ],
+   "sqli": [
+    false,
+    false
+   ],
+   "detection.": [
+    false,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-21",
+  "brief": "Develop an automated vulnerability scanner performing static AST security checks and container image layer auditing.",
+  "name": "automated vulnerability scanner",
+  "entities": [
+   "vulnerability_report",
+   "container_layer"
+  ],
+  "form": [
+   "vulnerability_report"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 12,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 23,
+  "own_total": 23,
+  "tests": 24,
+  "compiled": 24,
+  "attempts": 11,
+  "arch": "automated vulnerability scanner: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create a vulnerability report through its form, then open /vulnerability_reports.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, vulnerability_report, container_layer.",
+  "brief_terms": {
+   "vulnerability": [
+    true,
+    true
+   ],
+   "scanner": [
+    true,
+    true
+   ],
+   "static": [
+    false,
+    true
+   ],
+   "ast": [
+    true,
+    true
+   ],
+   "security": [
+    false,
+    false
+   ],
+   "checks": [
+    false,
+    false
+   ],
+   "container": [
+    true,
+    true
+   ],
+   "image": [
+    false,
+    false
+   ],
+   "layer": [
+    true,
+    true
+   ],
+   "auditing.": [
+    false,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-22",
+  "brief": "Create a network telemetry ingestion agent leveraging eBPF program hooks for real-time IPFIX flow enrichment.",
+  "name": "network telemetry ingestion agent",
+  "entities": [
+   "telemetry"
+  ],
+  "form": [
+   "telemetry"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 9,
+  "bad_json": 0,
+  "integrator": false,
+  "failures": [
+   "provides:t4:endpoint:GET /api/telemetrys",
+   "provides:t4:endpoint:POST /api/telemetrys",
+   "provides:t4:endpoint:GET /api/telemetrys/{item_id}",
+   "uses:t5:endpoint:GET /api/telemetrys",
+   "uses:t5:endpoint:POST /api/telemetrys"
+  ],
+  "py": [],
+  "ts": [],
+  "own_pass": 8,
+  "own_total": 9,
+  "tests": 18,
+  "compiled": 18,
+  "attempts": 14,
+  "arch": "network telemetry ingestion agent: a React frontend calls FastAPI routers through a typed client; Postgres stores 2 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create a telemetry record through its form, then open /telemetry.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, telemetry.",
+  "brief_terms": {
+   "network": [
+    true,
+    true
+   ],
+   "telemetry": [
+    true,
+    true
+   ],
+   "ingestion": [
+    true,
+    true
+   ],
+   "agent": [
+    true,
+    true
+   ],
+   "ebpf": [
+    false,
+    false
+   ],
+   "program": [
+    false,
+    false
+   ],
+   "hooks": [
+    false,
+    false
+   ],
+   "ipfix": [
+    true,
+    false
+   ],
+   "flow": [
+    true,
+    false
+   ],
+   "enrichment.": [
+    false,
+    false
+   ]
+  }
+ },
+ {
+  "id": "seed-23",
+  "brief": "Construct a ultra-low-latency financial matching engine handling FIX protocol order books with sub-microsecond execution.",
+  "name": "construct a ultra-low-latency financial matching engine handling FIX protocol order books with sub-microsecond execution",
+  "entities": [
+   "order_book"
+  ],
+  "form": [
+   "order_book"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 9,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 17,
+  "own_total": 17,
+  "tests": 18,
+  "compiled": 18,
+  "attempts": 8,
+  "arch": "financial matching engine: FastAPI routers provide the API; React pages render the frontend; Postgres stores 2 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create an order book through its form, then open /order_books.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, order_book.",
+  "brief_terms": {
+   "ultra-low-latency": [
+    true,
+    true
+   ],
+   "financial": [
+    true,
+    true
+   ],
+   "matching": [
+    true,
+    true
+   ],
+   "engine": [
+    true,
+    true
+   ],
+   "fix": [
+    true,
+    true
+   ],
+   "protocol": [
+    true,
+    true
+   ],
+   "order": [
+    true,
+    true
+   ],
+   "books": [
+    true,
+    true
+   ],
+   "sub-microsecond": [
+    true,
+    true
+   ],
+   "execution.": [
+    true,
+    true
+   ]
+  }
+ },
+ {
+  "id": "seed-24",
+  "brief": "Develop an autonomous flight controller firmware with Real-Time Operating System (RTOS) task scheduling and EKF sensor fusion.",
+  "name": "autonomous flight controller firmware",
+  "entities": [
+   "device",
+   "sensor_fusion"
+  ],
+  "form": [
+   "device"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 12,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 22,
+  "own_total": 22,
+  "tests": 24,
+  "compiled": 23,
+  "attempts": 11,
+  "arch": "autonomous flight controller firmware: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create an account, then open /devices.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, device, sensor_fusion.",
+  "brief_terms": {
+   "autonomous": [
+    true,
+    true
+   ],
+   "flight": [
+    true,
+    true
+   ],
+   "controller": [
+    true,
+    true
+   ],
+   "firmware": [
+    true,
+    true
+   ],
+   "operating": [
+    false,
+    false
+   ],
+   "system": [
+    true,
+    false
+   ],
+   "rtos": [
+    false,
+    false
+   ],
+   "task": [
+    true,
+    true
+   ],
+   "scheduling": [
+    false,
+    false
+   ],
+   "ekf": [
+    false,
+    false
+   ],
+   "sensor": [
+    true,
+    true
+   ],
+   "fusion.": [
+    true,
+    true
+   ]
+  }
+ },
+ {
+  "id": "seed-25",
+  "brief": "Design a spatial 3D audio rendering pipeline streaming low-latency multi-user audio over WebSockets and WebRTC.",
+  "name": "spatial 3D audio rendering pipeline streaming low-latency multi-user audio over WebSockets and WebRTC",
+  "entities": [
+   "audio_track"
+  ],
+  "form": [
+   "audio_track"
+  ],
+  "oauth": true,
+  "repaired": false,
+  "tasks": 10,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 17,
+  "own_total": 17,
+  "tests": 19,
+  "compiled": 19,
+  "attempts": 9,
+  "arch": "spatial 3D audio rendering pipeline streaming low-latency multi-user audio over WebSockets and WebRTC",
+  "sys": [
+   "Sign in, create an audio track through its form, then open /audio_tracks.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, audio_track.",
+  "brief_terms": {
+   "spatial": [
+    true,
+    true
+   ],
+   "audio": [
+    true,
+    true
+   ],
+   "rendering": [
+    true,
+    true
+   ],
+   "pipeline": [
+    true,
+    true
+   ],
+   "low-latency": [
+    true,
+    true
+   ],
+   "multi-user": [
+    true,
+    true
+   ],
+   "websockets": [
+    true,
+    true
+   ],
+   "webrtc.": [
+    true,
+    true
+   ]
+  }
+ },
+ {
+  "id": "seed-26",
+  "brief": "Create a cloud gaming frame-streaming server implementing dynamic AV1 hardware encoding and input prediction.",
+  "name": "cloud gaming frame-streaming server",
+  "entities": [
+   "video",
+   "input_prediction"
+  ],
+  "form": [
+   "video"
+  ],
+  "oauth": false,
+  "repaired": false,
+  "tasks": 12,
+  "bad_json": 0,
+  "integrator": true,
+  "failures": [],
+  "py": [],
+  "ts": [],
+  "own_pass": 22,
+  "own_total": 22,
+  "tests": 24,
+  "compiled": 23,
+  "attempts": 11,
+  "arch": "cloud gaming frame-streaming server: a React frontend calls FastAPI routers through a typed client; Postgres stores 3 tables; cookie sessions protect the API and every page.",
+  "sys": [
+   "Sign in, create an account, then open /videos.",
+   "Visit every page route without signing in."
+  ],
+  "sum_db": "Postgres tables: users, video, input_prediction.",
+  "brief_terms": {
+   "cloud": [
+    true,
+    true
+   ],
+   "gaming": [
+    true,
+    true
+   ],
+   "frame-streaming": [
+    true,
+    true
+   ],
+   "server": [
+    true,
+    true
+   ],
+   "av1": [
+    false,
+    false
+   ],
+   "hardware": [
+    false,
+    false
+   ],
+   "encoding": [
+    false,
+    false
+   ],
+   "input": [
+    true,
+    true
+   ],
+   "prediction.": [
+    true,
+    true
+   ]
+  }
+ }
+]

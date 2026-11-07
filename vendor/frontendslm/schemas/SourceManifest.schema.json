@@ -1,0 +1,31 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "design_tokens": {
+      "additionalProperties": true,
+      "title": "Design Tokens",
+      "type": "object"
+    },
+    "component_tree": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Component Tree",
+      "type": "array"
+    },
+    "files": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Files",
+      "type": "object"
+    }
+  },
+  "required": [
+    "design_tokens",
+    "component_tree",
+    "files"
+  ],
+  "title": "SourceManifest",
+  "type": "object"
+}

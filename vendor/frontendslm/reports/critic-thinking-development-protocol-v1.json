@@ -1,0 +1,59 @@
+{
+  "declared_at": "2026-11-07T16:12:53.263919+00:00",
+  "declaration_timing": "Control underway; Thinking inference not yet started. Case selection and role expectations were frozen in the control run before inference.",
+  "control_run": "critic-thinking-control-v1",
+  "candidate_run": "critic-thinking-development-v1",
+  "candidates": [
+    {
+      "candidate": "repaired/operations_01",
+      "expected_role": "control"
+    },
+    {
+      "candidate": "repaired/configuration_02",
+      "expected_role": "content_contradiction"
+    },
+    {
+      "candidate": "repaired/learning_01",
+      "expected_role": "control"
+    },
+    {
+      "candidate": "control/planning_02",
+      "expected_role": "control"
+    },
+    {
+      "candidate": "control/forms_03",
+      "expected_role": "control"
+    },
+    {
+      "candidate": "original/configuration_02",
+      "expected_role": "measured_interaction_failure"
+    }
+  ],
+  "role": "Repeated six-case development comparison, not independent accuracy or human preference estimation",
+  "critic_lock": {
+    "model": "Qwen/Qwen3-VL-4B-Thinking",
+    "revision": "1de27d8c51f12e819435303b9e84c4e25ba8401e",
+    "license": "apache-2.0",
+    "trust_remote_code": false,
+    "output_mode": "thinking"
+  },
+  "changed": [
+    "Critic checkpoint and template",
+    "Greedy 2500-token output becomes sampled 16384-token reasoning plus constrained answer"
+  ],
+  "invariants": [
+    "Exact system instructions and JSON input payload",
+    "Screenshot and browser-evidence bytes",
+    "Complete source and test workflows",
+    "Seed 42, L40S, BF16, SDPA, final JSON schema and independent validation"
+  ],
+  "success_gate": "Correctly identify stale helper copy with evidence, preserve the four measured passing controls unless a separately supported defect is found, and give an original-failure repair recommendation compatible with the full test workflow.",
+  "semantic_review": "Inspect actual findings and recommendations after role scoring; structural role match alone is not enough.",
+  "resource_bound": "16384 tokens total is below official 40960 VL recommendation; truncation is failed inference, not proof of incapability.",
+  "next_step": "Only after semantic improvement, apply the measured critique through the 4B Architect and rerun the full browser audit. Broader reliability and human beauty remain separate gates.",
+  "sources": [
+    "https://huggingface.co/Qwen/Qwen3-VL-4B-Thinking",
+    "https://raw.githubusercontent.com/mlc-ai/xgrammar/v0.2.8/python/xgrammar/contrib/hf.py"
+  ],
+  "training_performed": false
+}

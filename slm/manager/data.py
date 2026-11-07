@@ -7,6 +7,7 @@ from pathlib import Path
 
 from slm.contracts import Project
 from slm.manager.manager import format_example
+from slm.manager.spec import SPEC_SYSTEM, format_spec_example
 
 
 def sft_rows(projects: list[Project]) -> list[dict]:
@@ -17,6 +18,17 @@ def sft_rows(projects: list[Project]) -> list[dict]:
             continue
         system, prompt, completion = format_example(p)
         rows.append({"system": system, "prompt": prompt, "completion": completion})
+    return rows
+
+
+def spec_sft_rows(projects: list[Project]) -> list[dict]:
+    """The same row shape for the nested manager: brief in, ProjectSpec JSON out."""
+    rows = []
+    for p in projects:
+        if p.plan is None:
+            continue
+        prompt, completion = format_spec_example(p.description, p.plan)
+        rows.append({"system": SPEC_SYSTEM, "prompt": prompt, "completion": completion})
     return rows
 
 

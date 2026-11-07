@@ -1,0 +1,19 @@
+
+> generated-app@0.1.0 build
+> tsc --noEmit && vite build
+
+src/App.tsx(17,66): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(23,56): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(29,70): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(50,28): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(53,36): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(67,28): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(70,31): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(84,28): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(87,38): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(105,28): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(108,36): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(124,28): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(127,31): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(143,28): error TS2304: Cannot find name 'ApiError'.
+src/App.tsx(146,38): error TS2304: Cannot find name 'ApiError'.

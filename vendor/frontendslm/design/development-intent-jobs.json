@@ -1,0 +1,124 @@
+[
+  {
+    "id": "calm_dense",
+    "brief": "Design a calm but information-dense operations console for experienced dispatchers. Show 30 active jobs without making them scroll through large cards. Avoid playful styling and decorative gradients."
+  },
+  {
+    "id": "warm_editorial",
+    "brief": "A reading app for long essays: warm, editorial, quiet, like a well-set journal. Not a SaaS dashboard. Reading comfort comes first; offer a day/night switch."
+  },
+  {
+    "id": "playful_professional",
+    "brief": "A playful but professional booking form for a children's science museum. Parents need a quick, reassuring way to reserve a visit. Avoid cartoon overload or childish tiny type."
+  },
+  {
+    "id": "unknown_descriptor",
+    "brief": "Create a project workspace for researchers. Make it zorbly. That word is our team's private design descriptor; no definition is provided yet."
+  },
+  {
+    "id": "premium_light",
+    "brief": "A premium, airy, light-mode catalog for handmade ceramics. Avoid dark luxury styling, gold accents, and dense dashboard layouts. Help shoppers compare dimensions and add an item to their cart."
+  },
+  {
+    "id": "planning_02",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "planning_02",
+      "application_type": "planning",
+      "user_goal": "Build a polished single-page independent film production checklist interface. Provide a task called Prepare materials, a toggle control (task-toggle), and a text status (task-status), initially Pending. Activating the control changes it to Completed; activating again restores Pending. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "low",
+        "descriptors": "warm, editorial, tactile",
+        "theme": "light"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "toggle",
+          "action": "Provide a task called Prepare materials, a toggle control (task-toggle), and a text status (task-status), initially Pending. Activating the control changes it to Completed; activating again restores Pending.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    }
+  },
+  {
+    "id": "forms_03",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "forms_03",
+      "application_type": "forms",
+      "user_goal": "Build a polished single-page local volunteer signup interface. Provide a labeled Name input (name), Email input (email), submit control (submit), and status (form-status). An empty submission must visibly say Required. After filling a name and valid email, submission must say Confirmed. Implement local validation with noValidate so an empty submission reaches the handler. Label it a demo, not a real booking. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "medium",
+        "descriptors": "playful, geometric, colorful",
+        "theme": "light"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "form",
+          "action": "Provide a labeled Name input (name), Email input (email), submit control (submit), and status (form-status). An empty submission must visibly say Required. After filling a name and valid email, submission must say Confirmed. Implement local validation with noValidate so an empty submission reaches the handler. Label it a demo, not a real booking.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    }
+  }
+]

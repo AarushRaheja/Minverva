@@ -1,0 +1,88 @@
+{
+  "run_id": "thinking-repair-development-v1",
+  "declared_at": "2026-11-07T15:34:04.784584+00:00",
+  "role": "Checkpoint/decode development comparison on reused sources; not a prospective accuracy estimate",
+  "source_run": "pilot-baseline-v2",
+  "comparison_runs": [
+    "repair-regression-v6",
+    "repair-sampling-v1",
+    "unit-repair-development-v2"
+  ],
+  "candidates": [
+    "A0/operations_01",
+    "A0/configuration_02",
+    "A1/learning_01",
+    "A1/planning_02",
+    "A1/forms_03"
+  ],
+  "max_revisions": 1,
+  "seed": 42,
+  "repair_strategy": "component",
+  "architect_profile": "thinking",
+  "repair_decoding": {
+    "max_new_tokens": 16384,
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "min_p": 0.0
+  },
+  "model_lock": {
+    "architect": {
+      "model": "Qwen/Qwen3-4B-Thinking-2507",
+      "revision": "768f209d9ea81521153ed38c47d515654e938aea",
+      "license": "apache-2.0",
+      "trust_remote_code": false,
+      "output_mode": "thinking"
+    },
+    "critic": {
+      "model": "Qwen/Qwen3-VL-4B-Instruct",
+      "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17",
+      "license": "apache-2.0",
+      "trust_remote_code": false
+    }
+  },
+  "hypothesis": "The alternative 4B Thinking checkpoint can correct measured state-transition defects that the Instruct checkpoint repeatedly left unchanged.",
+  "unchanged": [
+    "Initial source files",
+    "Complete browser audit and required workflows",
+    "Component-repair prompt constructor",
+    "Pinned 4B Critic and measured acceptance gate",
+    "No training and no human beauty claim"
+  ],
+  "changed": [
+    "4B Architect checkpoint and its chat template",
+    "Vendor-recommended thinking sampling profile",
+    "Output cap increased from 6144 to 16384 tokens including reasoning",
+    "Token-delimited extraction of final code; raw reasoning retained"
+  ],
+  "output_cap_limitation": "16384 is a resource bound below the model card recommendation of 32768; truncation is failure, not proof of model incapability.",
+  "comparison_limitations": [
+    "Checkpoint, decoding and budget change together; do not attribute gains solely to model reasoning",
+    "Repeated development cases cannot establish independent accuracy"
+  ],
+  "gate": "Require all three failures repaired and both controls retained before broader development evaluation; preserve unused briefs until supported.",
+  "prompt_constructor_control_hashes": {
+    "A0/operations_01": "97f9136a8ebc9f8233d474013f4da0039b55aae31f85dca97e6a2b3a69c6ddc1",
+    "A0/configuration_02": "101f6a6bb16a7c40882e030893b11ca417e1fbf64fa8bb43dd57cfeb8b0789b6",
+    "A1/learning_01": "1a5dd88c65d1dd7cbca18942e9f4c748b542e414f1e78c01acd7a8ae3b4b5465"
+  },
+  "source_sha256": {
+    "src/frontendslm/inference.py": "64e61eac0b46a5fd9e2cd62620621df69c4f235f32b105cd9db837f62a4a2415",
+    "src/frontendslm/generation.py": "a982ac108df6ada07a77737745953c9bf19fd649128b5c7d170c6be53388d698",
+    "src/frontendslm/repair.py": "e24661001defa059f51062ad41545c346d72108ac97057efcafbe1b8b1f64219",
+    "src/frontendslm/evidence.py": "a1c5cb7d044fe1889bd194f198b7dcdedba3a9b26be3d315879ed7c3325473c1",
+    "src/frontendslm/prompts.py": "df10ae14c393e8ccf5ce1765ca6022bf7d17f1062296d41d9b36c7014781a88c",
+    "scripts/run_reliability.py": "79f313a1e2c34145034c761094f219e51bfb256716fe2c6541dd0c7ba9c5b1cd",
+    "audit/cases.py": "46507388363adf2601ed355258c04297dac0c84a2a5cd06d929396f63f557b73",
+    "audit/evaluate.mjs": "cb189b70efd8abab5bf8e2f1a252ee4d38db14f261d4465d7182b8e851dc9c03",
+    "audit/scoring.py": "ad45e13327585bdfbd018b39e183789635d0a293d68d9e3847babffac115f5ca",
+    "modal_app.py": "7c63d9d64e398554370f7691efb3af443b24a479038c9512ebf124653a102748",
+    "configs/models-thinking.lock.json": "8edd04954fc4d78f4d9156109df1269299504bffde13e76a1850f4bbc94dde54",
+    "configs/models.lock.json": "56e2090a4034143aa732ed9de522aeb5bd2fee6811f67df3ec4b52ad41a568ca",
+    "sandbox/package-lock.json": "1d05e0638fe0bb27bf41ecc81e6ffbd1e565d147d7b864c32401c165e7dcf58f"
+  },
+  "primary_source": "https://huggingface.co/Qwen/Qwen3-4B-Thinking-2507",
+  "local_tests_passed": 49,
+  "training_performed": false
+}

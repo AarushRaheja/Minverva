@@ -1,10 +1,13 @@
 # How this repository is layered
 
-The repo was built in four layers by different hands. Each layer sits on the one below and replaced
+The repo was built in six layers by different hands. Each layer sits on the one below and replaced
 or reused parts of it. Read this before changing anything that crosses layers.
 
 ```
-L4  free-compute-ui (this branch)    $0 training loop · local + Ollama clients · web UI · specialist specs
+L6  Minerva in Minverva (Nov 7)     `minerva build` imported; the tui drives it (events.jsonl, run dirs)
+L5  arch-bench + consolidation      nested manager spec, trained backend adapters, FrontEndSLM frontend agent,
+                                     real-stack audit, integrator (Minerva-SLM-Pipeline-Compiled @ 88c6cbf)
+L4  free-compute-ui    $0 training loop · local + Ollama clients · web UI · specialist specs
                                      · primary-agent architecture experiments (slm/arch)
 L3  fork refactor (PR #18, Nov 1)    manager SLM + 4 domain specialists build a web project
                                      (RatChakraborty's fork; the commit is authored by Codebuff, an AI agent)
@@ -59,3 +62,19 @@ Known limits of L3, found while building L4:
 
 L4 doesn't change the integrator or the symbol contract, so L3's tests still hold. It adds new code
 next to L3's and changes only the specialist system prompts and one gold template.
+
+## L5: arch-bench and the Minerva consolidation (Nov 3–7)
+`feat/arch-bench` (12 commits after `free-compute-ui`) moved the manager to a nested `ProjectSpec`
+(`slm/manager/spec.py`), trained the manager and the database, auth and network adapters (weights on the
+Modal volume `slm-vol`, hashes in `models/SHA256SUMS`), and fixed the gold artifacts. 70ea35f raised
+`VLLMLoRAClient`'s default `max_tokens` from 128 to 768. The consolidation added `minerva/`: one command,
+`minerva build "<what>" --look "<how>"`, that plans and writes the backend with those adapters, has
+FrontEndSLM's Architect (`vendor/frontendslm/`) write the UI, audits the assembled app on real Postgres,
+FastAPI and a browser (`harness/`), and ships `project/` plus `REPORT.md`. `spec-frontend` is unused by it.
+Current state: `docs/consolidation/STATUS.md`.
+
+## L6: Minerva in Minverva
+The pipeline was imported as a whole (PROVENANCE.md). `minerva build` writes an append-only
+`events.jsonl` in its run directory and prints `run: <dir>` first, so the ratatui `tui/` can start
+builds, follow them live and show their stages, rounds, audit, report and project. The old `slm run`
+flow and the Arms view still work.

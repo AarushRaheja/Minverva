@@ -1,0 +1,205 @@
+{
+  "$defs": {
+    "ContentReview": {
+      "additionalProperties": false,
+      "properties": {
+        "test_ref": {
+          "title": "Test Ref",
+          "type": "string"
+        },
+        "screen_quote": {
+          "title": "Screen Quote",
+          "type": "string"
+        },
+        "comparison": {
+          "title": "Comparison",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "consistent",
+            "contradicted",
+            "no_related_claim",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "test_ref",
+        "screen_quote",
+        "comparison",
+        "status"
+      ],
+      "title": "ContentReview",
+      "type": "object"
+    },
+    "EvidenceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "screenshot",
+            "test",
+            "build",
+            "runtime",
+            "accessibility",
+            "overflow"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "ref": {
+          "title": "Ref",
+          "type": "string"
+        },
+        "region": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Region"
+        }
+      },
+      "required": [
+        "type",
+        "ref"
+      ],
+      "title": "EvidenceReference",
+      "type": "object"
+    },
+    "Issue": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "visual_hierarchy",
+            "typography",
+            "spacing",
+            "color",
+            "responsive",
+            "interaction",
+            "accessibility",
+            "prompt_adherence",
+            "content_consistency",
+            "runtime"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "blocker",
+            "major",
+            "minor",
+            "cosmetic"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceReference"
+          },
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "observation": {
+          "title": "Observation",
+          "type": "string"
+        },
+        "recommendation": {
+          "title": "Recommendation",
+          "type": "string"
+        },
+        "acceptance_test": {
+          "title": "Acceptance Test",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "category",
+        "severity",
+        "confidence",
+        "evidence",
+        "observation",
+        "recommendation",
+        "acceptance_test"
+      ],
+      "title": "Issue",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "content_reviews": {
+      "items": {
+        "$ref": "#/$defs/ContentReview"
+      },
+      "title": "Content Reviews",
+      "type": "array"
+    },
+    "verdict": {
+      "enum": [
+        "accept",
+        "revise",
+        "uncertain"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/Issue"
+      },
+      "title": "Issues",
+      "type": "array"
+    },
+    "uncertainties": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Uncertainties",
+      "type": "array"
+    },
+    "summary": {
+      "title": "Summary",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "verdict",
+    "issues",
+    "uncertainties",
+    "summary"
+  ],
+  "title": "Critique",
+  "type": "object"
+}

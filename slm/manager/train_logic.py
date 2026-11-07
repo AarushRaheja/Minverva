@@ -8,6 +8,7 @@ from pydantic import BaseModel
 
 from slm.contracts import Project, ProjectPlan
 from slm.manager.score import PlanScore, score_json, summarize
+from slm.manager.spec import ProjectSpec, SpecScore, score_spec_json, summarize_specs, to_plan
 
 IGNORE = -100
 DEPTH_BINS = (3, 4, 5, 6)
@@ -94,6 +95,46 @@ def parse_plan(text: str) -> tuple[ProjectPlan | None, str | None]:
         return ProjectPlan.model_validate_json(text), None
     except ValueError as e:
         return None, str(e)
+
+
+def spec_json_schema() -> dict:
+    return ProjectSpec.model_json_schema()
+
+
+def parse_spec_plan(text: str) -> tuple[ProjectPlan | None, str | None]:
+    """The plan a nested reply compiles to, or the reason it does not compile."""
+    try:
+        return to_plan(ProjectSpec.model_validate_json(text)), None
+    except ValueError as e:
+        return None, str(e)
+
+
+class SpecEvalRecord(BaseModel):
+    project_id: str
+    output: str  # raw model text
+    score: SpecScore
+
+
+def score_spec_outputs(projects: list[Project], outputs: list[str]) -> list[SpecEvalRecord]:
+    return [
+        SpecEvalRecord(project_id=p.id, output=o, score=score_spec_json(o, p.plan))
+        for p, o in zip(projects, outputs, strict=True)
+        if p.plan is not None
+    ]
+
+
+def summarize_spec_records(records: list[SpecEvalRecord], n_failures: int = 10) -> dict:
+    """Overall summary and a few failures: the ones that did not compile first, then by low recall."""
+    fails = sorted((r for r in records if not r.score.plan.isomorphic),
+                   key=lambda r: (r.score.compiled, r.score.plan.task_recall))
+    return {
+        "overall": summarize_specs([r.score for r in records]),
+        "failures": [
+            {"project_id": r.project_id, "parsed": r.score.parsed, "compiled": r.score.compiled,
+             "task_recall": round(r.score.plan.task_recall, 3), "output": r.output[:600]}
+            for r in fails[:n_failures]
+        ],
+    }
 
 
 def retry_prompt(user: str, previous: str, error: str) -> str:

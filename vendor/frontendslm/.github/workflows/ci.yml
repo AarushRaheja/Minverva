@@ -1,0 +1,21 @@
+name: contracts
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.9.5'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0'
+      - run: uv sync --frozen
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+        working-directory: sandbox
+      - run: uv run pytest
+      - run: uv run ruff check src scripts modal_app.py tests audit design
+      - run: uv run python -m compileall -q src scripts modal_app.py audit design
+      - run: npm run build
+        working-directory: sandbox

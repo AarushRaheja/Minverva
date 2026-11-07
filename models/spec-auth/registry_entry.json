@@ -1,0 +1,12 @@
+{
+  "adapter_name": "spec-auth",
+  "domain": "auth",
+  "seed": 901,
+  "path": "/vol/adapters/901/spec-auth",
+  "train_examples": 200,
+  "gate_task_ok": 1.0,
+  "train_seconds": 87.64536619186401,
+  "gpu": "A10",
+  "data_version": 5,
+  "escalated": false
+}

@@ -1,0 +1,11 @@
+{
+  "name": "minerva-audit-harness",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@axe-core/playwright": "4.10.2",
+    "@playwright/test": "1.55.1",
+    "playwright": "1.55.1"
+  }
+}

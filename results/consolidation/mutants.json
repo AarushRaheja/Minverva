@@ -1,0 +1,317 @@
+{
+ "passed": 21,
+ "total": 21,
+ "rows": [
+  {
+   "name": "clean_control",
+   "expected_catcher": null,
+   "ok": true,
+   "score": {
+    "build_pass": true,
+    "complete_render": true,
+    "interaction_pass": true,
+    "no_overflow": true,
+    "no_serious_a11y": true,
+    "no_runtime_failures": true,
+    "nonempty": true,
+    "release_eligible": true,
+    "intermediate_states": 26,
+    "complete_state_measurements": true,
+    "state_accessibility_pass": true,
+    "state_overflow_pass": true,
+    "no_console_errors": true,
+    "audit_pass": true
+   },
+   "stack": [],
+   "failed_tests": []
+  },
+  {
+   "name": "local_state_only",
+   "expected_catcher": "interaction_pass",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "interaction_pass",
+    "release_eligible",
+    "audit_pass"
+   ],
+   "failed_tests": [
+    "create-invoice:desktop",
+    "create-client:desktop",
+    "create-invoice:mobile",
+    "create-client:mobile"
+   ]
+  },
+  {
+   "name": "hardcoded_rows",
+   "expected_catcher": "interaction_pass",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "interaction_pass",
+    "release_eligible",
+    "audit_pass"
+   ],
+   "failed_tests": [
+    "nav-and-list:desktop",
+    "create-invoice:desktop",
+    "create-client:desktop",
+    "nav-and-list:mobile"
+   ]
+  },
+  {
+   "name": "ignores_typed_title",
+   "expected_catcher": "interaction_pass",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "interaction_pass",
+    "release_eligible",
+    "audit_pass"
+   ],
+   "failed_tests": [
+    "create-invoice:desktop",
+    "create-client:desktop",
+    "create-invoice:mobile",
+    "create-client:mobile"
+   ]
+  },
+  {
+   "name": "no_empty_title_check",
+   "expected_catcher": "interaction_pass",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "interaction_pass",
+    "release_eligible",
+    "audit_pass"
+   ],
+   "failed_tests": [
+    "empty-title-rejected:desktop",
+    "empty-title-rejected:mobile"
+   ]
+  },
+  {
+   "name": "missing_test_id",
+   "expected_catcher": "interaction_pass",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "interaction_pass",
+    "release_eligible",
+    "audit_pass"
+   ],
+   "failed_tests": [
+    "create-invoice:desktop",
+    "create-client:desktop",
+    "empty-title-rejected:desktop",
+    "create-invoice:mobile"
+   ]
+  },
+  {
+   "name": "second_section_unreachable",
+   "expected_catcher": "interaction_pass",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "interaction_pass",
+    "release_eligible",
+    "audit_pass"
+   ],
+   "failed_tests": [
+    "nav-and-list:desktop",
+    "create-client:desktop",
+    "nav-and-list:mobile",
+    "create-client:mobile"
+   ]
+  },
+  {
+   "name": "wrong_endpoint",
+   "expected_catcher": "interaction_pass",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "interaction_pass",
+    "no_runtime_failures",
+    "nonempty",
+    "release_eligible",
+    "complete_state_measurements",
+    "state_accessibility_pass",
+    "state_overflow_pass",
+    "no_console_errors",
+    "audit_pass"
+   ],
+   "failed_tests": [
+    "nav-and-list:desktop",
+    "create-invoice:desktop",
+    "create-client:desktop",
+    "empty-title-rejected:desktop"
+   ]
+  },
+  {
+   "name": "no_sign_out",
+   "expected_catcher": "interaction_pass",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "interaction_pass",
+    "release_eligible",
+    "audit_pass"
+   ],
+   "failed_tests": [
+    "sign-out:desktop",
+    "sign-out:mobile"
+   ]
+  },
+  {
+   "name": "console_error",
+   "expected_catcher": "no_console_errors",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "no_console_errors",
+    "audit_pass"
+   ],
+   "failed_tests": []
+  },
+  {
+   "name": "crash_on_render",
+   "expected_catcher": "interaction_pass",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "interaction_pass",
+    "no_runtime_failures",
+    "nonempty",
+    "release_eligible",
+    "complete_state_measurements",
+    "state_accessibility_pass",
+    "state_overflow_pass",
+    "audit_pass"
+   ],
+   "failed_tests": [
+    "nav-and-list:desktop",
+    "create-invoice:desktop",
+    "create-client:desktop",
+    "empty-title-rejected:desktop"
+   ]
+  },
+  {
+   "name": "low_contrast",
+   "expected_catcher": "no_serious_a11y",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "no_serious_a11y",
+    "release_eligible",
+    "state_accessibility_pass",
+    "audit_pass"
+   ],
+   "failed_tests": []
+  },
+  {
+   "name": "horizontal_overflow",
+   "expected_catcher": "no_overflow",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "no_overflow",
+    "release_eligible",
+    "state_overflow_pass",
+    "audit_pass"
+   ],
+   "failed_tests": []
+  },
+  {
+   "name": "type_error",
+   "expected_catcher": "build_pass",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "build_pass",
+    "complete_render",
+    "interaction_pass",
+    "no_overflow",
+    "no_serious_a11y",
+    "nonempty",
+    "release_eligible",
+    "complete_state_measurements",
+    "state_accessibility_pass",
+    "state_overflow_pass",
+    "audit_pass"
+   ],
+   "failed_tests": []
+  },
+  {
+   "name": "invented_field",
+   "expected_catcher": "build_pass",
+   "caught": true,
+   "ok": true,
+   "gate_failures": [
+    "build_pass",
+    "complete_render",
+    "interaction_pass",
+    "no_overflow",
+    "no_serious_a11y",
+    "nonempty",
+    "release_eligible",
+    "complete_state_measurements",
+    "state_accessibility_pass",
+    "state_overflow_pass",
+    "audit_pass"
+   ],
+   "failed_tests": []
+  },
+  {
+   "name": "backend_crashes_on_create",
+   "expected_catcher": "preflight",
+   "caught": true,
+   "ok": true,
+   "detail": [
+    "create:/api/invoices: 500 null",
+    "fetch_one:/api/invoices: nothing was created to fetch"
+   ]
+  },
+  {
+   "name": "backend_no_auth",
+   "expected_catcher": "preflight",
+   "caught": true,
+   "ok": true,
+   "detail": [
+    "list_needs_session:/api/invoices: 200",
+    "create_needs_session:/api/invoices: 200"
+   ]
+  },
+  {
+   "name": "verify_clean_control",
+   "expected_catcher": "verify_clean",
+   "ok": true,
+   "detail": []
+  },
+  {
+   "name": "no_self_setup",
+   "expected_catcher": "verify",
+   "ok": true,
+   "detail": [
+    "self_setup: psql: error: connection to server at \"127.0.0.1\", port 36075 failed: FATAL:  database \"app\" does not exist\n"
+   ]
+  },
+  {
+   "name": "self_setup_skips_schema",
+   "expected_catcher": "verify",
+   "ok": true,
+   "detail": [
+    "self_setup: psql:/var/folders/6t/y4g7k1v50ln56v_nk_kqm1br0000gn/T/minerva-audit-Y0XgXR/seed.sql:1: ERROR:  relation \"users\" does not exist\n"
+   ]
+  },
+  {
+   "name": "backend_table_missing",
+   "expected_catcher": "preflight",
+   "caught": true,
+   "ok": true,
+   "detail": [
+    "seed: psql:/var/folders/6t/y4g7k1v50ln56v_nk_kqm1br0000gn/T/minerva-audit-vWvN83/seed.sql:3: ERROR:  column \"title\" of relation \"invoice\" does not exist\nLINE 1: INSERT INTO invoice (owner_id, title) VALUES (1, 'Seeded inv...\n                                       ^\n"
+   ]
+  }
+ ]
+}

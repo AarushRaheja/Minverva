@@ -1,0 +1,1087 @@
+Technical Research & Engineering Blueprint · Version 1.0 · November 2026
+
+Project objective: Train two cooperating, specialized small language models that transform natural-language requirements into production-quality web interfaces, evaluate the rendered results, identify design and usability defects, and iteratively improve the generated code.
+
+The ambition is to build something that can eventually compete with significantly larger UI-generation systems on design quality, while remaining relatively inexpensive to run and fully under our control.
+
+I would treat this as both a serious machine learning research project and the foundation of a deployable software product.
+Decision
+Specification
+Model A
+4B parameter UI Architect SLM
+Model B
+4B parameter multimodal Design Critic SLM
+Training strategy
+Independent SFT → preference training → joint revision training
+Frontend target
+React, TypeScript, Tailwind CSS
+Evaluation
+Visual + functional + responsive + accessibility + human preferences
+Inference
+Bounded generate → render → critique → revise loop
+Initial hardware
+Single high-memory NVIDIA GPU for fine-tuning
+Product target
+Web application with preview, editing, and code export
+Research target
+Demonstrate measurable gains attributable to each specialized model
+The two primary checkpoints I would test are:
+- Architect: Qwen3-4B-Instruct-2507 — Apache-2.0, 4B parameters, strong instruction following and coding foundation. 
+  Hugging Face
+  
+- Critic: Qwen3-VL-4B-Instruct — Apache-2.0 vision-language model with screenshot understanding and spatial reasoning capabilities. 
+  Hugging Face
+  
+These are starting candidates, not irreversible commitments. We will verify their actual performance before fine-tuning.
+User specification
+Natural language + optional references + functional requirements
+Requirements compiler
+Typed specification, acceptance criteria, interaction inventory
+Design tokens → layout → components → executable code
+Sandboxed execution and observation
+Build • browser screenshots • DOM • interaction tests • accessibility
+Multimodal inspection → defect detection → ranked recommendations
+Critique validation and revision controller
+Evidence checking • issue selection • change scope • regression gates
+SLM A revises, then rerenders
+Final artifact
+Working application + design rationale + tests + source files + validation report
+There are only two trainable models in this architecture. The requirements compiler, browser renderer, test runner, and revision controller are deterministic software components, not third-party foundation models.
+
+That is important: the system should not secretly depend on a much larger proprietary model during production.
+The Architect is responsible for creating and modifying source code.
+
+It must learn five capabilities:
+Capability
+Required output
+Requirements interpretation
+Structured specification
+Design planning
+Design tokens, layout strategy, component plan
+Code generation
+Compilable source files
+Code editing
+Minimal, valid patches
+Revision reasoning
+Changes addressing verified criticism
+It owns the source code. The Critic never writes directly to the project files.
+The Critic must learn to assess interfaces, not merely recognize whether a screenshot looks attractive.
+
+It receives the original user requirements, screenshots, interaction observations, and measured test results.
+
+It outputs a structured, prioritized critique.
+
+Its responsibilities are:
+1. Detect visual and structural weaknesses.
+2. Detect usability problems supported by observations.
+3. Evaluate design consistency and prompt adherence.
+4. Identify probable causes of defects.
+5. Propose precise, actionable changes.
+6. Recognize uncertainty and abstain where evidence is insufficient.
+For example, it may say:
+The primary call-to-action is visually subordinate to the secondary button. Increase its contrast and prominence without changing the information hierarchy.
+But it should not claim a form is nonfunctional based solely on a screenshot. That requires interaction-test evidence.
+
+The Critic should be trained to distinguish what it sees, what the tools measured, and what it merely suspects.
+
+This is one of the project's most important scientific safeguards.
+Before training anything, we should standardize the information exchanged between the components.
+We do not want the Architect to interpret the original prompt differently on every iteration.
+
+Instead, use a versioned structured design specification.
+```
+
+{
+  "schema_version": "1.0",
+  "project_id": "sample_001",
+  "application_type": "dashboard",
+  "user_goal": "Monitor an autonomous robot fleet",
+  "audience": ["robotics engineers"],
+  "style": {
+    "descriptors": ["scientific", "precise", "minimal"],
+    "theme": "dark",
+    "density": "medium"
+  },
+  "pages": [
+    {
+      "id": "overview",
+      "sections": [
+        "fleet status",
+        "vehicle telemetry",
+        "incident history"
+      ]
+    }
+  ],
+  "interactions": [
+    {
+      "id": "vehicle_filter",
+      "action": "filter vehicles",
+      "expected": "visible fleet changes"
+    }
+  ],
+  "constraints": {
+    "framework": "react",
+    "language": "typescript",
+    "styling": "tailwind",
+    "responsive": true,
+    "accessibility_target": "WCAG 2.2 AA"
+  },
+  "acceptance_criteria": [
+    "vehicle filter works",
+    "overview is usable at 390px",
+    "no horizontal overflow"
+  ]
+}
+
+```
+We will validate every specification with JSON Schema or Pydantic.
+
+Missing requirements must remain distinguishable from explicit user requirements. In particular, the model must not quietly invent authentication, backend integrations, real-time data, or working payment systems.
+The Architect should generate three intermediate artifacts:
+Design system: colors, typography, spacing, radii, elevation, motion
+Component tree: pages, regions, components, interactions, states
+Source manifest: file paths and contents or scoped patches
+Example of the design-token artifact:
+```
+{
+  "colors": {
+    "background": "#101318",
+    "surface": "#191E25",
+    "primary": "#A6C9F3",
+    "text": "#F1F3F5"
+  },
+  "typography": {
+    "family": "Inter",
+    "scale": [12, 14, 16, 20, 28, 40]
+  },
+  "spacing": [4, 8, 12, 16, 24, 32, 48],
+  "radii": [4, 8, 12],
+  "motion": {
+    "duration_ms": 180,
+    "reduced_motion": true
+  }
+}
+```
+These are illustrative values, not a universal design system.
+
+The model must adapt its design decisions to the brief rather than produce this same theme repeatedly.
+The Critic's output is more important than a single aesthetic score.
+
+We should train it to produce evidence-linked issue reports:
+```
+
+{
+  "schema_version": "1.0",
+  "verdict": "revise",
+  "issues": [
+    {
+      "id": "issue_001",
+      "category": "visual_hierarchy",
+      "severity": "major",
+      "confidence": 0.87,
+      "evidence": [
+        {
+          "type": "screenshot",
+          "view": "desktop",
+          "region": [0.62, 0.15, 0.90, 0.32]
+        }
+      ],
+      "observation": "Primary action is hard to distinguish",
+      "recommendation": "Increase the primary action's visual prominence",
+      "acceptance_test": "Primary action is clearly identifiable in blind review"
+    }
+  ],
+  "uncertainties": [],
+  "summary": "Revise the call-to-action hierarchy"
+}
+
+```
+The coordinates are normalized screenshot coordinates. The example confidence is illustrative; we must calibrate confidence against labeled outcomes rather than assume it is a valid probability.
+
+Each critique must include enough information for the Architect to act.
+
+A generic comment such as "make the UI more modern" should score poorly during training.
+
+A specific comment identifying an affected component, problem, evidence, and expected improvement should score highly.
+We should build three separate datasets, not one enormous collection of mixed examples.
+Dataset
+Trains
+Purpose
+Architect-SFT
+Model A
+Requirements → design and code
+Critic-SFT
+Model B
+Observations → grounded critiques
+Revision-Preferences
+Both
+Better/worse designs, better/worse revisions
+All examples need provenance, source permissions, quality labels, checksums, and split assignments.
+INITIAL TARGET — 12,000 ACCEPTED EXAMPLES
+[Chart omitted: private email attachment]
+Proposed dataset mixture, not collected counts
+Every accepted example should contain a requirement specification, source implementation, at least one verified render, metadata about the design decisions, and relevant tests.
+
+A portion should also include alternate styles for the same requirements. That teaches separation between functionality and aesthetics.
+
+For instance, the same scheduling application might have an editorial, playful, enterprise, and technical visual treatment without changing its essential interactions.
+INITIAL TARGET — 15,000 GROUNDED CRITIQUE EXAMPLES
+Category
+Target
+Visual hierarchy and composition
+3,000
+Typography, spacing, and color
+2,500
+Responsive and layout defects
+2,500
+Interaction and usability failures
+2,500
+Accessibility and semantics
+2,000
+Strong designs / correct abstentions
+2,500
+Total
+15,000
+The final category matters enormously. A Critic that is always rewarded for finding flaws will invent flaws even in excellent designs.
+
+It must learn when not to request changes.
+Target 5,000 pairwise comparisons, divided between:
+- Alternative Architect outputs for the same brief.
+- Alternative revisions of the same design.
+- Correct versus incorrect critiques.
+- Critiques that improve the next iteration versus those that cause regressions.
+The numbers are acquisition goals. We should initially produce a pilot dataset and scale only after label quality and model learning are demonstrated.
+There are several useful research starting points.
+Resource
+Why it matters
+[Design2Code](https://github.com/jiahuigeng/Design2Code?utm_source=chatgpt.com)
+Screenshot-to-code examples and visual evaluation
+[WebUI-95](https://doi.org/10.1145/3772363.3799359?utm_source=chatgpt.com)
+63,824 normalized web interfaces
+[DesignBench](https://github.com/WebPAI/DesignBench?utm_source=chatgpt.com)
+Generation, editing, and repair evaluation
+[UI-Bench](https://arxiv.org/abs/2508.20410?utm_source=chatgpt.com)
+Expert pairwise visual judgments
+WebUI-95 is especially interesting because it focuses on simplifying webpage implementations while retaining visual fidelity. DesignBench is particularly relevant to our revision model because it evaluates editing and repair, not only initial generation. 
+DOI+2
+
+However, availability does not mean permission to use an entire dataset commercially. Each dataset needs an explicit license and provenance audit.
+We should use a strict acquisition pipeline:
+Licensed source or original implementation
+
+Normalize and validate source code
+
+Render in a controlled browser
+
+Extract components, DOM, and interactions
+
+Generate candidate natural-language briefs
+
+Human verification and correction
+
+Deduplicate and partition
+Versioned training dataset
+A candidate should be rejected or quarantined when:
+- It does not compile or render.
+- Its source cannot be used under the dataset's license.
+- Its purported functional behaviors are untested.
+- The screenshot does not match its source implementation.
+- Its required assets are missing or inaccessible.
+- It duplicates an evaluation example or substantially duplicates an existing training example.
+- Its generated description misrepresents visible behavior.
+We should also preserve some intentionally broken examples for Critic training, with explicitly labeled failure conditions.
+This is the part I would develop most carefully.
+
+Start with a known-good interface. Generate controlled mutations such as:
+Mutation
+Expected observation
+Reduce primary-button contrast
+Weaker action discoverability
+Remove responsive constraints
+Overflow at narrow viewport
+Disable a form submission handler
+Interaction failure
+Replace semantic button with unstructured clickable element
+Accessibility/keyboard regression
+Increase content density significantly
+Potential readability degradation
+Remove loading state
+Missing interaction feedback
+Change spacing inconsistently
+Visual rhythm inconsistency
+Each mutation is associated with an exact source diff and a testable hypothesis.
+
+Then render both versions, collect browser evidence, and have reviewers evaluate whether the expected problem actually occurred.
+
+This avoids a dangerous assumption: just because we programmatically introduced a defect does not mean it will be visible or consequential.
+
+We should combine these synthetic examples with naturally occurring design weaknesses and human critiques.
+
+For every category, include hard negatives—situations where a design choice looks unusual but is appropriate.
+
+The Critic needs to learn contextual judgment, not simplistic rules such as "more whitespace is always better."
+Primary candidate:
+
+Qwen/Qwen3-4B-Instruct-2507
+
+Before training, freeze its model revision and record the exact revision hash, tokenizer, chat template, dependencies, and generation parameters.
+
+We should establish four baselines.
+ID
+Configuration
+What it tells us
+A0
+Untouched 4B model, simple prompt
+Starting performance
+A1
+Untouched 4B model, detailed design instructions
+How much prompting helps
+A2
+Fine-tuned 4B model
+Whether specialization helps
+A3
+Fine-tuned 4B model + Critic feedback
+Whether the full loop helps
+A2 and A3 cannot be evaluated fairly if they receive extra requirements or better tools unavailable to the comparison systems.
+Let the user specification be \(x\), and the target structured design and code response be \(y\).
+
+We initially minimize token-level negative log-likelihood:
+\[ \mathcal{L}_{A,\mathrm{SFT}} = -\frac{1}{\sum_t m_t} \sum_{t=1}^{T} m_t \log P_{\theta_A}(y_t\mid x,y_{<t}) \]
+Here \(m_t\) masks everything except the assistant tokens we want to train on.
+
+We should train on three task types, with explicit task identifiers:
+- GENERATE: specification → complete implementation.
+- PLAN: specification → typed design plan.
+- REVISE: implementation + critique → corrected patch.
+For the first experiment, use the same shared model weights for all three tasks rather than building three separate adapters. We can test separate adapters later if one task hurts another.
+These are starting hyperparameters, not claims of optimality.
+Parameter
+Initial setting
+Quantization
+4-bit NF4 for QLoRA
+Compute
+BF16 where supported
+LoRA rank
+32
+LoRA alpha
+64
+LoRA dropout
+0.05
+Target modules
+Attention and MLP linear projections
+Learning rate
+1 × 10⁻⁴
+Optimizer
+Paged AdamW 8-bit, if supported
+Scheduler
+Cosine decay
+Warmup
+3% of optimization steps
+Weight decay
+0.01
+Effective batch
+32 examples, subject to token-length constraints
+Sequence length
+4,096 tokens initially
+Epochs
+2, then select via validation
+Gradient clipping
+1.0
+Checkpoint interval
+Every 250 optimizer steps
+Why only 4,096 tokens initially?
+
+Because we need to verify whether a small model can learn the design task at all before training on large multi-file applications. Many component-level examples fit within a manageable sequence length. Complete applications will require longer contexts or file-by-file generation.
+
+Once the smaller experiments work, extend to 8,192–16,384 token contexts using length bucketing, memory profiling, and gradient accumulation.
+
+We can implement this with Hugging Face Transformers, PEFT, TRL, and BitsAndBytes, validating against the installed library versions. The TRL documentation supports parameter-efficient SFT and preference training. 
+Hugging Face
+
+After SFT, generate multiple candidate designs for each held-out training prompt.
+
+Humans compare implementations based on the same brief, rendered at the same dimensions.
+
+For each pair, we obtain:
+\[ (x,y^+,y^-) \]
+where \(y^+\) is the preferred output and \(y^-\) is the rejected output.
+
+We can train with DPO:
+\[ \mathcal L_{\mathrm{DPO}} = -\mathbb E\left[ \log \sigma\left( \beta \left[ \log\frac{\pi_\theta(y^+\mid x)}{\pi_{\mathrm{ref}}(y^+\mid x)} - \log\frac{\pi_\theta(y^-\mid x)}{\pi_{\mathrm{ref}}(y^-\mid x)} \right] \right) \right] \]
+Initial \(\beta=0.1\), with a validation sweep over 0.05, 0.1, and 0.2.
+
+A major caveat: preference comparisons between enormous, independently generated codebases can have noisy credit assignment.
+
+Therefore I would initially optimize short, scoped changes and design-plan selections, rather than assuming that DPO over entire multi-file projects will work well.
+
+We will retain the SFT-only checkpoint and compare it directly against the DPO checkpoint.
+The Critic needs to inspect screenshots, but it also needs semantic information.
+
+A screenshot alone cannot reliably establish whether a dropdown works or whether an error message appears after submission.
+
+Its input should therefore contain:
+Visual evidence: desktop, tablet, and mobile screenshots
+User intent: the original specification and acceptance criteria
+Structural evidence: component tree and selected accessibility/DOM data
+Behavioral evidence: test results and interaction traces
+Error evidence: build errors, runtime exceptions, overflow, accessibility violations
+The base Qwen3-VL-4B-Instruct model is a promising candidate, and Qwen maintains a fine-tuning implementation supporting language-model, vision, and multimodal-component training choices. We should still run a compatibility and memory test before committing to a particular training setup. 
+Hugging Face+1
+
+I would train the Critic on four explicitly separated tasks.
+Task
+Input
+Output
+DETECT
+Screenshots + context
+Defect inventory
+GROUND
+Screenshot + candidate defect
+Evidence location
+COMPARE
+Two renders of the same brief
+Preference and explanation
+VERIFY
+Before/after renders + tests
+Improved, regressed, unchanged, or uncertain
+That fourth task makes the Critic useful beyond the first critique.
+
+It can help verify whether the Architect actually implemented a meaningful improvement.
+The first-stage objective is multimodal supervised fine-tuning:
+\[ \mathcal L_{B,\mathrm{SFT}} = -\sum_t m_t\log P_{\theta_B} (y_t\mid I,s,e,y_{<t}) \]
+where:
+- \(I\): screenshots and associated images.
+- \(s\): original design specification.
+- \(e\): verified nonvisual evidence.
+- \(y\): structured critique.
+The target includes the issue description, severity, evidence reference, recommendation, and uncertainty fields.
+
+I would initially keep the vision encoder frozen and apply LoRA to the language layers. Then compare with a variant adapting the multimodal projector or selected vision components.
+
+For a small dataset, aggressively fine-tuning the visual backbone may damage general visual understanding.
+Parameter
+Initial setting
+Base
+Qwen3-VL-4B-Instruct
+Adaptation
+LoRA on language-model layers
+LoRA rank
+16
+LoRA alpha
+32
+Learning rate
+5 × 10⁻⁵
+Effective batch
+16
+Epochs
+2
+Input
+One screenshot + context initially
+Image resolution
+Bounded using the model's official processor
+Output
+JSON validated against critique schema
+Selection metric
+Grounded defect-detection F1 plus calibration
+These are initial experiments. Vision token counts and memory usage may require a smaller microbatch or reduced screenshot resolution.
+
+After single-image training succeeds, introduce multiple screenshots and interaction states.
+
+We should not merge full-resolution desktop and mobile images into one input until we have measured the visual-token cost and ensured that small text remains legible.
+A good Critic must not merely detect defects. It must rank their importance correctly.
+
+Consider three issues:
+- A 2-pixel icon misalignment.
+- A mobile navigation menu that cannot open.
+- A low-contrast primary button.
+The first is cosmetic. The second blocks functionality. The third may affect both usability and accessibility.
+
+The Critic should generally prioritize the blocking issue.
+
+We will use explicit severity labels:
+Severity
+Definition
+Blocker
+Prevents a required task or produces an invalid artifact
+Major
+Seriously harms usability or violates a central requirement
+Minor
+Meaningful but localized quality defect
+Cosmetic
+Low-impact polish issue
+Severity ground truth should be defined by reviewers and verifiable tests, not by arbitrary aesthetic scoring formulas.
+
+For preference learning, train on comparisons of critique quality: which response identifies the real issue, cites valid evidence, and recommends a useful fix?
+
+Initially, I favor SFT plus a separately trained pairwise ranking or DPO experiment. We should not assume one objective is best until we compare validation performance.
+The Critic deserves its own benchmark, completely separate from Architect quality.
+DEFECT DETECTION
+Measured against independently labeled issues
+EVIDENCE GROUNDING
+Does the cited visual or test evidence support the issue?
+PREFERENCE
+Does it prefer the same design as expert reviewers?
+TRUSTWORTHINESS
+How often does it invent problems in sound designs?
+I would additionally measure confidence calibration using reliability diagrams, Brier scores on suitable labeled binary tasks, and selective precision when the Critic abstains on uncertain findings.
+
+The Critic must outperform useful baselines—such as a rule-based detector and the unmodified VLM—before we allow its feedback to drive automatic source revisions.
+This is where the two models become a coherent system.
+The loop should be strictly controlled.
+```
+
+def build_ui(spec, architect, critic, tools, max_revisions=3):
+    project = architect.generate(spec)
+    best = None
+
+    for iteration in range(max_revisions + 1):
+        evidence = tools.build_render_and_test(project)
+
+        critique = critic.evaluate(
+            specification=spec,
+            screenshots=evidence.screenshots,
+            test_results=evidence.tests,
+            structure=evidence.structure,
+        )
+
+        issues = validate_critique(critique, evidence)
+        candidate = evaluate_candidate(project, evidence, issues)
+
+        if best is None or is_preferred(candidate, best):
+            best = candidate
+
+        if candidate.passes_release_gates:
+            if not has_actionable_major_issues(issues):
+                break
+
+        if iteration == max_revisions:
+            break
+
+        patch = architect.revise(
+            specification=spec,
+            project=project,
+            verified_issues=issues,
+        )
+
+        project = apply_in_sandbox(project, patch)
+
+    return best
+
+```
+The above is algorithmic pseudocode. Its types, stopping rules, and preference comparisons must be implemented concretely.
+Suppose the Critic suggests a larger heading and the Architect implements it.
+
+The system must compare before-and-after outputs and verify that:
+- The intended change occurred.
+- The page still compiles.
+- Existing interactions still function.
+- No new overflow or accessibility failures occurred.
+- Human or validated model judgments indicate actual visual improvement.
+Otherwise the system could enter a cycle where each model agrees with the other's decisions, regardless of whether the interface improves.
+Use two distinct revision modes.
+
+Local revision: Change only an identified component or token when the problem is localized.
+
+Structural revision: Permit changes across multiple components when the problem concerns navigation, information architecture, or overall layout.
+
+Initially, the revision controller should default to local changes.
+
+For example, if a card has inconsistent padding, the model should not rewrite the entire application.
+
+The revision instruction should include an affected-file allowlist and a non-regression checklist.
+Never allow unbounded self-refinement.
+
+For the first version:
+Parameter
+Value
+Maximum generation attempts
+2
+Maximum design revisions
+3
+Maximum build-repair attempts per revision
+2
+Critique temperature
+0 initially
+Architect generation temperature
+0.2 initially
+Revision strategy
+Highest-impact verified issues first
+Final artifact
+Best validated candidate, not necessarily latest
+The stopping decision is enforced by deterministic software.
+
+The Critic can recommend stopping, but it cannot override broken functionality or hard requirements.
+Once the isolated models work, we collect actual trajectories:
+\[ x \rightarrow A_0 \rightarrow C_0 \rightarrow A_1 \rightarrow C_1 \rightarrow A_2 \]
+Where:
+- \(A_i\): Architect-generated artifact.
+- \(C_i\): Critic feedback on that artifact.
+We record the code changes, screenshots, test outcomes, and human preference results at each iteration.
+
+Then we build two new training tasks.
+
+Architect revision training: Given an earlier implementation and verified critique, predict an effective patch.
+
+Critic revision-effect training: Given the original and revised implementation, predict what improved, what regressed, and what remains unresolved.
+
+This is different from training the models merely to imitate their own outputs.
+
+Only validated improvement trajectories should be promoted into the primary training dataset. Failed trajectories are useful as negative or diagnostic examples.
+
+One important detail: when the Critic participates in selecting training examples, it must not also serve as the sole judge of subsequent performance. Independent human evaluation is essential to prevent circular self-reward.
+I propose a new benchmark, provisionally called UI-Intelligence-Bench.
+
+It should evaluate three independent questions:
+1. Can the Architect generate excellent interfaces?
+2. Can the Critic correctly evaluate interfaces?
+3. Does putting them together produce genuinely better results?
+The initial frozen benchmark should contain 300 prompts across ten categories.
+
+PROPOSED BENCHMARK DISTRIBUTION
+[Chart omitted: private email attachment]
+Those 300 prompts should be subdivided into:
+- Simple: Single-page interface with a small number of interactions.
+- Intermediate: Multiple components, realistic state, responsive layouts.
+- Advanced: Complex information architecture, interdependent controls, multiple views, and strict design constraints.
+We should freeze the entire benchmark and never use its prompts, design examples, or derived outputs in training.
+
+Split by source project and design family, not just randomly by individual example. Otherwise near-duplicate sites could appear in both training and testing.
+The browser harness should run at least three viewport sizes:
+Device
+Initial viewport
+Desktop
+1440 × 900
+Tablet
+768 × 1024
+Mobile
+390 × 844
+Additionally, use a 320px stress test and at least one wider desktop resolution.
+
+For every output, collect:
+- TypeScript/build status.
+- Browser exceptions.
+- Missing or broken assets.
+- Horizontal and vertical overflow.
+- DOM and accessibility snapshots.
+- Keyboard-navigation test outcomes.
+- Interaction-test pass rates.
+- Responsive screenshots.
+- Accessibility scan results.
+- Source-file diffs between iterations.
+For automated accessibility checks, use @axe-core/playwright alongside manual review. Playwright explicitly notes that automated checks cannot detect every accessibility problem. 
+Playwright
+
+We should test both the default interaction state and important alternate states: open menus, selected tabs, loading indicators, validation errors, empty data, and success messages.
+Human judgments are the most important test of our central claim: that we generate great UI.
+
+Use blind pairwise comparisons.
+
+Each reviewer receives the same original brief and two rendered, functional interfaces, without knowing which system generated them.
+
+They answer:
+- Which interface looks better?
+- Which better satisfies the brief?
+- Which is easier to understand?
+- Which would you prefer to use?
+- What is the most important difference?
+For a subset, ask participants to actually complete tasks rather than judge screenshots.
+
+We should collect independent judgments from at least three reviewers for each evaluated pair in the first full study, and expand reviewers for ambiguous or high-variance comparisons.
+
+Report confidence intervals and inter-rater agreement rather than treating each opinion as unquestionable ground truth.
+I would not reduce everything to one number until the individual metrics are stable.
+
+The primary research results should include:
+Metric
+Desired initial milestone
+Build success
+≥95% on the defined V1 benchmark
+Required interactions
+≥90% pass rate
+Blocking regressions after revision
+0 among accepted candidates
+Major accessibility violations
+0 detected in accepted states
+Critic schema validity
+≥99%
+Grounded critique precision
+≥85% on labeled critical/major defects
+Human preference
+Statistically supported improvement over A1
+Revision effectiveness
+More improvements than regressions, with confidence intervals
+These are proposed release gates and research targets, not predictions of actual performance. They may need to change once we measure the baselines.
+
+The Critic's recall also matters. High precision alone could be achieved by reporting almost no issues, so we must publish precision and recall together.
+An ablation removes a component to reveal whether it actually adds value.
+
+This should be part of the project from the beginning.
+Experiment
+Architect
+Critic
+Revisions
+E0
+Base
+None
+0
+E1
+Fine-tuned
+None
+0
+E2
+Fine-tuned
+Base VLM
+3
+E3
+Fine-tuned
+Fine-tuned VLM
+3
+E4
+Base
+Fine-tuned VLM
+3
+E5
+Fine-tuned
+Fine-tuned VLM
+1
+E6
+Fine-tuned
+Fine-tuned VLM
+3 + revision training
+The comparison between E2 and E3 is especially important.
+
+It tells us whether fine-tuning the Design Critic adds measurable value beyond simply connecting an off-the-shelf vision-language model.
+
+E5 versus E3 measures the value of additional refinement rounds, including their latency and computational expense.
+Layer
+Proposed technology
+Training
+PyTorch, Transformers, PEFT, TRL
+Data validation
+Pydantic, JSON Schema, Hugging Face Datasets
+Experiment management
+MLflow or Weights & Biases
+Model checkpoints
+Hugging Face Hub or private object storage
+Inference API
+FastAPI
+Architect serving
+vLLM where compatible
+Critic serving
+Transformers or compatible VLM serving engine
+Frontend
+React, TypeScript, Vite
+Styling
+Tailwind CSS
+Browser automation
+Playwright
+Accessibility
+axe-core
+Persistence
+PostgreSQL for projects and reports
+Background execution
+Worker queue for builds and evaluations
+Containerization
+Docker with restricted execution environments
+CI
+GitHub Actions
+We should pin compatible versions in lockfiles rather than use floating dependencies.
+This is the complete structure I would create.
+```
+dual-ui-intelligence/
+│
+├── configs/
+│   ├── architect_sft.yaml
+│   ├── architect_dpo.yaml
+│   ├── critic_sft.yaml
+│   ├── critic_preferences.yaml
+│   └── inference.yaml
+│
+├── models/
+│   ├── architect/
+│   │   ├── train_sft.py
+│   │   ├── train_dpo.py
+│   │   ├── generate.py
+│   │   ├── revise.py
+│   │   └── prompts/
+│   └── critic/
+│       ├── train_sft.py
+│       ├── train_preferences.py
+│       ├── evaluate.py
+│       ├── compare.py
+│       └── schemas.py
+│
+├── datasets/
+│   ├── schemas/
+│   ├── ingestion/
+│   ├── normalization/
+│   ├── rendering/
+│   ├── annotation/
+│   ├── mutations/
+│   ├── deduplication/
+│   ├── splitting/
+│   └── manifests/
+│
+├── orchestration/
+│   ├── pipeline.py
+│   ├── revision_controller.py
+│   ├── critique_validator.py
+│   ├── acceptance_gates.py
+│   ├── state.py
+│   └── artifacts.py
+│
+├── renderer/
+│   ├── templates/
+│   ├── browser/
+│   ├── screenshots/
+│   ├── interaction_tests/
+│   └── accessibility/
+│
+├── evaluation/
+│   ├── benchmark/
+│   ├── architect/
+│   ├── critic/
+│   ├── end_to_end/
+│   ├── human_studies/
+│   ├── ablations/
+│   └── reports/
+│
+├── services/
+│   ├── api/
+│   ├── workers/
+│   └── model_adapters/
+│
+├── frontend/
+│   ├── src/
+│   └── tests/
+│
+├── notebooks/
+│   ├── train_architect_colab.ipynb
+│   └── train_critic_colab.ipynb
+│
+├── scripts/
+│   ├── prepare_data.py
+│   ├── run_baseline.py
+│   ├── train_architect.py
+│   ├── train_critic.py
+│   ├── evaluate_all.py
+│   └── export_model.py
+│
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   ├── security/
+│   └── e2e/
+│
+├── docs/
+│   ├── ARCHITECTURE.md
+│   ├── DATASET_SPEC.md
+│   ├── TRAINING_SPEC.md
+│   ├── EVALUATION_PROTOCOL.md
+│   ├── SECURITY.md
+│   └── MODEL_CARDS/
+│
+├── pyproject.toml
+├── package.json
+├── docker-compose.yml
+└── README.md
+```
+Generated datasets and checkpoints should not be committed directly to Git.
+
+Instead, commit dataset manifests containing hashes and storage references. Checkpoints should be tracked separately by immutable model revision and experiment ID.
+The final application should allow a user to provide a design description, generate an interface, inspect the result, see Critic feedback, and request another iteration.
+UI Intelligence Studio
+Concept
+Design brief
+
+A premium research dashboard with live telemetry, an incident timeline, and responsive navigation.
+Model workflow
+Generate design
+Render interface
+Design critique
+Refine
+Application preview
+[AgniX Technologies | Modular Robotics Platforms](https://images.openai.com/static-rsc-4/ItNPz5X2PFupOl8q3LyrlvUDxP9YLx3XsNhrY9vzxwlMJo3SZYlPXaTn3qSXdVonkk3z7DStlO8snGwphLtiREOq6ZSF2cRUr5lodm2vPYZGrRgxa0oHlYV6tYGpz7PdlhsACE6fN-2xjdB8JSnAXYekVxbQLk7cY1bwkNXW6CQ?purpose=inline)
+Design Critic
+
+Illustrative
+Review mobile chart density and the prominence of incident alerts before final approval.
+Conceptual interface only. The project has not yet generated or evaluated this application.
+The actual product should include a code editor, file tree, live preview, revision history, screenshot comparison, evidence ledger, and export function.
+
+A project should be exportable as a normal React/TypeScript repository without depending on the UI Intelligence service for ordinary runtime behavior.
+Because this product executes machine-generated frontend code, security is not optional.
+
+The renderer should run in disposable, isolated environments with:
+- No host filesystem or sensitive environment-variable access.
+- No privileged container execution.
+- Restricted network egress, with explicit asset allowlists.
+- CPU, memory, disk, and execution-time limits.
+- Restricted dependencies and blocked lifecycle scripts unless specifically vetted.
+- No access to model API keys or user authentication tokens.
+- Sanitized logs and bounded artifact sizes.
+- Automatic destruction of execution environments.
+The model should produce code, but it should not be able to arbitrarily execute shell commands on the host.
+
+This separation also improves reproducibility.
+Based on the high-memory GPU configuration you previously reported from Colab Pro, we should be able to begin with single-GPU adapter training, provided that runtime configuration remains available.
+
+The two 4B models do not have to be trained simultaneously.
+
+We can train the Architect, save its adapter, unload it, and then train the Critic separately.
+Workload
+Initial approach
+Architect SFT
+QLoRA, single GPU
+Architect DPO
+LoRA/QLoRA, single GPU
+Critic multimodal SFT
+LoRA, frozen visual encoder initially
+Critic preference training
+Single GPU, with memory profiling
+Data rendering
+CPU browser workers
+Joint evaluation
+Sequential model execution initially
+Production inference
+Two separately loadable model services
+For the Critic, image processing and variable screenshot resolution may create substantially higher memory consumption than text-only training.
+
+I would benchmark memory usage before selecting its final batch size and context length.
+Instead of assuming training will require a fixed number of GPU hours, we should calculate the required steps from the actual data.
+
+For example, if an accepted dataset contains 12,000 samples, the effective batch size is 32, and we train for two epochs:
+\[ \text{Optimizer steps} = \left\lceil\frac{12{,}000}{32}\right\rceil \times 2 = 750 \]
+But this tells us little about runtime without accounting for input/output token lengths, visual tokens, packing efficiency, and hardware throughput.
+
+I would create a benchmark script that measures actual tokens per second, peak GPU memory, and wall-clock time for 25–50 representative optimizer steps.
+
+Then the project can produce credible training-cost forecasts based on measured throughput.
+
+Save resumable training state so Colab interruptions don't force a complete restart.
+Every training run must record:
+```
+experiment_id: architect_sft_001
+model: Qwen/Qwen3-4B-Instruct-2507
+model_revision: pinned_commit_hash
+dataset_manifest: architect_v1_manifest
+dataset_hash: sha256_value
+training_config: configs/architect_sft.yaml
+git_commit: exact_commit_hash
+seed: 42
+checkpoint: immutable_checkpoint_location
+metrics:
+  train_loss: null
+  validation_loss: null
+  build_pass_rate: null
+  human_preference_rate: null
+```
+Actual metrics are populated by the experiment, never fabricated.
+
+For reproducibility, store optimizer/scheduler state, random-number-generator states, LoRA configuration, tokenizer settings, and evaluation generation parameters.
+I would organize the work into eight development milestones. The schedule below is a proposed sequence, not a promise of elapsed time.
+M0
+Repository, schemas, and reproducibility
+
+Establish the monorepo, configuration validation, model adapters, CI, dataset manifests, and technical documentation.
+
+Exit gate: clean environment installation, passing schema tests, and reproducible smoke tests.
+M1
+Deterministic rendering and evaluation engine
+
+Implement frontend compilation, sandbox execution, screenshots, browser interaction traces, accessibility scans, and artifact storage.
+
+Exit gate: 20 handcrafted reference applications run through the harness correctly.
+M2
+Frozen benchmarks and base-model evaluation
+
+Create the pilot evaluation prompts, run both untouched checkpoints, and characterize their failure modes.
+
+Exit gate: reproducible baseline report for both Architect and Critic.
+M3
+Architect Pilot SFT
+
+Curate 300–500 strong examples, establish QLoRA training, and evaluate the resulting adapter against prompting-only baselines.
+
+Exit gate: validated training run and measurable evidence of improvement or a documented negative result.
+M4
+Critic Pilot SFT
+
+Build 500–1,000 grounded critique examples and fine-tune the multimodal Critic.
+
+Exit gate: Critic beats its untouched baseline on defect grounding and precision without unacceptable false positives.
+M5
+Integrated dual-SLM system
+
+Build the generate → render → critique → patch → verify workflow and inspect 50 complete trajectories.
+
+Exit gate: reproducible end-to-end operation with regression controls and human-reviewed improvements.
+M6
+Scaled training and preference optimization
+
+Expand accepted datasets, train larger adapters, perform preference experiments, and run ablations.
+
+Exit gate: frozen-benchmark results demonstrate which training stages actually add value.
+M7
+Production product and model release
+
+Build the interactive studio, inference APIs, secure worker deployment, model cards, export format, and release documentation.
+
+Exit gate: complete application with tested artifact export, cost accounting, and documented limitations.
+To minimize uncertainty, I would start with a deliberately narrow experiment.
+
+Sprint objective: Prove that the base Architect can produce runnable interfaces and that the base Critic can identify meaningful defects from rendered evidence.
+
+The first sprint should implement exactly these deliverables:
+Sprint 1 checklist
+
+1/10 completed
+Create repository structure, lockfiles, CI, and typed schemas
+Build a reusable React/TypeScript sandbox template
+Implement Playwright screenshots at 1440px and 390px
+Implement compilation, overflow, interaction, and accessibility reporting
+Create 50 original, diverse UI benchmark prompts
+Implement Qwen3 4B Architect inference adapter
+Implement Qwen3-VL 4B Critic inference adapter
+Generate and render the first 20 candidate interfaces
+Produce an evidence-linked critique report for each candidate
+Write baseline evaluation and failure-analysis report
+Copy sprint checklist
+Notice that we do not fine-tune either model in Sprint 1. That's intentional.
+
+First, we need to understand the base models' capabilities and establish a scientifically defensible measurement system.
+
+Training without that foundation would make improvements difficult to attribute or reproduce.
+I see four potential research contributions.
+
+1. Small-model design specialization. Demonstrate how specialized data changes the UI-generation quality of a 4B language model, including what capabilities improve and what capabilities remain weak.
+
+2. Grounded multimodal design criticism. Train a compact VLM to identify interface problems and propose useful corrections using screenshots and verifiable behavioral observations.
+
+3. Iterative two-SLM collaboration. Study whether a specialized generator and critic can jointly produce higher-quality interfaces than either model alone, controlling for inference compute and revision count.
+
+4. A reproducible UI quality benchmark. Develop a benchmark spanning aesthetics, functionality, responsiveness, usability, and critique quality, including human judgments and regression measurements.
+
+The benchmark and grounded critique dataset could themselves become valuable open research resources, subject to licensing and annotation-quality constraints.
+To keep the first system scientifically tractable, I would exclude native mobile apps, full backend generation, real payment integrations, complex authentication flows, arbitrary npm dependencies, Figma round-tripping, and general-purpose computer-use agents.
+
+We can support believable simulated data and local frontend state, but must clearly distinguish demonstrations from real external integrations.
+
+I also would not train a third hidden judge model. The central research constraint is two specialized trainable models, with deterministic tests and independent human reviewers serving as external validation.
+I would formalize the project around this hypothesis:
+A 4B language model specialized in UI generation, paired with an independently fine-tuned 4B multimodal design critic and a bounded render–critique–revision loop, can produce measurably more usable, aesthetically preferred, and functionally correct web interfaces than the same generator without specialized critique.
+We should test this claim without assuming that it is true.
+
+The result could be a strong dual-SLM system, or it could reveal that model quality, data diversity, or visual preference learning is the real bottleneck. Both outcomes would be useful research findings.
+I would prioritize the following three things above everything else:
+
+First, build the deterministic rendering and testing infrastructure. It supplies trustworthy observations to the Critic and makes the whole system measurable.
+
+Second, invest heavily in the Critic's dataset. Teaching a model to identify genuine flaws, ground its findings, and know when to abstain is likely to be harder than training the Architect to write frontend code.
+
+Third, benchmark every stage independently. We want to know precisely whether better training data, preference optimization, multimodal criticism, or repeated revisions produce the improvements.
+
+Once you create and share the GitHub repository, M0 through M2 are the first implementation target, followed by the small-scale training experiments in M3 and M4.
+
+The ultimate deliverable is not just two model checkpoints. It is an auditable, reproducible system that can accept a natural-language request, generate a complete frontend, examine what it actually rendered, improve weak design decisions, and return working source code with evidence of its quality.
+

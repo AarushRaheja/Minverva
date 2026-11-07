@@ -1,0 +1,89 @@
+{
+  "run_id": "repair-sampling-v1",
+  "comparison_run": "repair-regression-v6",
+  "compared_repair_round": 1,
+  "cases": [
+    {
+      "candidate": "A0/operations_01",
+      "prompt_sha256": "97f9136a8ebc9f8233d474013f4da0039b55aae31f85dca97e6a2b3a69c6ddc1",
+      "same_prompt": true,
+      "same_initial_source": true,
+      "sampled_pass": false,
+      "greedy_pass": false,
+      "sampling_parameters": {
+        "max_new_tokens": 6144,
+        "do_sample": true,
+        "repetition_penalty": 1.05,
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "top_k": 20,
+        "min_p": 0.0
+      },
+      "final_failed_audit_checks": [
+        "state_accessibility_pass",
+        "audit_pass"
+      ]
+    },
+    {
+      "candidate": "A0/configuration_02",
+      "prompt_sha256": "101f6a6bb16a7c40882e030893b11ca417e1fbf64fa8bb43dd57cfeb8b0789b6",
+      "same_prompt": true,
+      "same_initial_source": true,
+      "sampled_pass": false,
+      "greedy_pass": false,
+      "sampling_parameters": {
+        "max_new_tokens": 6144,
+        "do_sample": true,
+        "repetition_penalty": 1.05,
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "top_k": 20,
+        "min_p": 0.0
+      },
+      "final_failed_audit_checks": [
+        "interaction_pass",
+        "release_eligible",
+        "audit_pass"
+      ]
+    },
+    {
+      "candidate": "A1/learning_01",
+      "prompt_sha256": "1a5dd88c65d1dd7cbca18942e9f4c748b542e414f1e78c01acd7a8ae3b4b5465",
+      "same_prompt": true,
+      "same_initial_source": true,
+      "sampled_pass": false,
+      "greedy_pass": false,
+      "sampling_parameters": {
+        "max_new_tokens": 6144,
+        "do_sample": true,
+        "repetition_penalty": 1.05,
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "top_k": 20,
+        "min_p": 0.0
+      },
+      "final_failed_audit_checks": [
+        "interaction_pass",
+        "release_eligible",
+        "audit_pass"
+      ]
+    }
+  ],
+  "initial_passes": 0,
+  "final_passes": 0,
+  "total": 3,
+  "new_repair_attempts": 3,
+  "critique_calls": 6,
+  "valid_critics": 6,
+  "known_failed_audit_accepts": 0,
+  "training_performed": false,
+  "default_changed": false,
+  "modal_app": {
+    "app_id": "ap-DIPTans77YK0gU5VWGexQj",
+    "description": "frontendslm-baseline",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-11-07 05:26:24-05:00",
+    "stopped_at": "2026-11-07 05:32:24-05:00"
+  }
+}

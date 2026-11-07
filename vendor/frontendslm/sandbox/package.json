@@ -1,0 +1,13 @@
+{
+  "name": "frontendslm-render-template",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {"build": "tsc --noEmit && vite build", "preview": "vite preview --host 127.0.0.1 --port 4173"},
+  "dependencies": {"react": "19.1.1", "react-dom": "19.1.1"},
+  "devDependencies": {
+    "@axe-core/playwright": "4.10.2", "@playwright/test": "1.55.1", "@types/react": "19.1.10", "@types/react-dom": "19.1.9",
+    "autoprefixer": "10.4.21", "playwright": "1.55.1", "postcss": "8.5.32", "tailwindcss": "3.4.17",
+    "typescript": "5.9.2", "vite": "6.4.5"
+  }
+}

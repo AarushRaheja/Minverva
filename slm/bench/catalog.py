@@ -157,7 +157,7 @@ CREATE TABLE users (
 """)
 
 _SESSION = Template("""# $path
-from fastapi import Request
+from fastapi import HTTPException, Request
 
 from src.database.db import db
 
@@ -167,10 +167,10 @@ SESSION_COOKIE = "app_session"
 async def require_session(request: Request) -> dict:
     token = request.cookies.get(SESSION_COOKIE)
     if not token:
-        raise PermissionError("signed out")
+        raise HTTPException(status_code=401, detail="signed out")
     user = await db.fetchrow("SELECT * FROM users WHERE session_token = $$1", token)
     if user is None:
-        raise PermissionError("unknown session")
+        raise HTTPException(status_code=401, detail="unknown session")
     return dict(user)
 """)
 
@@ -192,6 +192,9 @@ async def oauth_callback(request):
 """)
 
 _GUARDS = Template("""# $path
+from fastapi import HTTPException
+from fastapi.responses import JSONResponse
+
 from src.auth.session import require_session
 
 PROTECTED_ROUTES = [$routes]
@@ -199,7 +202,10 @@ PROTECTED_ROUTES = [$routes]
 
 async def require_route_guard(request, call_next):
     if request.url.path in PROTECTED_ROUTES:
-        await require_session(request)
+        try:
+            await require_session(request)
+        except HTTPException as exc:  # an exception raised in middleware would surface as a 500
+            return JSONResponse({"detail": exc.detail}, status_code=exc.status_code)
     return await call_next(request)
 """)
 
@@ -213,7 +219,7 @@ router = APIRouter(tags=["$entity"])
 
 
 @router.get("$base")
-async def list_$entities():
+async def list_$entities(user: dict = Depends(require_session)):
     return await db.fetch("SELECT * FROM $table ORDER BY id DESC")
 
 
@@ -226,7 +232,7 @@ async def create_$entity(payload: dict, user: dict = Depends(require_session)):
 
 
 @router.get("$base/{item_id}")
-async def get_$entity(item_id: int):
+async def get_$entity(item_id: int, user: dict = Depends(require_session)):
     return await db.fetchrow("SELECT * FROM $table WHERE id = $$1", item_id)
 """)
 
@@ -241,7 +247,11 @@ export async function list$Pascal$comp(): Promise<$Pascal[]> {
 }
 
 export async function create$Pascal(payload: New$Pascal): Promise<$Pascal> {
-  const res = await fetch("$base", { method: "POST", body: JSON.stringify(payload) });
+  const res = await fetch("$base", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
   return res.json();
 }
 """)
@@ -251,8 +261,10 @@ import { useEffect, useState } from "react";
 
 export const route = "$route";
 
+type Row = { id: number; title: string };
+
 export function $Comp() {
-  const [rows, setRows] = useState<$Pascal[]>([]);
+  const [rows, setRows] = useState<Row[]>([]);
 
   useEffect(() => {
     fetch("$base")

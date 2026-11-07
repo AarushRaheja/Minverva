@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "benchmark": "UI-Intelligence-Bench pilot v1",
+  "sha256": "55e57e5a391a80078ebe5a8fa3742e8ad09408a1c8f18ef7eb291ec3399ea27f",
+  "count": 50,
+  "split": "evaluation",
+  "training_use": false,
+  "human_reviewed": false,
+  "license": "MIT",
+  "provenance": "Original authored specifications, not scraped websites.",
+  "limitations": [
+    "Small single-page pilot; advanced multi-page tasks not covered",
+    "Template-driven acceptance workflows require independent human review"
+  ]
+}

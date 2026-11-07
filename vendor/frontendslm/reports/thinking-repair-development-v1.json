@@ -1,0 +1,113 @@
+{
+  "run_id": "thinking-repair-development-v1",
+  "first_attempt_accepted": 2,
+  "final_measured_accepted": 5,
+  "total": 5,
+  "known_failures_repaired": 3,
+  "passing_controls_retained": 2,
+  "revision_attempts": 3,
+  "critic_calls": 8,
+  "critic_schema_valid": 8,
+  "critic_measured_valid": 8,
+  "new_generation_output_tokens": 19738,
+  "new_generation_seconds": 412.793457649,
+  "comparison_first_repairs": [
+    {
+      "run_id": "repair-regression-v6",
+      "first_repair_passes": 0,
+      "known_failures": 3,
+      "first_repair_output_tokens": 2500,
+      "first_repair_seconds": 90.18319522200001
+    },
+    {
+      "run_id": "repair-sampling-v1",
+      "first_repair_passes": 0,
+      "known_failures": 3,
+      "first_repair_output_tokens": 2515,
+      "first_repair_seconds": 86.02982425600001
+    },
+    {
+      "run_id": "unit-repair-development-v2",
+      "first_repair_passes": 1,
+      "known_failures": 3,
+      "first_repair_output_tokens": 971,
+      "first_repair_seconds": 37.711427336
+    },
+    {
+      "run_id": "thinking-repair-development-v1",
+      "first_repair_passes": 3,
+      "known_failures": 3,
+      "first_repair_output_tokens": 19738,
+      "first_repair_seconds": 412.793457649
+    }
+  ],
+  "prompt_invariants": [
+    {
+      "candidate": "A0/configuration_02",
+      "comparison_run": "repair-regression-v6",
+      "prompt_exact_match": true,
+      "prompt_sha256": "101f6a6bb16a7c40882e030893b11ca417e1fbf64fa8bb43dd57cfeb8b0789b6"
+    },
+    {
+      "candidate": "A0/configuration_02",
+      "comparison_run": "repair-sampling-v1",
+      "prompt_exact_match": true,
+      "prompt_sha256": "101f6a6bb16a7c40882e030893b11ca417e1fbf64fa8bb43dd57cfeb8b0789b6"
+    },
+    {
+      "candidate": "A0/operations_01",
+      "comparison_run": "repair-regression-v6",
+      "prompt_exact_match": true,
+      "prompt_sha256": "97f9136a8ebc9f8233d474013f4da0039b55aae31f85dca97e6a2b3a69c6ddc1"
+    },
+    {
+      "candidate": "A0/operations_01",
+      "comparison_run": "repair-sampling-v1",
+      "prompt_exact_match": true,
+      "prompt_sha256": "97f9136a8ebc9f8233d474013f4da0039b55aae31f85dca97e6a2b3a69c6ddc1"
+    },
+    {
+      "candidate": "A1/learning_01",
+      "comparison_run": "repair-regression-v6",
+      "prompt_exact_match": true,
+      "prompt_sha256": "1a5dd88c65d1dd7cbca18942e9f4c748b542e414f1e78c01acd7a8ae3b4b5465"
+    },
+    {
+      "candidate": "A1/learning_01",
+      "comparison_run": "repair-sampling-v1",
+      "prompt_exact_match": true,
+      "prompt_sha256": "1a5dd88c65d1dd7cbca18942e9f4c748b542e414f1e78c01acd7a8ae3b4b5465"
+    }
+  ],
+  "app": {
+    "app_id": "ap-qcCdkUlVGSY42EN8jPYPjj",
+    "state": "stopped",
+    "tasks": 0,
+    "created_at": "2026-11-07T15:34:08+00:00",
+    "stopped_at": "2026-11-07T15:46:47+00:00"
+  },
+  "unresolved_findings": [
+    {
+      "candidate": "A0/configuration_02",
+      "finding_id": "quantity-helper-contradiction",
+      "author": "assistant inspection; not a human label",
+      "status": "unresolved",
+      "block_export": true,
+      "description": "Visible helper text says quantity ranges from 1 to 2, but the passing edge-case test requires text containing 3. Source increments without an upper bound. The Critic falsely repeated the 1–2 limit in its acceptance summary.",
+      "source_sha256": "7faaa7c8faa876db57dfe5bb5cec88f172985e08321ef62d7c00f894b2d09dc0",
+      "evidence_sha256": "66e2e46c76ebd53f21f7e43ad8b889d1e079e124551428f943419b6308c15ad9",
+      "critique_sha256": "31fe25d67b0dc64c68ad115f63f0337ee0390a80c9b28bda9fa2309550f694bf",
+      "training_eligible": false
+    }
+  ],
+  "training_performed": false,
+  "human_visual_quality": "unmeasured",
+  "limitations": [
+    "Checkpoint, decoding and budget change together; do not attribute gains solely to model reasoning",
+    "Repeated development cases cannot establish independent accuracy",
+    "5/5 is measured gate acceptance, not universal correctness; one visible copy contradiction and false Critic statement remain.",
+    "Schema and measured coverage validity do not prove semantic Critic accuracy.",
+    "No human preference labels for these model outputs.",
+    "First repair comparisons use reused development cases, not prospective cases."
+  ]
+}

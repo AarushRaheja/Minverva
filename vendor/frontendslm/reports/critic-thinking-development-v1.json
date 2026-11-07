@@ -1,0 +1,122 @@
+{
+  "experiment": "critic-thinking-development-v1",
+  "metrics": [
+    {
+      "run_id": "critic-thinking-control-v1",
+      "json_syntax_valid": 6,
+      "contract_valid": 6,
+      "measurement_valid": 6,
+      "controls_accepted": 4,
+      "content_contradiction_correctly_reported": 0,
+      "output_tokens": 948,
+      "inference_seconds": 39.58605274800001,
+      "truncated_outputs": 0,
+      "app": {
+        "app_id": "ap-tKoG5mJ7L55uIlHXQ2s9HL",
+        "description": "frontendslm-baseline",
+        "state": "stopped",
+        "tasks": "0",
+        "created_at": "2026-11-07 11:10:58-05:00",
+        "stopped_at": "2026-11-07 11:12:19-05:00"
+      }
+    },
+    {
+      "run_id": "critic-thinking-development-v1",
+      "json_syntax_valid": 6,
+      "contract_valid": 5,
+      "measurement_valid": 4,
+      "controls_accepted": 3,
+      "content_contradiction_correctly_reported": 0,
+      "output_tokens": 35974,
+      "inference_seconds": 813.7268039980002,
+      "truncated_outputs": 0,
+      "app": {
+        "app_id": "ap-BPDBWlaXq0gbB1K9866RNO",
+        "description": "frontendslm-baseline",
+        "state": "stopped",
+        "tasks": "0",
+        "created_at": "2026-11-07 11:13:03-05:00",
+        "stopped_at": "2026-11-07 11:28:39-05:00"
+      }
+    }
+  ],
+  "input_invariants": [
+    {
+      "candidate": "repaired/operations_01",
+      "input_contract_exact_match": true,
+      "input_contract_sha256": "a7dab99149528a214ef18ca01502bb5aa0c881117eb24d04ffa001e7ddead7d2",
+      "instruct_verdict": "accept",
+      "thinking_verdict": "accept"
+    },
+    {
+      "candidate": "repaired/configuration_02",
+      "input_contract_exact_match": true,
+      "input_contract_sha256": "41a237058fb545614cfd808572ae9b7e02ea2d00db07e2173b22013a1b6e185e",
+      "instruct_verdict": "accept",
+      "thinking_verdict": "uncertain"
+    },
+    {
+      "candidate": "repaired/learning_01",
+      "input_contract_exact_match": true,
+      "input_contract_sha256": "e5ff365c6dd89a296953cdded3dacab61d32d019094aa47bfde55cdf60cc60fc",
+      "instruct_verdict": "accept",
+      "thinking_verdict": "accept"
+    },
+    {
+      "candidate": "control/planning_02",
+      "input_contract_exact_match": true,
+      "input_contract_sha256": "0448052b0b9ca0562133153a397608c7c1a607ca32f7cb2ca637a22aba7221c1",
+      "instruct_verdict": "accept",
+      "thinking_verdict": "accept"
+    },
+    {
+      "candidate": "control/forms_03",
+      "input_contract_exact_match": true,
+      "input_contract_sha256": "6d8ce66d37e03d3a0ad778f93716c5a5e15f5f0de20607710c7bda168afd29aa",
+      "instruct_verdict": "accept",
+      "thinking_verdict": "uncertain"
+    },
+    {
+      "candidate": "original/configuration_02",
+      "input_contract_exact_match": true,
+      "input_contract_sha256": "3a871365f41b1ca64bea470be2acabd137b00f739e106de0253abc47ba7d7a3a",
+      "instruct_verdict": "revise",
+      "thinking_verdict": "revise"
+    }
+  ],
+  "semantic_review": {
+    "author": "assistant inspection; not a human label",
+    "findings": [
+      {
+        "candidate": "repaired/configuration_02",
+        "finding": "Wrongly proposes maximum 2 and labels passing behavior broken. Measured validator rejects it."
+      },
+      {
+        "candidate": "control/forms_03",
+        "finding": "Misreads post-submit Required as an initial-state requirement and emits zero-area regions. Contract validator rejects it."
+      },
+      {
+        "candidate": "original/configuration_02",
+        "finding": "Mandatory failure coverage passes but recommendation retains the cap that prevents the complete workflow."
+      }
+    ],
+    "semantic_gate_passed": false,
+    "human_grounding_verified": null,
+    "training_eligible": false
+  },
+  "decision": "Do not promote the Thinking Critic; defaults remain unchanged.",
+  "changed_factors": [
+    "checkpoint",
+    "chat template",
+    "sampling",
+    "total output budget"
+  ],
+  "limitations": [
+    "Six reused development cases; not independent accuracy or human grounding labels.",
+    "16384 total tokens is below the official 40960 VL recommendation; none of these six outputs was truncated.",
+    "Frozen audit 2.0 evidence; the independent exact-number audit 2.1 does not change these replay inputs.",
+    "No training or human aesthetic evaluation occurred."
+  ],
+  "local_tests_passed": 57,
+  "training_performed": false
+}

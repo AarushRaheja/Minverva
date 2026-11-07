@@ -1,0 +1,65 @@
+{
+  "run_id": "unit-repair-development-v2",
+  "role": "Development diagnostic on reused sources and briefs; not a prospective accuracy estimate",
+  "initial_source_run": "pilot-baseline-v2",
+  "comparison_failed_cases_run": "unit-repair-development-v1",
+  "candidates": [
+    "A0/operations_01",
+    "A0/configuration_02",
+    "A1/learning_01",
+    "A1/planning_02",
+    "A1/forms_03"
+  ],
+  "max_revisions": 2,
+  "seed": 42,
+  "repair_strategy": "units",
+  "repair_decoding": "greedy",
+  "hypothesis": "Whole-element boundaries and syntax rejection reduce malformed scoped repairs while preserving real browser requirements.",
+  "changes": [
+    "Capture small JSX controls, text elements and literal test-target containers as complete balanced elements",
+    "Explicit edit-scope examples and no-op rejection instruction",
+    "Explain that aria-hidden does not satisfy visual visibility",
+    "Reject malformed assembled TSX before browser execution; retain rejected manifest and exact base-source measurements"
+  ],
+  "unchanged": [
+    "Pinned 4B checkpoints",
+    "Initial source and complete browser tests",
+    "Measured Critic gate",
+    "No training; no human beauty claim"
+  ],
+  "primary_measure": "Complete functional audit plus valid measured accept, with all unsuccessful attempts retained",
+  "next_step_rule": "Require all three known failures fixed and both passing controls retained before broader development testing. Do not consume unused briefs based on a partial diagnostic success.",
+  "source_sha256": {
+    "src/frontendslm/inference.py": "8887e629accfebe5b499ddc6b72c9631effcdef4110f089a4e190491724f9b6b",
+    "src/frontendslm/repair.py": "3021a7ee11b060e22d61955c2d51fb45659d7c110c199e6547bb04b5dd27fb81",
+    "src/frontendslm/evidence.py": "a1c5cb7d044fe1889bd194f198b7dcdedba3a9b26be3d315879ed7c3325473c1",
+    "src/frontendslm/prompts.py": "df10ae14c393e8ccf5ce1765ca6022bf7d17f1062296d41d9b36c7014781a88c",
+    "scripts/run_reliability.py": "27a97671b9e0c8608d65bebd3ceb21f7ce4084d3388d2e51ecfdcab0d3155e7d",
+    "audit/source_units.py": "d8b709d16b3865fb827811e7696dc056e5a7b8741e5253347f0919534e1eb705",
+    "audit/source-units.cjs": "b1d199c9c76af7ddd1d487c7a7173ee7ac27475478aca9fe65b13c5a0d9c7994",
+    "audit/evaluate.mjs": "cb189b70efd8abab5bf8e2f1a252ee4d38db14f261d4465d7182b8e851dc9c03",
+    "audit/cases.py": "46507388363adf2601ed355258c04297dac0c84a2a5cd06d929396f63f557b73",
+    "audit/scoring.py": "ad45e13327585bdfbd018b39e183789635d0a293d68d9e3847babffac115f5ca",
+    "sandbox/package-lock.json": "1d05e0638fe0bb27bf41ecc81e6ffbd1e565d147d7b864c32401c165e7dcf58f",
+    "configs/models.lock.json": "56e2090a4034143aa732ed9de522aeb5bd2fee6811f67df3ec4b52ad41a568ca"
+  },
+  "research_reference": "https://github.com/OpenAutoCoder/Agentless",
+  "declared_at": "2026-11-07T15:10:07.013498+00:00",
+  "previous_result": {
+    "known_failures_repaired": 1,
+    "known_failures": 3,
+    "passing_controls_retained": 2,
+    "unmodified_unit_patches_accepted": 0
+  },
+  "local_validation": {
+    "pytest_passed": 45,
+    "ruff": "pass",
+    "previous_malformed_outputs_rejected": 2
+  },
+  "billing_observation": {
+    "remaining_credits_usd": 16.35,
+    "source": "Signed-in Modal billing UI in Arc",
+    "observed_date": "2026-11-07",
+    "note": "Displayed estimate, not a per-run charge or spending cap"
+  }
+}

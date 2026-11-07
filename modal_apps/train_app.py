@@ -21,9 +21,10 @@ from slm.train import logic
 from slm.train.jobs import Job, jobs
 
 APP = "slm-train"
-GPU = "L4"
-L4_USD_PER_HOUR = 0.80
+GPU = "A10"
+GPU_USD_PER_HOUR = 1.10
 MANIFEST = "/vol/data/manifest.json"
+PILOT_EVAL_CAP = 60
 PILOT_SEED = 900  # seeds >= 900 are pilot runs; merge_registry skips them by default
 
 app = modal.App(APP)
@@ -95,9 +96,11 @@ def _build_dataset(tok, job: Job, train: list[C.TrainExample]):
     for ex in train:
         p_ids = tok(chat_prompt(tok, job.domain, ex.prompt), add_special_tokens=False)["input_ids"]
         c_ids = tok(ex.completion + tok.eos_token, add_special_tokens=False)["input_ids"]
-        ids = (p_ids + c_ids)[: RECIPE["max_len"]]
+        ids = p_ids + c_ids
+        if len(ids) > RECIPE["max_len"]:  # a clipped completion teaches the model never to finish
+            raise ValueError(f"{job.adapter_name}: example has {len(ids)} tokens, limit {RECIPE['max_len']}")
         rows["input_ids"].append(ids)
-        rows["completion_mask"].append(([0] * len(p_ids) + [1] * len(c_ids))[: RECIPE["max_len"]])
+        rows["completion_mask"].append([0] * len(p_ids) + [1] * len(c_ids))
     return Dataset.from_dict(rows)
 
 
@@ -111,8 +114,9 @@ def _train_one(base, tok, job: Job, max_train: int | None, base_only: bool,
     train, ev = logic.load_examples(job, C.PATHS["domain_data"], allow_missing=allow_missing)
     if manifest is not None and not escalated and not max_train and not allow_missing:
         logic.check_counts(job, len(train), manifest)  # fixed-budget guard
-    if max_train:
+    if max_train:  # a capped run measures speed and score, so a smaller check set is enough
         train = train[:max_train]
+        ev = logic.stratified_eval(ev, cap=PILOT_EVAL_CAP)
     rec: dict = {"adapter": job.adapter_name, "domain": job.domain, "n_train": len(train),
                  "n_eval": len(ev)}
     t0 = time.time()
@@ -185,7 +189,8 @@ def train_domains(domains: list[str] | None = None, seed: int = 0, max_train: in
     for job in todo:
         rec, base = _train_one(base, tok, job, max_train, base_only, manifest=manifest,
                                allow_missing=allow_missing)
-        if not base_only and logic.needs_retry(job, rec["gate_task_ok"], False):
+        # A capped run measures speed and score only: its retry would train on the full data.
+        if not base_only and not max_train and logic.needs_retry(job, rec["gate_task_ok"], False):
             first = rec["gate_task_ok"]
             rec, base = _train_one(base, tok, job, None, False, manifest=manifest,
                                    escalated=True, epochs=RECIPE["epochs"] + 2)
@@ -198,7 +203,7 @@ def train_domains(domains: list[str] | None = None, seed: int = 0, max_train: in
         vol.commit()
     total = time.time() - t_start
     return {"model_load_seconds": load_s, "total_seconds": total,
-            "gpu_usd": total / 3600 * L4_USD_PER_HOUR,
+            "gpu_usd": total / 3600 * GPU_USD_PER_HOUR,
             "jobs": [{k: v for k, v in r.items() if k != "per_kind"} for r in results]}
 
 
@@ -234,11 +239,12 @@ def pending(seed: int) -> list[dict]:
 
 
 @app.local_entrypoint()
-def pilot(n_train: int = 200):
+def pilot(n_train: int = 200, seed: int = PILOT_SEED, domains: str = ""):
     """One small adapter per domain on the real data, to measure time/$ and the gate."""
-    call = train_domains.spawn(None, PILOT_SEED, n_train, False, "pilot", True, False)
-    out = call.get()
-    print(json.dumps(out, indent=2))
+    calls = {d: train_domains.spawn([d], seed, n_train, False, f"pilot-{seed}-{d}", True, False)
+             for d in (domains.split(",") if domains else ADAPTER)}
+    for domain, call in calls.items():
+        print(domain, json.dumps(call.get(), indent=2))
     print("registry:", json.dumps(merge_registry.remote(include_pilot=True), indent=2))
 
 
@@ -249,7 +255,10 @@ def sweep(seed: int = 0):
         print("nothing pending")
         return
     print(f"{len(todo)} adapters: {[j['adapter_name'] for j in todo]}")
-    out = train_domains.remote([j["domain"] for j in todo], seed, None, False, f"sweep-s{seed}")
+    # One container per domain, all at once. Each trainer writes only its own files, and the registry
+    # is merged afterward. It costs one extra base-model load per domain, in exchange for far less wall time.
+    calls = [train_domains.spawn([j["domain"]], seed, None, False, f"sweep-s{seed}-{j['domain']}") for j in todo]
+    out = [call.get() for call in calls]
     print(json.dumps(out, indent=2))
     print("registry:", json.dumps(merge_registry.remote(), indent=2))
 

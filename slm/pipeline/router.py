@@ -12,10 +12,12 @@ def adapter_for(task: Task) -> str:
 
 
 def route(plan: ProjectPlan, task: Task, *, tracer: Tracer | None = None, mode: str | None = None,
-          project_id: str | None = None, dep_level: int | None = None) -> str:
-    """Record the dispatch decision (no model call) and return the adapter to call."""
+          project_id: str | None = None, dep_level: int | None = None, served: str | None = None) -> str:
+    """Record the dispatch decision (no model call) and return the adapter to call.
+
+    `served` overrides the domain adapter when one model serves every task (the single arm)."""
     assert task.domain in DOMAINS, task.domain
-    name = adapter_for(task)
+    name = served or adapter_for(task)
     if tracer is not None:
         tracer.record(
             kind="route", caller="dispatcher", callee=name, adapter=name, mode=mode, domain=task.domain,

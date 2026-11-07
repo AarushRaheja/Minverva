@@ -1,0 +1,125 @@
+{
+  "first_attempt_passes": 1,
+  "final_passes": 4,
+  "total": 10,
+  "revision_attempts": 21,
+  "generation_valid": 31,
+  "build_passes": 31,
+  "total_attempts": 31,
+  "valid_critics": 31,
+  "known_failed_audit_accepts": 0,
+  "rounds": [
+    {
+      "round": 0,
+      "attempts": 10,
+      "cumulative_passes": 1,
+      "cumulative_interaction_passes": 6
+    },
+    {
+      "round": 1,
+      "attempts": 9,
+      "cumulative_passes": 4,
+      "cumulative_interaction_passes": 7
+    },
+    {
+      "round": 2,
+      "attempts": 6,
+      "cumulative_passes": 4,
+      "cumulative_interaction_passes": 7
+    },
+    {
+      "round": 3,
+      "attempts": 6,
+      "cumulative_passes": 4,
+      "cumulative_interaction_passes": 7
+    }
+  ],
+  "unchanged_revisions": [
+    {
+      "round": 3,
+      "candidate": "A1/planning_03"
+    },
+    {
+      "round": 3,
+      "candidate": "A1/analytics_05"
+    },
+    {
+      "round": 3,
+      "candidate": "A1/collaboration_01"
+    }
+  ],
+  "failures": [
+    {
+      "candidate": "A1/operations_02",
+      "issues": [
+        {
+          "category": "accessibility",
+          "observation": "Measured accessibility failure: {\"failures\":[{\"view\":\"operations_02-interaction:desktop:step-1\",\"viewport\":\"desktop\",\"state\":\"intermediate\",\"rule\":\"target-size\",\"impact\":\"serious\",\"description\":\"Ensure touch targets have sufficient size and space\",\"nodes\":[{\"target\":[\"button\"],\"failureSummary\":\"Fix any of the following:\\n  Target has insufficient size (23px by 36px, should be at least 24px by 24px)\\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 23px instead of at least 24px.\"}]},{\"view\":\"operations_02-edge-cases:desktop:step-0\",\"viewport\":\"desktop\",\"state\":\"intermediate\",\"rule\":\"target-size\",\"impact\":\"serious\",\"description\":\"Ensure touch targets have sufficient size and space\",\"nodes\":[{\"target\":[\"button\"],\"failureSummary\":\"Fix any of the following:\\n  Target has insuffi"
+        }
+      ]
+    },
+    {
+      "candidate": "A1/planning_03",
+      "issues": [
+        {
+          "category": "interaction",
+          "observation": "Measured failures: planning_03-interaction:desktop: step 2 click(task-toggle): locator.click: Timeout 2500ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('task-toggle')\u001b[22m\n | planning_03-edge-cases:desktop: step 1 press(task-toggle): locator.press: Timeout 2500ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('task-toggle')\u001b[22m\n"
+        }
+      ]
+    },
+    {
+      "candidate": "A1/analytics_05",
+      "issues": [
+        {
+          "category": "interaction",
+          "observation": "Measured failures: analytics_05-interaction:desktop: step 1 expect_text(tab-panel): expect(locator).toContainText(expected) failed\n\nLocator: getByTestId('tab-panel')\nExpected string: \"Summary\"\nReceived string: \"Total Sales$12,450Items Sold2,847 | analytics_05-edge-cases:desktop: step 1 press(tab-details): locator.press: Timeout 2500ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('tab-details')\u001b[22m\n"
+        },
+        {
+          "category": "accessibility",
+          "observation": "Measured accessibility failure: {\"failures\":[{\"view\":\"desktop\",\"state\":\"initial\",\"rule\":\"aria-allowed-attr\",\"impact\":\"critical\",\"description\":\"Ensure an element's role supports its ARIA attributes\",\"nodes\":[{\"target\":[\"#tab-overview\"],\"failureSummary\":\"Fix all of the following:\\n  ARIA attribute is not allowed: aria-selected=\\\"true\\\"\"},{\"target\":[\"#tab-details\"],\"failureSummary\":\"Fix all of the following:\\n  ARIA attribute is not allowed: aria-selected=\\\"false\\\"\"}]},{\"view\":\"desktop\",\"state\":\"initial\",\"rule\":\"aria-valid-attr-value\",\"impact\":\"critical\",\"description\":\"Ensure all ARIA attributes have valid values\",\"nodes\":[{\"target\":[\"#tab-overview\"],\"failureSummary\":\"Fix all of the following:\\n  Invalid ARIA attribute value: aria-controls=\\\"tab-panel\\\"\"}]},{\"view\":\"desktop\",\"state\":\"after\",\"rule\":\"aria-allowed-attr\",\"impac"
+        }
+      ]
+    },
+    {
+      "candidate": "A1/learning_02",
+      "issues": [
+        {
+          "category": "accessibility",
+          "observation": "Measured accessibility failure: {\"failures\":[{\"view\":\"desktop\",\"state\":\"initial\",\"rule\":\"aria-required-parent\",\"impact\":\"critical\",\"description\":\"Ensure elements with an ARIA role that require parent roles are contained by them\",\"nodes\":[{\"target\":[\".cursor-pointer\"],\"failureSummary\":\"Fix any of the following:\\n  Required ARIA parent role not present: tablist\"}]},{\"view\":\"desktop\",\"state\":\"after\",\"rule\":\"aria-required-parent\",\"impact\":\"critical\",\"description\":\"Ensure elements with an ARIA role that require parent roles are contained by them\",\"nodes\":[{\"target\":[\".cursor-pointer\"],\"failureSummary\":\"Fix any of the following:\\n  Required ARIA parent role not present: tablist\"}]},{\"view\":\"learning_02-interaction:desktop:step-1\",\"viewport\":\"desktop\",\"state\":\"intermediate\",\"rule\":\"aria-required-parent\",\"impact\":\"critical\",\"des"
+        }
+      ]
+    },
+    {
+      "candidate": "A1/editorial_04",
+      "issues": [
+        {
+          "category": "accessibility",
+          "observation": "Measured accessibility failure: {\"failures\":[{\"view\":\"editorial_04-interaction:desktop:step-1\",\"viewport\":\"desktop\",\"state\":\"intermediate\",\"rule\":\"color-contrast\",\"impact\":\"serious\",\"description\":\"Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds\",\"nodes\":[{\"target\":[\".text-lg\"],\"failureSummary\":\"Fix any of the following:\\n  Element has insufficient color contrast of 1.72 (foreground color: #374151, background color: #111827, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1\"},{\"target\":[\".mb-6.text-xl.text-gray-800:nth-child(1)\"],\"failureSummary\":\"Fix any of the following:\\n  Element has insufficient color contrast of 1.2 (foreground color: #1f2937, background color: #111827, font size: 14.4pt (19.2px), font weight: normal). Expe"
+        }
+      ]
+    },
+    {
+      "candidate": "A1/collaboration_01",
+      "issues": [
+        {
+          "category": "interaction",
+          "observation": "Measured failures: collaboration_01-interaction:desktop: step 6 expect_text(saved-note): expect(locator).toContainText(expected) failed\n\nLocator: getByTestId('saved-note')\nExpected string: \"Discuss accessibility\"\nReceived: <element(s) not found>\nTim | collaboration_01-edge-cases:desktop: step 10 expect_text(saved-note): expect(locator).toContainText(expected) failed\n\nLocator: getByTestId('saved-note')\nExpected string: \"Second note\"\nReceived: <element(s) not found>\nTimeout: 5000"
+        }
+      ]
+    }
+  ],
+  "prospective_brief_overlap_with_original_baseline": [],
+  "declared_source_unchanged_at_completion": true,
+  "runtime_source_snapshot_verified": true,
+  "training_performed": false,
+  "human_preference": "unmeasured",
+  "target_met": false,
+  "modal_app": {
+    "app_id": "ap-D2Df5pGpmWxE2ApTabBDO1",
+    "description": "frontendslm-baseline",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-11-07 04:38:28-05:00",
+    "stopped_at": "2026-11-07 05:20:00-05:00"
+  }
+}

@@ -1,0 +1,707 @@
+[
+  {
+    "blind_id": "view-01",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "forms_03",
+      "application_type": "forms",
+      "user_goal": "Build a polished single-page local volunteer signup interface. Provide a labeled Name input (name), Email input (email), submit control (submit), and status (form-status). An empty submission must visibly say Required. After filling a name and valid email, submission must say Confirmed. Implement local validation with noValidate so an empty submission reaches the handler. Label it a demo, not a real booking. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "medium",
+        "descriptors": "playful, geometric, colorful",
+        "theme": "light"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "form",
+          "action": "Provide a labeled Name input (name), Email input (email), submit control (submit), and status (form-status). An empty submission must visibly say Required. After filling a name and valid email, submission must say Confirmed. Implement local validation with noValidate so an empty submission reaches the handler. Label it a demo, not a real booking.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    },
+    "intent": {
+      "schema_version": "1.0",
+      "primary_user_goal": "Build a polished single-page local volunteer signup interface",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "interpretations": [
+        {
+          "term": "playful",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "playful, geometric, colorful",
+          "meaning_in_context": "Introduces light, approachable energy without sacrificing clarity or professionalism; manifests in subtle visual cues like rounded corners, animated transitions, or whimsical iconography, but not in a childish or distracting way.",
+          "decisions": [
+            {
+              "dimension": "shape",
+              "choice": "rounded corners on input fields and form controls",
+              "rationale": "Rounded shapes contribute to a playful yet approachable feel, aligning with the 'playful' descriptor while maintaining a clean, modern aesthetic similar to Linear or Stripe."
+            },
+            {
+              "dimension": "motion",
+              "choice": "subtle hover animations on interactive elements (e.g., submit button)",
+              "rationale": "Playful does not mean chaotic; gentle micro-interactions enhance engagement without overwhelming the user or disrupting the form's clarity."
+            }
+          ]
+        },
+        {
+          "term": "geometric",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "playful, geometric, colorful",
+          "meaning_in_context": "Emphasizes structured, precise forms with clean lines and aligned components, reinforcing clarity and consistency in layout and spacing.",
+          "decisions": [
+            {
+              "dimension": "layout",
+              "choice": "grid-based alignment with consistent spacing and aligned form fields",
+              "rationale": "Geometric design ensures predictable, scalable structure across devices, supporting usability and visual harmony in a form-heavy interface."
+            },
+            {
+              "dimension": "spacing",
+              "choice": "medium spacing between form fields and sections",
+              "rationale": "Medium density supports readability and prevents visual clutter, allowing geometric precision to shine without sacrificing comfort."
+            }
+          ]
+        },
+        {
+          "term": "colorful",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "playful, geometric, colorful",
+          "meaning_in_context": "Uses intentional, non-distracting color to highlight states (e.g., required, confirmed) and guide user attention, without overwhelming the interface.",
+          "decisions": [
+            {
+              "dimension": "color",
+              "choice": "use a single accent color (e.g., teal or indigo) for the submit button and status indicators",
+              "rationale": "Colorful is used to signal state changes (Required \u2192 Confirmed) in a clear, visible way, supporting the form's feedback loop while staying within a clean, professional tone."
+            },
+            {
+              "dimension": "controls",
+              "choice": "highlight required fields in a soft red or orange border when empty",
+              "rationale": "Color is used to communicate validation states, improving usability and aligning with the playful yet functional tone of the interface."
+            }
+          ]
+        },
+        {
+          "term": "clean product UI",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "Clean product UI, like Linear or Stripe",
+          "meaning_in_context": "Prioritizes clarity, minimalism, and consistent control design\u2014no decorative elements or visual noise\u2014ensuring the form remains focused on user action and data entry.",
+          "decisions": [
+            {
+              "dimension": "content",
+              "choice": "remove all decorative graphics or illustrations",
+              "rationale": "A clean product UI emphasizes function over ornamentation; this ensures the form remains focused on the core task of signing up."
+            },
+            {
+              "dimension": "typography",
+              "choice": "use clear, sans-serif typefaces with consistent font weights and hierarchy",
+              "rationale": "Clean UI relies on legible, well-structured typography to support fast reading and accurate data entry."
+            }
+          ]
+        }
+      ],
+      "layout": "editorial",
+      "density": "comfortable",
+      "typography": "editorial",
+      "palette": "neutral",
+      "accent": "teal",
+      "theme": "light",
+      "primary_action": "Submit volunteer signup",
+      "information_hierarchy": [
+        "Name input (name)",
+        "Email input (email)",
+        "Submit control (submit)",
+        "Form status (form-status)",
+        "Required state",
+        "Confirmed state"
+      ],
+      "ux_priorities": [
+        "Keyboard-accessible controls",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No serious or critical automated accessibility violations"
+      ],
+      "avoid": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data",
+        "dark theme",
+        "chaotic or excessive animations"
+      ],
+      "assumptions": [
+        "Users will enter valid email formats when prompted (no email validation beyond basic format)",
+        "The form will be used primarily in a browser environment with standard touch and keyboard input",
+        "The 'demo' label will be clearly visible and not misleading to users"
+      ],
+      "unresolved_descriptors": [],
+      "clarifying_questions": []
+    },
+    "images": {
+      "desktop": "design-development-v6/round-2/A1/forms_03/render/desktop.png",
+      "mobile": "design-development-v6/round-2/A1/forms_03/render/mobile.png"
+    }
+  },
+  {
+    "blind_id": "view-02",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "planning_02",
+      "application_type": "planning",
+      "user_goal": "Build a polished single-page independent film production checklist interface. Provide a task called Prepare materials, a toggle control (task-toggle), and a text status (task-status), initially Pending. Activating the control changes it to Completed; activating again restores Pending. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "low",
+        "descriptors": "warm, editorial, tactile",
+        "theme": "light"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "toggle",
+          "action": "Provide a task called Prepare materials, a toggle control (task-toggle), and a text status (task-status), initially Pending. Activating the control changes it to Completed; activating again restores Pending.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    },
+    "intent": {
+      "schema_version": "1.0",
+      "primary_user_goal": "Build a polished single-page independent film production checklist interface. Provide a task called Prepare materials, a toggle control (task-toggle), and a text status (task-status), initially Pending. Activating the control changes it to Completed; activating again restores Pending.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "interpretations": [
+        {
+          "term": "warm",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "warm, editorial, tactile",
+          "meaning_in_context": "A welcoming, approachable tone in color and texture, without being overly decorative or bright; supports a friendly yet professional feel suitable for creative workflows.",
+          "decisions": [
+            {
+              "dimension": "color",
+              "choice": "neutral with subtle warm undertones (e.g., soft beige, warm gray)",
+              "rationale": "The 'warm' descriptor suggests a friendly, inviting tone that aligns with creative professionals, while maintaining professionalism. Avoiding saturated or bold colors ensures clarity and focus on task state."
+            }
+          ]
+        },
+        {
+          "term": "editorial",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "warm, editorial, tactile",
+          "meaning_in_context": "Deliberate, structured presentation of information with clear hierarchy and readable flow, emphasizing clarity and purpose over visual noise.",
+          "decisions": [
+            {
+              "dimension": "typography",
+              "choice": "editorial",
+              "rationale": "The editorial style ensures a clear, readable hierarchy and consistent information flow, which is essential for a checklist interface where users need to track progress efficiently."
+            },
+            {
+              "dimension": "layout",
+              "choice": "focus",
+              "rationale": "A focused layout emphasizes the single task (Prepare materials) with minimal distractions, supporting the editorial intent of clarity and purpose."
+            }
+          ]
+        },
+        {
+          "term": "tactile",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "warm, editorial, tactile",
+          "meaning_in_context": "A sense of physicality or touch in the interface\u2014suggesting a human, hands-on experience, such as a physical checklist being flipped or marked.",
+          "decisions": [
+            {
+              "dimension": "controls",
+              "choice": "toggle with a clear visual state change (e.g., checkmark or solid fill on completion)",
+              "rationale": "The tactile quality is best expressed through a physical-like toggle that provides immediate visual feedback when activated, mimicking the feel of marking a task completed."
+            },
+            {
+              "dimension": "spacing",
+              "choice": "moderate padding around controls to create a sense of physical separation",
+              "rationale": "Tactile design benefits from intentional spacing that gives the interface a grounded, physical presence, enhancing user confidence in task management."
+            }
+          ]
+        },
+        {
+          "term": "clean product UI",
+          "polarity": "prefer",
+          "origin": "inferred",
+          "source_quote": "Clean product UI, like Linear or Stripe",
+          "meaning_in_context": "A minimalist, uncluttered interface with clear visual hierarchy and functional clarity, avoiding unnecessary elements or visual complexity.",
+          "decisions": [
+            {
+              "dimension": "layout",
+              "choice": "focus",
+              "rationale": "A focused layout with minimal decorative elements aligns with the clean product UI standard, ensuring the task and its status are the primary focus."
+            },
+            {
+              "dimension": "density",
+              "choice": "low",
+              "rationale": "The specified 'low' density directly supports a clean, uncluttered interface, reducing visual noise and improving readability across devices."
+            }
+          ]
+        }
+      ],
+      "layout": "focus",
+      "density": "spacious",
+      "typography": "editorial",
+      "palette": "warm",
+      "accent": "indigo",
+      "theme": "light",
+      "primary_action": "Toggle 'Prepare materials' to mark as completed or pending",
+      "information_hierarchy": [
+        "Task name: Prepare materials",
+        "Toggle control (task-toggle)",
+        "Status text (task-status)",
+        "Visual state change on toggle",
+        "Clear, readable typography",
+        "Responsive alignment across devices"
+      ],
+      "ux_priorities": [
+        "Keyboard-accessible controls",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "All specified state transitions work using local demonstration data",
+        "Usable at 1440px and 390px",
+        "No serious or critical automated accessibility violations"
+      ],
+      "avoid": [
+        "dark theme",
+        "overly decorative elements",
+        "complex animations",
+        "visual clutter",
+        "real-time data updates"
+      ],
+      "assumptions": [
+        "Users are familiar with toggle-based task management in checklists.",
+        "The interface will be used in a quiet, focused environment (e.g., pre-production planning).",
+        "The 'local demonstration only' constraint means no external data sources or integrations are required."
+      ],
+      "unresolved_descriptors": [],
+      "clarifying_questions": []
+    },
+    "images": {
+      "desktop": "design-development-v6/round-0/A1/planning_02/render/desktop.png",
+      "mobile": "design-development-v6/round-0/A1/planning_02/render/mobile.png"
+    }
+  },
+  {
+    "blind_id": "view-03",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "forms_03",
+      "application_type": "forms",
+      "user_goal": "Build a polished single-page local volunteer signup interface. Provide a labeled Name input (name), Email input (email), submit control (submit), and status (form-status). An empty submission must visibly say Required. After filling a name and valid email, submission must say Confirmed. Implement local validation with noValidate so an empty submission reaches the handler. Label it a demo, not a real booking. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "medium",
+        "descriptors": "playful, geometric, colorful",
+        "theme": "light"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "form",
+          "action": "Provide a labeled Name input (name), Email input (email), submit control (submit), and status (form-status). An empty submission must visibly say Required. After filling a name and valid email, submission must say Confirmed. Implement local validation with noValidate so an empty submission reaches the handler. Label it a demo, not a real booking.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    },
+    "intent": {
+      "schema_version": "1.0",
+      "primary_user_goal": "Build a polished single-page local volunteer signup interface",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "interpretations": [
+        {
+          "term": "playful",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "playful, geometric, colorful",
+          "meaning_in_context": "Introduces light, approachable energy without sacrificing clarity or professionalism; manifests in subtle visual cues like rounded corners, animated transitions, or whimsical iconography, but not in a childish or distracting way.",
+          "decisions": [
+            {
+              "dimension": "shape",
+              "choice": "rounded corners on input fields and form controls",
+              "rationale": "Rounded shapes contribute to a playful yet approachable feel, aligning with the 'playful' descriptor while maintaining a clean, modern aesthetic similar to Linear or Stripe."
+            },
+            {
+              "dimension": "motion",
+              "choice": "subtle hover animations on interactive elements (e.g., submit button)",
+              "rationale": "Playful does not mean chaotic; gentle micro-interactions enhance engagement without overwhelming the user or disrupting the form's clarity."
+            }
+          ]
+        },
+        {
+          "term": "geometric",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "playful, geometric, colorful",
+          "meaning_in_context": "Emphasizes structured, precise forms with clean lines and aligned components, reinforcing clarity and consistency in layout and spacing.",
+          "decisions": [
+            {
+              "dimension": "layout",
+              "choice": "grid-based alignment with consistent spacing and aligned form fields",
+              "rationale": "Geometric design ensures predictable, scalable structure across devices, supporting usability and visual harmony in a form-heavy interface."
+            },
+            {
+              "dimension": "spacing",
+              "choice": "medium spacing between form fields and sections",
+              "rationale": "Medium density supports readability and prevents visual clutter, allowing geometric precision to shine without sacrificing comfort."
+            }
+          ]
+        },
+        {
+          "term": "colorful",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "playful, geometric, colorful",
+          "meaning_in_context": "Uses intentional, non-distracting color to highlight states (e.g., required, confirmed) and guide user attention, without overwhelming the interface.",
+          "decisions": [
+            {
+              "dimension": "color",
+              "choice": "use a single accent color (e.g., teal or indigo) for the submit button and status indicators",
+              "rationale": "Colorful is used to signal state changes (Required \u2192 Confirmed) in a clear, visible way, supporting the form's feedback loop while staying within a clean, professional tone."
+            },
+            {
+              "dimension": "controls",
+              "choice": "highlight required fields in a soft red or orange border when empty",
+              "rationale": "Color is used to communicate validation states, improving usability and aligning with the playful yet functional tone of the interface."
+            }
+          ]
+        },
+        {
+          "term": "clean product UI",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "Clean product UI, like Linear or Stripe",
+          "meaning_in_context": "Prioritizes clarity, minimalism, and consistent control design\u2014no decorative elements or visual noise\u2014ensuring the form remains focused on user action and data entry.",
+          "decisions": [
+            {
+              "dimension": "content",
+              "choice": "remove all decorative graphics or illustrations",
+              "rationale": "A clean product UI emphasizes function over ornamentation; this ensures the form remains focused on the core task of signing up."
+            },
+            {
+              "dimension": "typography",
+              "choice": "use clear, sans-serif typefaces with consistent font weights and hierarchy",
+              "rationale": "Clean UI relies on legible, well-structured typography to support fast reading and accurate data entry."
+            }
+          ]
+        }
+      ],
+      "layout": "editorial",
+      "density": "comfortable",
+      "typography": "editorial",
+      "palette": "neutral",
+      "accent": "teal",
+      "theme": "light",
+      "primary_action": "Submit volunteer signup",
+      "information_hierarchy": [
+        "Name input (name)",
+        "Email input (email)",
+        "Submit control (submit)",
+        "Form status (form-status)",
+        "Required state",
+        "Confirmed state"
+      ],
+      "ux_priorities": [
+        "Keyboard-accessible controls",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No serious or critical automated accessibility violations"
+      ],
+      "avoid": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data",
+        "dark theme",
+        "chaotic or excessive animations"
+      ],
+      "assumptions": [
+        "Users will enter valid email formats when prompted (no email validation beyond basic format)",
+        "The form will be used primarily in a browser environment with standard touch and keyboard input",
+        "The 'demo' label will be clearly visible and not misleading to users"
+      ],
+      "unresolved_descriptors": [],
+      "clarifying_questions": []
+    },
+    "images": {
+      "desktop": "pilot-baseline-v2/A1/forms_03/render/desktop.png",
+      "mobile": "pilot-baseline-v2/A1/forms_03/render/mobile.png"
+    }
+  },
+  {
+    "blind_id": "view-04",
+    "brief": "A local document-review page. Clear hierarchy, restrained color, useful context, readable typography; mark a proposal reviewed and expand an open question.",
+    "intent": null,
+    "images": {
+      "desktop": "design-composition-reference/render/desktop.png",
+      "mobile": "design-composition-reference/render/mobile.png"
+    }
+  },
+  {
+    "blind_id": "view-05",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "planning_02",
+      "application_type": "planning",
+      "user_goal": "Build a polished single-page independent film production checklist interface. Provide a task called Prepare materials, a toggle control (task-toggle), and a text status (task-status), initially Pending. Activating the control changes it to Completed; activating again restores Pending. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "low",
+        "descriptors": "warm, editorial, tactile",
+        "theme": "light"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "toggle",
+          "action": "Provide a task called Prepare materials, a toggle control (task-toggle), and a text status (task-status), initially Pending. Activating the control changes it to Completed; activating again restores Pending.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    },
+    "intent": {
+      "schema_version": "1.0",
+      "primary_user_goal": "Build a polished single-page independent film production checklist interface. Provide a task called Prepare materials, a toggle control (task-toggle), and a text status (task-status), initially Pending. Activating the control changes it to Completed; activating again restores Pending.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "interpretations": [
+        {
+          "term": "warm",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "warm, editorial, tactile",
+          "meaning_in_context": "A welcoming, approachable tone in color and texture, without being overly decorative or bright; supports a friendly yet professional feel suitable for creative workflows.",
+          "decisions": [
+            {
+              "dimension": "color",
+              "choice": "neutral with subtle warm undertones (e.g., soft beige, warm gray)",
+              "rationale": "The 'warm' descriptor suggests a friendly, inviting tone that aligns with creative professionals, while maintaining professionalism. Avoiding saturated or bold colors ensures clarity and focus on task state."
+            }
+          ]
+        },
+        {
+          "term": "editorial",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "warm, editorial, tactile",
+          "meaning_in_context": "Deliberate, structured presentation of information with clear hierarchy and readable flow, emphasizing clarity and purpose over visual noise.",
+          "decisions": [
+            {
+              "dimension": "typography",
+              "choice": "editorial",
+              "rationale": "The editorial style ensures a clear, readable hierarchy and consistent information flow, which is essential for a checklist interface where users need to track progress efficiently."
+            },
+            {
+              "dimension": "layout",
+              "choice": "focus",
+              "rationale": "A focused layout emphasizes the single task (Prepare materials) with minimal distractions, supporting the editorial intent of clarity and purpose."
+            }
+          ]
+        },
+        {
+          "term": "tactile",
+          "polarity": "prefer",
+          "origin": "explicit",
+          "source_quote": "warm, editorial, tactile",
+          "meaning_in_context": "A sense of physicality or touch in the interface\u2014suggesting a human, hands-on experience, such as a physical checklist being flipped or marked.",
+          "decisions": [
+            {
+              "dimension": "controls",
+              "choice": "toggle with a clear visual state change (e.g., checkmark or solid fill on completion)",
+              "rationale": "The tactile quality is best expressed through a physical-like toggle that provides immediate visual feedback when activated, mimicking the feel of marking a task completed."
+            },
+            {
+              "dimension": "spacing",
+              "choice": "moderate padding around controls to create a sense of physical separation",
+              "rationale": "Tactile design benefits from intentional spacing that gives the interface a grounded, physical presence, enhancing user confidence in task management."
+            }
+          ]
+        },
+        {
+          "term": "clean product UI",
+          "polarity": "prefer",
+          "origin": "inferred",
+          "source_quote": "Clean product UI, like Linear or Stripe",
+          "meaning_in_context": "A minimalist, uncluttered interface with clear visual hierarchy and functional clarity, avoiding unnecessary elements or visual complexity.",
+          "decisions": [
+            {
+              "dimension": "layout",
+              "choice": "focus",
+              "rationale": "A focused layout with minimal decorative elements aligns with the clean product UI standard, ensuring the task and its status are the primary focus."
+            },
+            {
+              "dimension": "density",
+              "choice": "low",
+              "rationale": "The specified 'low' density directly supports a clean, uncluttered interface, reducing visual noise and improving readability across devices."
+            }
+          ]
+        }
+      ],
+      "layout": "focus",
+      "density": "spacious",
+      "typography": "editorial",
+      "palette": "warm",
+      "accent": "indigo",
+      "theme": "light",
+      "primary_action": "Toggle 'Prepare materials' to mark as completed or pending",
+      "information_hierarchy": [
+        "Task name: Prepare materials",
+        "Toggle control (task-toggle)",
+        "Status text (task-status)",
+        "Visual state change on toggle",
+        "Clear, readable typography",
+        "Responsive alignment across devices"
+      ],
+      "ux_priorities": [
+        "Keyboard-accessible controls",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "All specified state transitions work using local demonstration data",
+        "Usable at 1440px and 390px",
+        "No serious or critical automated accessibility violations"
+      ],
+      "avoid": [
+        "dark theme",
+        "overly decorative elements",
+        "complex animations",
+        "visual clutter",
+        "real-time data updates"
+      ],
+      "assumptions": [
+        "Users are familiar with toggle-based task management in checklists.",
+        "The interface will be used in a quiet, focused environment (e.g., pre-production planning).",
+        "The 'local demonstration only' constraint means no external data sources or integrations are required."
+      ],
+      "unresolved_descriptors": [],
+      "clarifying_questions": []
+    },
+    "images": {
+      "desktop": "pilot-baseline-v2/A1/planning_02/render/desktop.png",
+      "mobile": "pilot-baseline-v2/A1/planning_02/render/mobile.png"
+    }
+  }
+]

@@ -1,0 +1,54 @@
+{
+  "completion_proven": false,
+  "previous_goal_turn": "progress: completed controlled decoding comparison and prepared original repair candidates",
+  "prospective_verified_counts": {
+    "total": 10,
+    "initial_passes": 1,
+    "final_passes": 4,
+    "attempts": 31,
+    "critic_schema_valid": 31,
+    "critic_measured_valid": 31,
+    "known_failed_audit_accepts": 0
+  },
+  "active_modal_apps": [],
+  "artifact_integrity": {
+    "pilot-baseline-v1": {
+      "verified_files": 150,
+      "mismatches": []
+    },
+    "pilot-baseline-v2": {
+      "verified_files": 292,
+      "mismatches": []
+    },
+    "prospective-reliability-v1": {
+      "verified_files": 498,
+      "mismatches": []
+    },
+    "repair-sampling-v1": {
+      "verified_files": 137,
+      "mismatches": []
+    },
+    "original-review-pilot-v1": {
+      "verified_files": 54,
+      "mismatches": []
+    },
+    "original-revision-candidates-v1": {
+      "verified_files": 9,
+      "mismatches": []
+    }
+  },
+  "human_reviews": 0,
+  "accepted_training_examples": 0,
+  "trained_adapters_found": false,
+  "required_input": "Independent human verification of original candidate material and actual visual-preference feedback",
+  "blocker_recurrence": "Missing human verification and preference labels were reported in the preceding two goal-turn finals and revalidated in this turn.",
+  "evidence_sha256": {
+    "docs/blueprint.txt": "e64c95ed20dcd7adf3c806248593837211c96836a043bbaead03056052a0954a",
+    "docs/implementation.md": "063ff159ca328e9a2c4b9b6c1704a606c85e0c5cd71235291d7f459b4c716adb",
+    "artifacts/prospective-reliability-v1/summary.json": "fbb9d5725b491cb3fd04e4da71ea7ebb883b1887be5c9a8e7fd06db701404639",
+    "reports/visual-rubric-pilot.md": "c82385bb567603f335aebcf4313daa18677292ceaa0eab1af5c6743d499d8475",
+    "reports/repair-sampling-v1.json": "2ed8ea8f7274abb152c42aba37bbd64b62c252ad3714e3c45111825b14cdadc5",
+    "artifacts/original-review-pilot-v1/summary.json": "6392183891b8681fbd5847755c016d00f3f041bc008cdd253f0f72d5bb6966ec",
+    "artifacts/original-revision-candidates-v1/summary.json": "b06cc0c2db16878d244b5234e6f6cf7e1637555520ddda390638b25db6f4e65a"
+  }
+}

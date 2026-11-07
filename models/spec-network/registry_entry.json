@@ -1,0 +1,12 @@
+{
+  "adapter_name": "spec-network",
+  "domain": "network",
+  "seed": 901,
+  "path": "/vol/adapters/901/spec-network",
+  "train_examples": 200,
+  "gate_task_ok": 1.0,
+  "train_seconds": 138.2743787765503,
+  "gpu": "A10",
+  "data_version": 4,
+  "escalated": false
+}

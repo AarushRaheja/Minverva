@@ -11,14 +11,17 @@ Name branches `<area>/<topic>`, lowercase, hyphens:
 
 | area | covers |
 |---|---|
+| `minerva` | `minerva/` build pipeline: bridge, integrator, verify, cli; `modal_apps/pipeline_app.py` |
+| `harness` | `harness/` audit harness and `templates/` generated-app templates |
+| `vendor` | `vendor/frontendslm/` (keep the diff against upstream small; see PROVENANCE.md) |
 | `slm` | contracts, domains, pipeline, manager, llm clients, cli |
 | `arch` | `slm/arch/` architecture experiments |
 | `bench` | `slm/bench/` project generator, gold artifacts, scoring |
-| `train` | `slm/train/`, `notebooks/`, Modal training apps |
+| `train` | `slm/train/`, `notebooks/`, Modal training apps, `models/` |
 | `eval` | `evaluation/` harness and benchmark tasks |
 | `ui` | `slm/ui/` web workbench and `slm code` |
 | `tui` | `tui/` ratatui monitor |
-| `docs` | README, docs/, PLAN.md, EXPERIMENTS.md |
+| `docs` | README, docs/, PLAN.md, EXPERIMENTS.md, `results/` write-ups |
 | `ci` | `.github/` |
 
 Examples: `train/spec-auth-lora`, `arch/repair-round`, `tui/elo-table`. One topic per branch; delete

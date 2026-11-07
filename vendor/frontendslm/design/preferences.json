@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "user_statement": "Clean product UI, like Linear or Stripe",
+  "reference_urls": [
+    "https://linear.app/now/behind-the-latest-design-refresh",
+    "https://docs.stripe.com/stripe-apps/design"
+  ],
+  "default_direction": "Clean product UI with clear hierarchy, restrained color, precise spacing, readable typography, and coherent controls.",
+  "default_direction_origin": "Interpretation of the user's stated preference, not user-research findings",
+  "specific_brief_overrides_default": true,
+  "functionality_required": true,
+  "human_visual_ratings": [
+    {
+      "candidate_id": "original-notification-preferences/working",
+      "source_sha256": "95b994783a86febcb6b9294b7ff5a3fae2761b925b61c50d3732d79d1600d433",
+      "submitted_at": "2026-11-07T14:28:58.674000Z",
+      "perceived_descriptors": [
+        "Clean",
+        "Functional",
+        "Minimal",
+        "Plain"
+      ],
+      "visual_quality": 4,
+      "primary_action_clarity": "clear",
+      "manual_functionality": "not_tested",
+      "notes": "This is a good clean frontend UI",
+      "review_id": "d975cf91f85dae3c",
+      "record": "artifacts/human-reviews/d975cf91f85dae3c/validation.json",
+      "scope": "User perception of this original reference candidate only; no general model-quality claim.",
+      "training_eligible": false
+    }
+  ]
+}

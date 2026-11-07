@@ -14,14 +14,19 @@ import time
 from typing import Callable
 
 from slm.contracts import (
-    Artifact, Deliverable, Project, ProjectPlan, Task, integrate, specialist_prompt, specialist_system,
-    task_ok,
+    Artifact, ArtifactFile, Deliverable, Project, ProjectPlan, Task, integrate, specialist_prompt,
+    specialist_system, task_ok,
 )
 from slm.llm.base import LLMClient
 from slm.manager.manager import MANAGER_SYSTEM, user_prompt
+from slm.manager.spec import SPEC_SYSTEM, ProjectSpec, normalize_spec, spec_task_prompts, to_plan
+from slm.pipeline.finish import MAX_REPAIRS, code_artifact, finish_artifact, repair_prompt, written_by_code
 from slm.pipeline.oracle import CALL
 from slm.pipeline.router import route
 from slm.trace import Tracer
+
+
+SPEC_PATH = "SPEC.json"  # the manager's nested plan, handed to the user with the code
 
 
 def _err(e: BaseException) -> str:
@@ -35,21 +40,36 @@ def _ctx(mode: str, project_id: str, task: Task, dep_level: int, adapter: str) -
 
 async def _run_task(
     plan: ProjectPlan, task: Task, dep_level: int, clients: dict[str, LLMClient], tracer: Tracer | None,
-    mode: str, project_id: str,
+    mode: str, project_id: str, prompts: dict[str, str] | None = None,
 ) -> tuple[str, Artifact | None]:
-    adapter = route(plan, task, tracer=tracer, mode=mode, project_id=project_id, dep_level=dep_level)
     client = clients[task.domain]
-    if hasattr(client, "for_model"):  # adapter-addressed clients get the adapter as the request model
+    single = mode == "single"  # one generalist serves every task: never re-address it to spec-*
+    adapter = route(plan, task, tracer=tracer, mode=mode, project_id=project_id, dep_level=dep_level,
+                    served=client.model if single else None)
+    if not single and hasattr(client, "for_model"):  # adapter-addressed clients get the adapter as the model
         client = client.for_model(adapter)
     CALL.set((plan, task))
     t0 = time.time()
     artifact, detail, ok = None, "", False
     try:
-        artifact = await client.acomplete(
-            specialist_system(task.domain), specialist_prompt(plan, task), Artifact,
-            caller="dispatch", callee=adapter, ctx=_ctx(mode, project_id, task, dep_level, adapter),
-        )
+        ctx = _ctx(mode, project_id, task, dep_level, adapter)
+        prompt = prompts[task.id] if prompts else specialist_prompt(plan, task)
+
+        async def ask(text: str) -> Artifact:
+            got = await client.acomplete(specialist_system(task.domain), text, Artifact, caller="dispatch",
+                                         callee=adapter, ctx=ctx)
+            return finish_artifact(task, got) if prompts else got
+
+        if prompts and written_by_code(task):
+            artifact = code_artifact(plan, task)
+        else:
+            artifact = await ask(prompt)
         ok, detail = task_ok(plan, task, artifact)
+        for _ in range(MAX_REPAIRS if prompts else 0):  # only the nested path has repair
+            if ok:
+                break
+            artifact = await ask(repair_prompt(prompt, artifact.model_dump_json(), detail))
+            ok, detail = task_ok(plan, task, artifact)
     except Exception as e:  # noqa: BLE001 - a failed task degrades the product, it does not abort the run
         detail = _err(e)
     if tracer is not None:
@@ -76,7 +96,7 @@ def _final(tracer: Tracer | None, project_id: str, mode: str, t0: float,
 
 async def run_plan(
     project_id: str, plan: ProjectPlan, clients: dict[str, LLMClient], tracer: Tracer | None = None,
-    *, mode: str = "specialists", parallel: bool = True,
+    *, mode: str = "specialists", parallel: bool = True, prompts: dict[str, str] | None = None,
 ) -> Deliverable:
     """Dispatch every task to its domain specialist, then integrate. Never raises."""
     t0 = time.time()
@@ -84,7 +104,7 @@ async def run_plan(
     by_id = {t.id: t for t in plan.tasks}
     try:
         for level, ids in enumerate(plan.levels()):
-            calls = [_run_task(plan, by_id[i], level, clients, tracer, mode, project_id) for i in ids]
+            calls = [_run_task(plan, by_id[i], level, clients, tracer, mode, project_id, prompts) for i in ids]
             done = await asyncio.gather(*calls) if parallel else [await c for c in calls]
             for tid, art in done:
                 if art is not None:
@@ -100,25 +120,37 @@ async def run_plan(
 async def solve_project(
     project: Project, *, manager_client: LLMClient | None, specialist_clients: dict[str, LLMClient],
     tracer: Tracer | None = None, gold_plan: bool = False, mode: str = "specialists",
-    parallel: bool = True,
+    parallel: bool = True, nested: bool = False,
 ) -> tuple[ProjectPlan | None, Deliverable | None]:
-    """Plan (manager or gold) then dispatch. Returns (plan, deliverable); (None, None) when planning fails."""
+    """Plan (manager or gold) then dispatch. Returns (plan, deliverable); (None, None) when planning fails.
+
+    nested=True asks the manager for a ProjectSpec and runs the flat plan it compiles to. Only the
+    spec's tasks reach specialists; the whole spec ships with the deliverable as SPEC_PATH.
+    """
     t0 = time.time()
+    spec: ProjectSpec | None = None
     if gold_plan:
         plan_obj = project.plan
         if plan_obj is None:
             raise ValueError(f"project {project.id} has no gold plan")
         if tracer is not None:
-            tracer.record(kind="plan", caller="gold", callee="plan", ok=True, mode="gold",
+            tracer.record(kind="plan", caller="gold", callee="plan", ok=True, mode=mode,
                           project_id=project.id, output=str(len(plan_obj.tasks)))
     else:
         assert manager_client is not None, "manager_client is required unless gold_plan=True"
         try:
-            plan_obj = await manager_client.acomplete(
-                MANAGER_SYSTEM, user_prompt(project.description), ProjectPlan,
-                caller="dispatch", callee="manager",
-                ctx={"project_id": project.id, "mode": mode},
-            )
+            ctx = {"project_id": project.id, "mode": mode}
+            if nested:
+                spec = normalize_spec(await manager_client.acomplete(
+                    SPEC_SYSTEM, user_prompt(project.description), ProjectSpec,
+                    caller="dispatch", callee="manager", ctx=ctx,
+                ))
+                plan_obj = to_plan(spec)  # a spec that does not compile is a failed plan
+            else:
+                plan_obj = await manager_client.acomplete(
+                    MANAGER_SYSTEM, user_prompt(project.description), ProjectPlan,
+                    caller="dispatch", callee="manager", ctx=ctx,
+                )
         except Exception as e:  # noqa: BLE001
             if tracer is not None:
                 tracer.record(kind="plan", caller="dispatch", callee="manager", ok=False, mode=mode,
@@ -130,19 +162,21 @@ async def solve_project(
                           project_id=project.id, output=str(len(plan_obj.tasks)))
     try:
         deliverable = await run_plan(project.id, plan_obj, specialist_clients, tracer, mode=mode,
-                                     parallel=parallel)
+                                     parallel=parallel, prompts=spec_task_prompts(spec) if spec else None)
     except Exception:  # noqa: BLE001 - _final already recorded the failure
         return plan_obj, None
+    if spec is not None:
+        deliverable.files.append(ArtifactFile(path=SPEC_PATH, content=spec.model_dump_json(indent=2)))
     return plan_obj, deliverable
 
 
 def solve(project: Project, *, manager_client: LLMClient | None, specialist_clients: dict[str, LLMClient],
           tracer: Tracer | None = None, gold_plan: bool = False, mode: str = "specialists",
-          parallel: bool = True) -> tuple[ProjectPlan | None, Deliverable | None]:
+          parallel: bool = True, nested: bool = False) -> tuple[ProjectPlan | None, Deliverable | None]:
     """Sync wrapper for scripts and the CLI."""
     return asyncio.run(solve_project(
         project, manager_client=manager_client, specialist_clients=specialist_clients, tracer=tracer,
-        gold_plan=gold_plan, mode=mode, parallel=parallel,
+        gold_plan=gold_plan, mode=mode, parallel=parallel, nested=nested,
     ))
 
 

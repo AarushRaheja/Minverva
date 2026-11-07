@@ -1,0 +1,47 @@
+{
+  "run_id": "unit-repair-development-v1",
+  "role": "Development diagnostic on reused sources and briefs; not a prospective accuracy estimate",
+  "initial_source_run": "pilot-baseline-v2",
+  "comparison_failed_cases_run": "repair-regression-v6",
+  "candidates": [
+    "A0/operations_01",
+    "A0/configuration_02",
+    "A1/learning_01",
+    "A1/planning_02",
+    "A1/forms_03"
+  ],
+  "max_revisions": 2,
+  "seed": 42,
+  "repair_strategy": "units",
+  "repair_decoding": "greedy",
+  "hypothesis": "Exact TypeScript source units plus measured localization hints improve focused repair and preserve unrelated implementation.",
+  "changes": [
+    "AST-bound UTF-8 source edits with constrained IDs and source checksum",
+    "Static hints linking failed test targets and simple accessibility selectors to source units",
+    "Full required workflows remain authoritative",
+    "Recover matching base-source measurements after invalid patches"
+  ],
+  "unchanged": [
+    "Pinned 4B checkpoints",
+    "Initial source and complete browser tests",
+    "Measured Critic gate",
+    "No training; no human beauty claim"
+  ],
+  "primary_measure": "Complete functional audit plus valid measured accept, with all unsuccessful attempts retained",
+  "next_step_rule": "Require all three known failures fixed and both passing controls retained before broader development testing. Do not consume unused briefs based on a partial diagnostic success.",
+  "source_sha256": {
+    "src/frontendslm/inference.py": "f31f841a4d0ac82f15457bed555b4e0229e0270a2dfb0cf4acc712f0190dde5b",
+    "src/frontendslm/repair.py": "572cf01993de53d19ee6b1d6355dfde5606386ef70346fdd273e0d12c3537c4d",
+    "src/frontendslm/evidence.py": "a1c5cb7d044fe1889bd194f198b7dcdedba3a9b26be3d315879ed7c3325473c1",
+    "src/frontendslm/prompts.py": "df10ae14c393e8ccf5ce1765ca6022bf7d17f1062296d41d9b36c7014781a88c",
+    "scripts/run_reliability.py": "6b721ab3d42aace670c979418639948497f63100aa06d533276ba913f89c1972",
+    "audit/source_units.py": "9e17a9423aff844d916c4371f530f8f3b2e71ecad9e7635245afcd759bdc140f",
+    "audit/source-units.cjs": "3dce2f6d4918de4c3dd81798faa78b2153539c82250f0d30dc1a20d53c12e1a6",
+    "audit/evaluate.mjs": "cb189b70efd8abab5bf8e2f1a252ee4d38db14f261d4465d7182b8e851dc9c03",
+    "audit/cases.py": "46507388363adf2601ed355258c04297dac0c84a2a5cd06d929396f63f557b73",
+    "audit/scoring.py": "ad45e13327585bdfbd018b39e183789635d0a293d68d9e3847babffac115f5ca",
+    "sandbox/package-lock.json": "1d05e0638fe0bb27bf41ecc81e6ffbd1e565d147d7b864c32401c165e7dcf58f",
+    "configs/models.lock.json": "56e2090a4034143aa732ed9de522aeb5bd2fee6811f67df3ec4b52ad41a568ca"
+  },
+  "research_reference": "https://github.com/OpenAutoCoder/Agentless"
+}

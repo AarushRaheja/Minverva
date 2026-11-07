@@ -1,0 +1,43 @@
+{
+  "purpose": "Prospective evaluation declared before observing UI generations for the next ten benchmark briefs",
+  "intent_run": "prospective-intents-v1",
+  "run_id": "prospective-reliability-v1",
+  "selection": {
+    "offset": 10,
+    "count": 10,
+    "baselines": [
+      "A1"
+    ]
+  },
+  "max_revisions": 3,
+  "repair_strategy": "component",
+  "composition_example": false,
+  "acceptance": "Complete functional audit plus valid measured critique with effective accept",
+  "target_pass_rate": 0.95,
+  "visual_scores": "Separate uncalibrated model estimates; no human preference claimed",
+  "training_performed": false,
+  "source_sha256": {
+    "src/frontendslm/repair.py": "b6c48a40c4a29d09a2380f46f4414560271fb89ede509fd46e5df86d51ba6cd9",
+    "src/frontendslm/generation.py": "cfa5ea399ca5e004c89d8c9fe60a666d71b0aa5c7bccba1c0132138d998b2adb",
+    "src/frontendslm/references.py": "4f24a662f95381ce3941de520b7211c722b869873e2ddb3505cd12ff2561e2f3",
+    "src/frontendslm/io.py": "a3ad53e55c9f41620283d79f5557d9ca2a03e05e83f59229227f1a29b1c1d04a",
+    "src/frontendslm/__init__.py": "b0255ab82d951d1e017611a9efed5d62b2d48258ee2a3f0e08cd2acf8566ac22",
+    "src/frontendslm/prompts.py": "df10ae14c393e8ccf5ce1765ca6022bf7d17f1062296d41d9b36c7014781a88c",
+    "src/frontendslm/schemas.py": "f3f5e4fe3e969fed539eddcb0fba189a5211927eba7c8a2071d6c3a37c611db0",
+    "src/frontendslm/inference.py": "3d88eed72a3c15dc6ad03c9aa1a00f54d39389b82fb3928ada10f806bac721d6",
+    "src/frontendslm/evidence.py": "a1c5cb7d044fe1889bd194f198b7dcdedba3a9b26be3d315879ed7c3325473c1",
+    "src/frontendslm/report.py": "3643e337d919e64d621e8a6bfe07021f1d25135211d6c0c4ae69f0cdbf9d01d1",
+    "audit/scoring.py": "ad45e13327585bdfbd018b39e183789635d0a293d68d9e3847babffac115f5ca",
+    "audit/cases.py": "46507388363adf2601ed355258c04297dac0c84a2a5cd06d929396f63f557b73",
+    "audit/evaluate.mjs": "cb189b70efd8abab5bf8e2f1a252ee4d38db14f261d4465d7182b8e851dc9c03",
+    "design/__init__.py": "465fd7180fe898abc79f90b534ee5e8d20fb7db9c2117311539c0ebc259b2be5",
+    "design/modal_app.py": "4f0758c191a9a3a0b722c57e9dc07a4b15c1c35b4d4b0f0ce0404325c09b503f",
+    "design/contracts.py": "24ba2e4223685f707f20c648a8d6f279b3360d7a28c0b15a840f966adf6430f4",
+    "design/inference.py": "a7eb1ae4f79ff1ee8c287debc1c6f8874be56203cedd16a88782e9315113a38b",
+    "design/rubric.json": "ca815780773fa9c5780bfadcb06389ab04701b8d87da42facafcc8f0f888516c",
+    "design/preferences.json": "7da9f0a1b8ae16b78fcd2f1dde021eb53503ad2079d35e49d66865ab62854f4b",
+    "modal_app.py": "5fee55593bb1319d4e86444fe94fd51f37f5c6aa25410206f05273e0420af211",
+    "scripts/run_reliability.py": "f175a6fc6d2913690cb02b2f75a2452af289d252422fc42fa8a2f7d691b6fc7e",
+    "scripts/run_design_evaluation.py": "5175e880caf4340af0d1ace14e829128922c988ab646cd2b6e3ae62350bf1f75"
+  }
+}

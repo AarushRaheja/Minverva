@@ -1,0 +1,223 @@
+{
+  "run_id": "unit-repair-development-v2",
+  "comparison_run": "unit-repair-development-v1",
+  "first_attempt_accepted": 2,
+  "final_accepted": 3,
+  "total": 5,
+  "known_failures_repaired": 1,
+  "known_failures": 3,
+  "passing_controls_retained": 2,
+  "repair_attempts": [
+    {
+      "candidate": "A0/operations_01",
+      "round": 1,
+      "protocol": "source-unit-patch-v7.1",
+      "error": null,
+      "source_manifest_valid": true,
+      "build_executed": true,
+      "build_pass": true,
+      "accepted": true,
+      "tokens": 319,
+      "seconds": 13.603576281000002
+    },
+    {
+      "candidate": "A0/configuration_02",
+      "round": 1,
+      "protocol": "source-unit-patch-v7.1",
+      "error": "No-op source unit edit",
+      "source_manifest_valid": false,
+      "build_executed": false,
+      "build_pass": false,
+      "accepted": false,
+      "tokens": 269,
+      "seconds": 9.796976181999998
+    },
+    {
+      "candidate": "A1/learning_01",
+      "round": 1,
+      "protocol": "source-unit-patch-v7.1",
+      "error": "No-op source unit edit",
+      "source_manifest_valid": false,
+      "build_executed": false,
+      "build_pass": false,
+      "accepted": false,
+      "tokens": 383,
+      "seconds": 14.310874872999996
+    },
+    {
+      "candidate": "A0/configuration_02",
+      "round": 2,
+      "protocol": "source-unit-patch-v7.1",
+      "error": "No-op source unit edit",
+      "source_manifest_valid": false,
+      "build_executed": false,
+      "build_pass": false,
+      "accepted": false,
+      "tokens": 278,
+      "seconds": 12.344006566000001
+    },
+    {
+      "candidate": "A1/learning_01",
+      "round": 2,
+      "protocol": "source-unit-patch-v7.1",
+      "error": "No-op source unit edit",
+      "source_manifest_valid": false,
+      "build_executed": false,
+      "build_pass": false,
+      "accepted": false,
+      "tokens": 375,
+      "seconds": 14.366267581000002
+    }
+  ],
+  "source_manifest_valid": 1,
+  "new_builds_executed": 1,
+  "new_builds_passed": 1,
+  "critic_calls": 6,
+  "critic_schema_valid": 6,
+  "critic_measured_valid": 6,
+  "failed_audit_effective_accepts": 0,
+  "next_step_gate_passed": false,
+  "training_performed": false,
+  "app": {
+    "app_id": "ap-KyqdVa4XHC4q7v1NOXgJi6",
+    "state": "stopped",
+    "tasks": 0,
+    "created_at": "2026-11-07T15:10:10+00:00",
+    "stopped_at": "2026-11-07T15:22:59+00:00"
+  },
+  "candidates": [
+    {
+      "candidate": "A0/operations_01",
+      "round": 1,
+      "audit": {
+        "build_pass": true,
+        "complete_render": true,
+        "interaction_pass": true,
+        "no_overflow": true,
+        "no_serious_a11y": true,
+        "no_runtime_failures": true,
+        "nonempty": true,
+        "release_eligible": true,
+        "intermediate_states": 10,
+        "complete_state_measurements": true,
+        "state_accessibility_pass": true,
+        "state_overflow_pass": true,
+        "no_console_errors": true,
+        "audit_pass": true
+      },
+      "critic_valid": true,
+      "effective_verdict": "accept",
+      "accepted": true,
+      "artifact_path": "round-1/A0/operations_01"
+    },
+    {
+      "candidate": "A0/configuration_02",
+      "round": 2,
+      "audit": {
+        "build_pass": false,
+        "complete_render": false,
+        "interaction_pass": false,
+        "no_overflow": false,
+        "no_serious_a11y": false,
+        "release_eligible": false,
+        "intermediate_states": 0,
+        "complete_state_measurements": false,
+        "state_accessibility_pass": false,
+        "state_overflow_pass": false,
+        "no_console_errors": true,
+        "audit_pass": false
+      },
+      "critic_valid": false,
+      "effective_verdict": null,
+      "accepted": false,
+      "artifact_path": "round-2/A0/configuration_02"
+    },
+    {
+      "candidate": "A1/planning_02",
+      "round": 0,
+      "audit": {
+        "build_pass": true,
+        "complete_render": true,
+        "interaction_pass": true,
+        "no_overflow": true,
+        "no_serious_a11y": true,
+        "no_runtime_failures": true,
+        "nonempty": true,
+        "release_eligible": true,
+        "intermediate_states": 8,
+        "complete_state_measurements": true,
+        "state_accessibility_pass": true,
+        "state_overflow_pass": true,
+        "no_console_errors": true,
+        "audit_pass": true
+      },
+      "critic_valid": true,
+      "effective_verdict": "accept",
+      "accepted": true,
+      "artifact_path": "round-0/A1/planning_02"
+    },
+    {
+      "candidate": "A1/forms_03",
+      "round": 0,
+      "audit": {
+        "build_pass": true,
+        "complete_render": true,
+        "interaction_pass": true,
+        "no_overflow": true,
+        "no_serious_a11y": true,
+        "no_runtime_failures": true,
+        "nonempty": true,
+        "release_eligible": true,
+        "intermediate_states": 16,
+        "complete_state_measurements": true,
+        "state_accessibility_pass": true,
+        "state_overflow_pass": true,
+        "no_console_errors": true,
+        "audit_pass": true
+      },
+      "critic_valid": true,
+      "effective_verdict": "accept",
+      "accepted": true,
+      "artifact_path": "round-0/A1/forms_03"
+    },
+    {
+      "candidate": "A1/learning_01",
+      "round": 2,
+      "audit": {
+        "build_pass": false,
+        "complete_render": false,
+        "interaction_pass": false,
+        "no_overflow": false,
+        "no_serious_a11y": false,
+        "release_eligible": false,
+        "intermediate_states": 0,
+        "complete_state_measurements": false,
+        "state_accessibility_pass": false,
+        "state_overflow_pass": false,
+        "no_console_errors": true,
+        "audit_pass": false
+      },
+      "critic_valid": false,
+      "effective_verdict": null,
+      "accepted": false,
+      "artifact_path": "round-2/A1/learning_01"
+    }
+  ],
+  "limitations": [
+    "Repeated development cases, not an independent accuracy estimate",
+    "No human visual ratings for these model outputs",
+    "Schema enforcement does not prove learned critic detection",
+    "One successful structured repair is insufficient to expand the evaluation"
+  ],
+  "post_experiment_changes": {
+    "pipeline_version": "7.2",
+    "changes": [
+      "Skip GPU critic initialization when a round has no measurement files",
+      "Include exact node ID and kind in no-op rejection feedback",
+      "Report packet omits nonexistent evidence and critic links"
+    ],
+    "modal_rerun_performed": false,
+    "local_tests_passed": 45,
+    "ruff": "pass"
+  }
+}

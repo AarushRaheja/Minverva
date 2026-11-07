@@ -23,6 +23,9 @@ from slm.trace import Tracer
 T = TypeVar("T", bound=BaseModel)
 
 RETRY_STATUS = {502, 503, 504}  # server (re)starting or scaled to zero
+# Output budget for one specialist artifact: the same 768 tokens the trainer gates with
+# (modal_apps/train_app.py, _eval_gate). Gold artifacts are at most ~450 tokens.
+SPECIALIST_MAX_TOKENS = 768
 RETRYABLE_EXC = (httpx.ConnectError, httpx.ReadTimeout, httpx.ConnectTimeout, httpx.RemoteProtocolError, httpx.ReadError)
 
 
@@ -53,7 +56,7 @@ class VLLMLoRAClient(LLMClient):
         tracer: Tracer | None = None,
         base_url: str | None = None,
         *,
-        max_tokens: int = 128,
+        max_tokens: int = SPECIALIST_MAX_TOKENS,
         request_timeout_s: float = 120.0,
         cold_start_timeout_s: float = 600.0,  # total budget for 503/connection retries
         transport: httpx.BaseTransport | None = None,

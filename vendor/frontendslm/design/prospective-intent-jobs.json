@@ -1,0 +1,512 @@
+[
+  {
+    "id": "operations_02",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "operations_02",
+      "application_type": "operations",
+      "user_goal": "Build a polished single-page greenhouse sensor monitoring interface. Provide a Search input (search) and two separate items named Atlas (item-atlas) and Beacon (item-beacon). Search must filter items case-insensitively; clearing restores both. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "low",
+        "descriptors": "warm, editorial, tactile",
+        "theme": "light"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "filter",
+          "action": "Provide a Search input (search) and two separate items named Atlas (item-atlas) and Beacon (item-beacon). Search must filter items case-insensitively; clearing restores both.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    }
+  },
+  {
+    "id": "planning_03",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "planning_03",
+      "application_type": "planning",
+      "user_goal": "Build a polished single-page weekly study planner interface. Provide a task called Prepare materials, a toggle control (task-toggle), and a text status (task-status), initially Pending. Activating the control changes it to Completed; activating again restores Pending. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "medium",
+        "descriptors": "playful, geometric, colorful",
+        "theme": "light"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "toggle",
+          "action": "Provide a task called Prepare materials, a toggle control (task-toggle), and a text status (task-status), initially Pending. Activating the control changes it to Completed; activating again restores Pending.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    }
+  },
+  {
+    "id": "forms_04",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "forms_04",
+      "application_type": "forms",
+      "user_goal": "Build a polished single-page observatory visit booking interface. Provide a labeled Name input (name), Email input (email), submit control (submit), and status (form-status). An empty submission must visibly say Required. After filling a name and valid email, submission must say Confirmed. Implement local validation with noValidate so an empty submission reaches the handler. Label it a demo, not a real booking. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "low",
+        "descriptors": "quiet, typographic, minimal",
+        "theme": "light"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "form",
+          "action": "Provide a labeled Name input (name), Email input (email), submit control (submit), and status (form-status). An empty submission must visibly say Required. After filling a name and valid email, submission must say Confirmed. Implement local validation with noValidate so an empty submission reaches the handler. Label it a demo, not a real booking.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    }
+  },
+  {
+    "id": "analytics_05",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "analytics_05",
+      "application_type": "analytics",
+      "user_goal": "Build a polished single-page cooperative grocery sales interface. Provide Overview and Details tabs (tab-overview, tab-details) and one panel (tab-panel). It initially includes Summary; choosing Details shows Breakdown; returning to Overview shows Summary. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "high",
+        "descriptors": "professional, high contrast, data focused",
+        "theme": "dark"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "tabs",
+          "action": "Provide Overview and Details tabs (tab-overview, tab-details) and one panel (tab-panel). It initially includes Summary; choosing Details shows Breakdown; returning to Overview shows Summary.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    }
+  },
+  {
+    "id": "catalog_01",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "catalog_01",
+      "application_type": "catalog",
+      "user_goal": "Build a polished single-page independent bookstore catalog interface. Provide a fictional item with Add (add-item), Remove (remove-item), and cart count (cart-count). Count starts at 0, increments on Add, and decrements on Remove without becoming negative. No payment integration. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "medium",
+        "descriptors": "precise, technical, restrained",
+        "theme": "dark"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "cart",
+          "action": "Provide a fictional item with Add (add-item), Remove (remove-item), and cart count (cart-count). Count starts at 0, increments on Add, and decrements on Remove without becoming negative. No payment integration.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    }
+  },
+  {
+    "id": "learning_02",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "learning_02",
+      "application_type": "learning",
+      "user_goal": "Build a polished single-page public transit rider help interface. Provide an expandable Getting started control (faq-toggle) and answer (faq-answer). The answer is initially hidden, then visible after activation, then hidden after a second activation. Use aria-expanded. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "low",
+        "descriptors": "warm, editorial, tactile",
+        "theme": "light"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "accordion",
+          "action": "Provide an expandable Getting started control (faq-toggle) and answer (faq-answer). The answer is initially hidden, then visible after activation, then hidden after a second activation. Use aria-expanded.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    }
+  },
+  {
+    "id": "configuration_03",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "configuration_03",
+      "application_type": "configuration",
+      "user_goal": "Build a polished single-page meal prep portion calculator interface. Provide quantity controls plus (quantity-plus), minus (quantity-minus), and quantity text (quantity). Quantity starts at 1, increases to 2, decreases to 1 and cannot go below 1. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "medium",
+        "descriptors": "playful, geometric, colorful",
+        "theme": "light"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "stepper",
+          "action": "Provide quantity controls plus (quantity-plus), minus (quantity-minus), and quantity text (quantity). Quantity starts at 1, increases to 2, decreases to 1 and cannot go below 1.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    }
+  },
+  {
+    "id": "editorial_04",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "editorial_04",
+      "application_type": "editorial",
+      "user_goal": "Build a polished single-page type design portfolio interface. Provide a reader appearance toggle (theme-toggle) and visible theme label (theme-label), initially Day. Activation switches the palette and label to Night; activating again restores Day. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "low",
+        "descriptors": "quiet, typographic, minimal",
+        "theme": "light"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "theme",
+          "action": "Provide a reader appearance toggle (theme-toggle) and visible theme label (theme-label), initially Day. Activation switches the palette and label to Night; activating again restores Day.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    }
+  },
+  {
+    "id": "directories_05",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "directories_05",
+      "application_type": "directories",
+      "user_goal": "Build a polished single-page student project showcase interface. Include entries Atlas and Beacon with numeric values 10 and 20. Provide a native sort select (sort) with values asc and desc, and ordered entries using data-testid=directory-item. Default ascending shows Atlas first; desc shows Beacon first. Include search (search) filtering the entries; searching Atlas leaves one entry. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "high",
+        "descriptors": "professional, high contrast, data focused",
+        "theme": "dark"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "sort",
+          "action": "Include entries Atlas and Beacon with numeric values 10 and 20. Provide a native sort select (sort) with values asc and desc, and ordered entries using data-testid=directory-item. Default ascending shows Atlas first; desc shows Beacon first. Include search (search) filtering the entries; searching Atlas leaves one entry.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    }
+  },
+  {
+    "id": "collaboration_01",
+    "brief": {
+      "schema_version": "1.0",
+      "project_id": "collaboration_01",
+      "application_type": "collaboration",
+      "user_goal": "Build a polished single-page community meeting agenda interface. Provide a New note control (open-dialog) that opens an accessible dialog (note-dialog), a textarea (note-input), Save (save-note), and saved note region (saved-note). Save closes the dialog and shows the submitted note. The dialog should also close with Escape and restore focus. Parentheses specify required data-testid values.",
+      "audience": [
+        "people using this service on desktop and mobile"
+      ],
+      "style": {
+        "density": "medium",
+        "descriptors": "precise, technical, restrained",
+        "theme": "dark"
+      },
+      "sections": [
+        "identity and navigation",
+        "primary content",
+        "key interaction",
+        "supporting context"
+      ],
+      "interactions": [
+        {
+          "id": "dialog",
+          "action": "Provide a New note control (open-dialog) that opens an accessible dialog (note-dialog), a textarea (note-input), Save (save-note), and saved note region (saved-note). Save closes the dialog and shows the submitted note. The dialog should also close with Escape and restore focus.",
+          "expected": "All specified state transitions work using local demonstration data."
+        }
+      ],
+      "acceptance_criteria": [
+        "Required interaction test passes",
+        "Usable at 1440px and 390px",
+        "No horizontal overflow at 320, 390, 768, 1440, or 1920px",
+        "Keyboard-accessible controls",
+        "No serious or critical automated accessibility violations"
+      ],
+      "constraints": {
+        "accessibility_target": "WCAG 2.2 AA",
+        "data": "local demonstration only",
+        "framework": "react",
+        "language": "typescript",
+        "responsive": true,
+        "styling": "tailwind"
+      },
+      "unspecified_requirements": [
+        "authentication",
+        "backend integrations",
+        "payments",
+        "real-time data"
+      ]
+    }
+  }
+]

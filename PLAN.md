@@ -36,11 +36,16 @@ brief ─► manager (Qwen3-1.7B + LoRA) ─► ProjectPlan
 
 ### Benchmark items
 
-Our own generator (`slm/bench/`) produces project briefs from ten templates (eight train, two
-held out): entities, an OAuth yes/no, and a fixed set of requirements — tables, session auth, REST
-per entity, one typed client, a page per entity, one form, an app shell. Every brief ships with a
-gold plan and a gold artifact per task, so a perfect run and a perfect score are both well defined
-and the integration checks are exercised by construction.
+Our own generator (`slm/bench/variety.py`) produces distinct one-line briefs from 48 app concepts
+(30 train, 8 dev, 10 test) with one to four entities and optional OAuth. Train, dev and test share no
+concepts or entity names, and test also uses phrasings train never saw. Each brief names its entities,
+its form entity and any OAuth requirement, and ships with a gold plan and a gold artifact per task, so
+a perfect run and a perfect score are both well defined and the integration checks are exercised by
+construction.
+
+The nested manager output (`slm/manager/spec.py`) adds groups, steps and tests at each level on top of
+`ProjectPlan`. `to_plan` compiles it to the same plan the dispatcher already runs, so specialist prompts
+do not change. A teacher model may reword its prose only (`slm/manager/enrich.py`).
 
 ### Arms
 

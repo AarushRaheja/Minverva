@@ -1,0 +1,30 @@
+{
+  "run_id": "repair-sampling-v1",
+  "purpose": "Development comparison: does recommended sampling improve component repair over greedy decoding?",
+  "comparison_run": "repair-regression-v6",
+  "initial_source_run": "pilot-baseline-v2",
+  "candidates": [
+    "A0/configuration_02",
+    "A0/operations_01",
+    "A1/learning_01"
+  ],
+  "max_revisions": 1,
+  "seed": 42,
+  "repair_strategy": "component",
+  "changed_variable": "Repair decoding: sample with temperature 0.7, top_p 0.8, top_k 20 and min_p 0, instead of greedy.",
+  "unchanged": "Source, repair messages, full browser tests, critic protocol, 6144 output-token cap, repetition_penalty=1.05. No training.",
+  "primary_measure": "Full audit and valid measured-critic acceptance after one repair; retain all failures.",
+  "next_step_rule": "Do not run fresh held-out briefs unless development evidence supports improvement. A three-case result alone cannot prove high reliability.",
+  "source_sha256": {
+    "src/frontendslm/inference.py": "1b55527ba1a4d4e7717f7acba0308d82336671ed8ad66f3b04ddc5cd89187f7f",
+    "src/frontendslm/repair.py": "b6c48a40c4a29d09a2380f46f4414560271fb89ede509fd46e5df86d51ba6cd9",
+    "src/frontendslm/prompts.py": "df10ae14c393e8ccf5ce1765ca6022bf7d17f1062296d41d9b36c7014781a88c",
+    "src/frontendslm/evidence.py": "a1c5cb7d044fe1889bd194f198b7dcdedba3a9b26be3d315879ed7c3325473c1",
+    "scripts/run_reliability.py": "db9f8d2c40ed9a0afa3f3d06b222c31fb5ab9844f723906acbb3ccd537908a6b",
+    "audit/evaluate.mjs": "cb189b70efd8abab5bf8e2f1a252ee4d38db14f261d4465d7182b8e851dc9c03",
+    "audit/cases.py": "46507388363adf2601ed355258c04297dac0c84a2a5cd06d929396f63f557b73",
+    "audit/scoring.py": "ad45e13327585bdfbd018b39e183789635d0a293d68d9e3847babffac115f5ca",
+    "configs/models.lock.json": "56e2090a4034143aa732ed9de522aeb5bd2fee6811f67df3ec4b52ad41a568ca"
+  },
+  "reference": "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507#best-practices"
+}

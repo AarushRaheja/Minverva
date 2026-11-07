@@ -267,15 +267,26 @@ def app_files(plan: ProjectPlan) -> list[ArtifactFile]:
         files.append(ArtifactFile(
             path="src/database/db.py",
             content=(
-                "import asyncpg\n\n"
-                'DSN = "postgresql://localhost/app"\n'
-                "db = asyncpg.create_pool(DSN)\n\n\n"
-                "async def fetch(sql: str, *args):\n"
-                "    pool = await db\n"
-                "    return await pool.fetch(sql, *args)\n\n\n"
-                "async def fetchrow(sql: str, *args):\n"
-                "    pool = await db\n"
-                "    return await pool.fetchrow(sql, *args)\n"
+                "import asyncio\nimport os\n\nimport asyncpg\n\n"
+                'DSN = os.environ.get("DATABASE_URL", "postgresql://localhost/app")\n\n\n'
+                "class Database:\n"
+                '    """Connects on first use, because a pool has to be created inside a running event loop."""\n\n'
+                "    def __init__(self):\n"
+                "        self._pool = None\n"
+                "        self._lock = asyncio.Lock()\n\n"
+                "    async def _connected(self):\n"
+                "        async with self._lock:\n"
+                "            if self._pool is None:\n"
+                "                self._pool = await asyncpg.create_pool(DSN)\n"
+                "        return self._pool\n\n"
+                "    async def fetch(self, sql: str, *args) -> list[dict]:\n"
+                "        pool = await self._connected()\n"
+                "        return [dict(row) for row in await pool.fetch(sql, *args)]\n\n"
+                "    async def fetchrow(self, sql: str, *args) -> dict | None:\n"
+                "        pool = await self._connected()\n"
+                "        row = await pool.fetchrow(sql, *args)\n"
+                "        return dict(row) if row else None\n\n\n"
+                "db = Database()\n"
             ),
         ))
     by_domain: dict[str, list[str]] = {}
@@ -291,8 +302,12 @@ def app_files(plan: ProjectPlan) -> list[ArtifactFile]:
 _IMPORT = re.compile(r"^from (src[\w.]*) import", re.MULTILINE)
 
 
-def integrate(project_id: str, plan: ProjectPlan, artifacts: dict[str, Artifact]) -> Deliverable:
-    """Merge the four specialists' artifacts, add glue, and check the seams between domains."""
+def integrate(project_id: str, plan: ProjectPlan, artifacts: dict[str, Artifact], *,
+              host_kinds: frozenset[str] = frozenset()) -> Deliverable:
+    """Merge the four specialists' artifacts, add glue, and check the seams between domains.
+
+    Tasks of `host_kinds` are delivered by something other than a specialist (Minerva's frontend agent and integrator),
+    so they are not expected here. They stay in the plan, because other tasks read the plan's routes and symbols."""
     files: dict[str, str] = {}
     conflicts: set[str] = set()
     wiring: list[str] = []
@@ -307,13 +322,14 @@ def integrate(project_id: str, plan: ProjectPlan, artifacts: dict[str, Artifact]
 
     checks: list[Check] = []
 
-    missing = [t.id for t in plan.tasks if not artifacts.get(t.id) or not artifacts[t.id].files]
+    missing = [t.id for t in plan.tasks if t.kind not in host_kinds
+               and (not artifacts.get(t.id) or not artifacts[t.id].files)]
     checks.append(Check(name="all_tasks_delivered", ok=not missing, detail=", ".join(missing)))
     checks.append(Check(name="no_path_conflicts", ok=not conflicts, detail=", ".join(sorted(conflicts))))
 
     for t in plan.tasks:
         art = artifacts.get(t.id)
-        if art is not None:
+        if art is not None and t.kind not in host_kinds:
             checks.extend(check_task(plan, t, art))
 
     providers = plan.providers()

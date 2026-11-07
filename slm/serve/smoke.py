@@ -27,16 +27,6 @@ from slm.trace import Tracer
 PLAN = build_plan(TRAIN_TEMPLATES[0])
 
 
-class Tolerant(VLLMLoRAClient):
-    """Untrained adapters emit garbage; count a failed artifact as an empty one so timing completes."""
-
-    async def acomplete(self, system, user, schema, **kw):
-        try:
-            return await super().acomplete(system, user, schema, **kw)
-        except SchemaValidationFailed:
-            return Artifact.model_validate({"files": [], "summary": "invalid"})
-
-
 def _clients(url: str, tracer: Tracer) -> dict:
     c = VLLMLoRAClient(BASE_MODEL, tracer=tracer, base_url=url, cold_start_timeout_s=900)
     return {d: c for d in DOMAINS}  # one client per domain; for_model() addresses the adapter
@@ -52,6 +42,7 @@ async def _timed_dispatch(url: str, parallel: bool) -> dict:
     return {
         "wall_s": round(wall, 3),
         "calls": sum(1 for e in events if e.kind == "llm"),
+        "retries": sum(1 for e in events if e.kind == "llm" and e.attempt > 1),  # inflate wall_s
         "tasks_ok": sum(1 for e in events if e.kind == "task" and e.ok),
         "tasks_total": sum(1 for e in events if e.kind == "task"),
         "checks_failed": result.failures,
@@ -60,11 +51,14 @@ async def _timed_dispatch(url: str, parallel: bool) -> dict:
 
 async def _run(url: str) -> dict:
     client = VLLMLoRAClient(BASE_MODEL, base_url=url, cold_start_timeout_s=900)
+    trace_dir = Path(tempfile.mkdtemp())
     out: dict = {}
-    out["cold_first_call_s"] = round(await _one(client, "manager"), 2)
-    for d in DOMAINS:
-        warm = [await _one(client, d) for _ in range(4)]
+    for d in DOMAINS:  # first touch loads the adapter (and, for the first domain, wakes the server)
+        out[f"first_{d}_s"] = round(await _one(client, d, trace_dir), 3)
+        warm = [await _one(client, d, trace_dir) for _ in range(4)]
         out[f"warm_{d}_s"] = round(statistics.median(warm), 3)
+    # all four adapters are loaded now; the first one is still warm unless the server evicted it
+    out[f"rewarm_{DOMAINS[0]}_s"] = round(await _one(client, DOMAINS[0], trace_dir), 3)
     out["parallel"] = await _timed_dispatch(url, True)
     out["serial"] = await _timed_dispatch(url, False)
     p, s = out["parallel"]["wall_s"], out["serial"]["wall_s"]
@@ -72,18 +66,20 @@ async def _run(url: str) -> dict:
     return out
 
 
-async def _one(client: VLLMLoRAClient, domain: str) -> float:
-    """One warm-ish specialist call for `domain` (the adapter loads on first touch)."""
+async def _one(client: VLLMLoRAClient, domain: str, trace_dir: Path) -> float:
+    """Seconds for one request to `domain`'s adapter: the first attempt only, so a validation retry
+    on an untrained adapter does not double the number."""
     from slm.contracts import specialist_prompt, specialist_system
 
     task = next(t for t in PLAN.tasks if t.domain == domain)
-    t = time.perf_counter()
+    sibling = client.for_model(task.adapter_name)
+    sibling.tracer = Tracer(trace_dir=trace_dir)
     try:
-        await client.for_model(task.adapter_name).acomplete(
-            specialist_system(task.domain), specialist_prompt(PLAN, task), Artifact)
+        await sibling.acomplete(specialist_system(task.domain), specialist_prompt(PLAN, task), Artifact)
     except SchemaValidationFailed:
         pass  # an untrained adapter still proves the latency
-    return time.perf_counter() - t
+    first = next(e for e in sibling.tracer.events() if e.kind == "llm" and e.attempt == 1)
+    return first.latency_ms / 1000
 
 
 def run_smoke(url: str) -> dict:
