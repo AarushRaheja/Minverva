@@ -1,0 +1,11 @@
+# Level 1 of the evidence ladder. Until the custom agent can pass this, a larger comparison can't say much about it.
+[experiment]
+backend = "modal"
+id = "functional-gate"
+purpose = "Can the custom agent build one working project, in three independent attempts per project?"
+regime = "A: same weights, same briefs; custom architecture against a conventional loop"
+agents = ["slm-mgr-G4-promptfix", "tool-loop-qwen"]
+split = "dev"
+families = ["project_build"]
+repeats = 3
+budget = "project"

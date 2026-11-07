@@ -1,0 +1,25 @@
+# Experimental tiers, not requirements of any benchmark.
+[low]
+max_steps = 25
+wall_time_seconds = 300
+max_cost_usd = 1.0
+
+[medium]
+max_steps = 50
+wall_time_seconds = 900
+max_cost_usd = 3.0
+
+[high]
+max_steps = 100
+wall_time_seconds = 1800
+max_cost_usd = 6.0
+
+# The custom agent's arm takes about 13 minutes per project, so project builds need more than the code-edit tiers.
+[project]
+max_steps = 100
+wall_time_seconds = 2400
+max_cost_usd = 6.0
+
+[control]
+max_steps = 1
+wall_time_seconds = 60

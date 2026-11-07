@@ -1,0 +1,15 @@
+agent_id = "slm-mono"
+adapter = "slm"
+arm = "mono"
+agent_architecture = "one model writes the whole project in one call, no manager or specialists"
+model_id = "qwen3.5:4b"
+checkpoint_hash = "d8b0f5e9760cd168"
+seed_honored = true
+known_limits = []
+
+[execution]
+network_access = false
+allowed_tools = []
+
+[cost]
+amortized_usd_per_hour = 0.12  # ASSUMPTION: see tool-loop-qwen.toml

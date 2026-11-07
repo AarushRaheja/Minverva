@@ -1,0 +1,11 @@
+# Decision rules, written before the final results exist. PROPOSED defaults from the plan: change them only before
+# the final run, and keep the file in git so any change is visible.
+primary_outcome = "Resolved@1"
+primary_comparison = ["slm-mgr-G4-promptfix", "tool-loop-qwen"]
+alpha = 0.05
+power = 0.80
+min_resolve_gain_pp = 5
+min_cost_reduction_pct = 20
+min_median_time_reduction_pct = 25
+bootstrap_samples = 10000
+multiple_comparisons = "Holm across ablation contrasts; subgroups are labelled exploratory"

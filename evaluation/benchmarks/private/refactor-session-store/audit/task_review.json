@@ -1,0 +1,16 @@
+{
+ "ok": true,
+ "problems": [],
+ "revision": "b0f7c2adaee04e61",
+ "fail_to_pass": [
+  "private::test_private_store.TestStore.test_clear_and_revoke",
+  "private::test_private_store.TestStore.test_instances_are_separate",
+  "private::test_private_store.TestStore.test_module_functions_use_one_default_store"
+ ],
+ "pass_to_pass": [
+  "public::test_public_sessions.TestSessions.test_round_trip"
+ ],
+ "reference_runs": 3,
+ "independently_reviewed": false,
+ "author": "claude-code-seed"
+}

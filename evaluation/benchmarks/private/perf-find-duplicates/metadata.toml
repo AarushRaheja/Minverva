@@ -1,0 +1,10 @@
+id = "perf-find-duplicates"
+split = "dev"
+author = "claude-code-seed"
+independently_reviewed = false
+task_class = "performance"
+capability = "efficiency"
+difficulty = "medium"
+group = "dedupe"
+allowed_paths = ["dedupe"]
+target_paths = ["dedupe/core.py"]

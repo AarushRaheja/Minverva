@@ -1,0 +1,11 @@
+# Run once, at the end, after everything else is frozen. Needs --final.
+[experiment]
+backend = "modal"
+id = "final-heldout"
+purpose = "Independent validation on projects never used for selection"
+regime = "A and C"
+agents = ["slm-mgr-G4-promptfix", "tool-loop-qwen", "claude-code"]
+split = "test"
+families = ["project_build"]
+repeats = 3
+budget = "project"

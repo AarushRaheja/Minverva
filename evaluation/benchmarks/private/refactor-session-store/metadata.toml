@@ -1,0 +1,10 @@
+id = "refactor-session-store"
+split = "dev"
+author = "claude-code-seed"
+independently_reviewed = false
+task_class = "refactor"
+capability = "software_engineering"
+difficulty = "medium"
+group = "sessions"
+allowed_paths = ["auth"]
+target_paths = ["auth/sessions.py", "auth/store.py"]

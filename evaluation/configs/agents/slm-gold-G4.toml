@@ -1,0 +1,15 @@
+agent_id = "slm-gold-G4"
+adapter = "slm"
+arm = "gold-G4"
+agent_architecture = "4 specialists given the perfect plan: an upper bound on what better planning could add"
+model_id = "qwen3.5:4b"
+checkpoint_hash = "d8b0f5e9760cd168"
+seed_honored = true
+known_limits = []
+
+[execution]
+network_access = false
+allowed_tools = []
+
+[cost]
+amortized_usd_per_hour = 0.12  # ASSUMPTION: see tool-loop-qwen.toml

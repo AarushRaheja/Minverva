@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SLM Workbench</title>
+<style>
+:root {
+  --bg: #f6f6f3; --panel: #ffffff; --ink: #1b1d1f; --muted: #6a6f75; --line: #e3e3de;
+  --accent: #2f5bd3; --ok: #1f8a4c; --bad: #c43d33; --warn: #b07a12;
+  --db: #7c4dbd; --auth: #c0632a; --net: #1e7f9a; --fe: #3f8a2f; --mgr: #444a52;
+  --code-bg: #f3f3ef; --radius: 10px;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131416; --panel: #1b1d20; --ink: #e9eaec; --muted: #9aa0a6; --line: #2c2f33;
+    --accent: #7c9cff; --ok: #4cc27f; --bad: #ff7b70; --warn: #e2b04a;
+    --db: #b18cf0; --auth: #f09a5f; --net: #5cc3df; --fe: #87cf6b; --mgr: #b5bcc4; --code-bg: #15171a;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131416; --panel: #1b1d20; --ink: #e9eaec; --muted: #9aa0a6; --line: #2c2f33;
+  --accent: #7c9cff; --ok: #4cc27f; --bad: #ff7b70; --warn: #e2b04a;
+  --db: #b18cf0; --auth: #f09a5f; --net: #5cc3df; --fe: #87cf6b; --mgr: #b5bcc4; --code-bg: #15171a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif; }
+header { display: flex; align-items: baseline; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--line); }
+header h1 { font-size: 16px; margin: 0; }
+header span { color: var(--muted); font-size: 13px; }
+main { display: grid; grid-template-columns: 340px 1fr; gap: 16px; padding: 16px 20px; max-width: 1500px; margin: 0 auto; }
+@media (max-width: 900px) { main { grid-template-columns: 1fr; padding: 12px 16px; } }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; min-width: 0; }
+.panel h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 10px; }
+label { display: block; font-size: 12px; color: var(--muted); margin: 12px 0 4px; }
+input[type=text], select, textarea { width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: 7px;
+  background: var(--bg); color: var(--ink); font: inherit; }
+textarea { font-family: var(--mono); font-size: 12px; min-height: 150px; resize: vertical; }
+.backends { display: grid; gap: 6px; }
+.backend { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; cursor: pointer; display: flex; gap: 8px; }
+.backend.sel { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.backend.off { opacity: .5; cursor: not-allowed; }
+.backend b { display: block; font-size: 13px; }
+.backend small { color: var(--muted); font-size: 11.5px; word-break: break-word; }
+.row { display: flex; gap: 10px; align-items: center; }
+.row label { margin: 0; color: var(--ink); font-size: 13px; display: flex; gap: 6px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+.seg button { border: 0; background: transparent; color: var(--ink); padding: 6px 10px; font: inherit; cursor: pointer; }
+.seg button.sel { background: var(--accent); color: #fff; }
+.seg button:disabled { opacity: .45; cursor: not-allowed; }
+.run { margin-top: 14px; width: 100%; padding: 10px; border: 0; border-radius: 8px; background: var(--accent);
+  color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+.run:disabled { opacity: .6; cursor: progress; }
+.err { color: var(--bad); font-size: 12.5px; margin-top: 8px; white-space: pre-wrap; }
+.stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.stat { border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; min-width: 92px; }
+.stat small { display: block; color: var(--muted); font-size: 11px; }
+.stat b { font-size: 15px; font-variant-numeric: tabular-nums; }
+.pill { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+.pill.ok { background: color-mix(in srgb, var(--ok) 16%, transparent); color: var(--ok); }
+.pill.bad { background: color-mix(in srgb, var(--bad) 16%, transparent); color: var(--bad); }
+.pill.run { background: color-mix(in srgb, var(--warn) 18%, transparent); color: var(--warn); }
+.graph { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; align-items: stretch; }
+.col { min-width: 170px; display: flex; flex-direction: column; gap: 8px; }
+.col h3 { margin: 0; font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+.card { border: 1px solid var(--line); border-left: 4px solid var(--c, var(--mgr)); border-radius: 8px; padding: 7px 9px;
+  background: var(--panel); cursor: pointer; font-size: 12.5px; }
+.card:hover { border-color: var(--c); }
+.card .top { display: flex; justify-content: space-between; gap: 6px; }
+.card .meta { color: var(--muted); font-size: 11.5px; }
+.card.pending { opacity: .55; }
+.card.running { animation: pulse 1s infinite alternate; }
+@keyframes pulse { to { box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 30%, transparent); } }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: var(--muted); }
+.dot.ok { background: var(--ok); } .dot.bad { background: var(--bad); } .dot.running { background: var(--warn); }
+.d-database { --c: var(--db); } .d-auth { --c: var(--auth); } .d-network { --c: var(--net); } .d-frontend { --c: var(--fe); }
+.d-manager, .d-integrator { --c: var(--mgr); }
+.lower { display: grid; grid-template-columns: 260px 1fr; gap: 14px; margin-top: 14px; }
+@media (max-width: 1100px) { .lower { grid-template-columns: 1fr; } }
+.checks { list-style: none; padding: 0; margin: 0; font-size: 12.5px; }
+.checks li { padding: 3px 0; display: flex; gap: 6px; align-items: baseline; word-break: break-word; }
+.files { font-family: var(--mono); font-size: 12px; max-height: 260px; overflow: auto; border-top: 1px solid var(--line); margin-top: 10px; padding-top: 8px; }
+.files div { padding: 2px 4px; border-radius: 4px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.files div.sel, .files div:hover { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px; margin: 0;
+  font: 12px/1.5 var(--mono); overflow: auto; max-height: 520px; white-space: pre; }
+.viewer-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; font-size: 12.5px; }
+.viewer-h code { font-family: var(--mono); word-break: break-all; }
+a.btn { color: var(--accent); text-decoration: none; font-size: 12.5px; white-space: nowrap; }
+.empty { color: var(--muted); padding: 30px 0; text-align: center; }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 11.5px; color: var(--muted); margin-bottom: 10px; }
+.legend span::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: var(--c); margin-right: 4px; vertical-align: -1px; }
+</style>
+</head>
+<body>
+<header><h1>SLM Workbench</h1><span>manager SLM → four domain specialists → integrator</span></header>
+<main>
+  <section class="panel" aria-label="Configure a run">
+    <h2>Backend</h2>
+    <div class="backends" id="backends"></div>
+
+    <h2 style="margin-top:16px">Project</h2>
+    <label for="tpl">Start from</label>
+    <select id="tpl"></select>
+    <label for="name">Name</label>
+    <input id="name" type="text" placeholder="invoice tracker">
+    <label for="entities">Entities (comma separated, 1–4)</label>
+    <input id="entities" type="text" placeholder="invoice, client">
+    <label for="form">Create form for</label>
+    <select id="form"></select>
+    <div class="row" style="margin-top:10px"><label><input id="oauth" type="checkbox"> OAuth sign-in</label></div>
+
+    <label>Planner</label>
+    <div class="seg" id="planner">
+      <button data-v="manager">Manager SLM</button><button data-v="rules">Reference plan</button>
+    </div>
+    <label for="brief">Brief (sent to the manager)</label>
+    <textarea id="brief" spellcheck="false"></textarea>
+    <div class="row" style="margin-top:10px"><label><input id="parallel" type="checkbox" checked> Parallel per dependency level</label></div>
+    <button class="run" id="go">Run workflow</button>
+    <div class="err" id="err"></div>
+  </section>
+
+  <section class="panel" aria-label="Run" id="out">
+    <div class="stats" id="stats"></div>
+    <div class="legend">
+      <span class="d-database">database</span><span class="d-auth">auth</span>
+      <span class="d-network">network</span><span class="d-frontend">frontend</span>
+    </div>
+    <div class="graph" id="graph"><div class="empty">Pick a backend and a project, then run the workflow.</div></div>
+    <div class="lower">
+      <div>
+        <h2>Integration checks</h2>
+        <ul class="checks" id="checks"><li class="empty" style="padding:6px 0">—</li></ul>
+        <div class="files" id="files"></div>
+      </div>
+      <div>
+        <div class="viewer-h"><code id="vpath">Select a task or a file</code><a class="btn" id="zip" hidden>Download .zip</a></div>
+        <pre id="viewer"></pre>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let META = null, backend = "demo", planner = "manager", briefEdited = false, run = null, events = [], poll = null, sel = null;
+
+async function init() {
+  META = await (await fetch("/api/meta")).json();
+  $("tpl").innerHTML = META.templates.map((t, i) => `<option value="${i}">${esc(t.name)} (${t.split})</option>`).join("")
+    + `<option value="custom">Custom…</option>`;
+  renderBackends();
+  loadTemplate(0);
+}
+
+function renderBackends() {
+  $("backends").innerHTML = META.backends.map((b) => `
+    <div class="backend ${b.id === backend ? "sel" : ""} ${b.available ? "" : "off"}" data-id="${b.id}" role="radio"
+         aria-checked="${b.id === backend}" tabindex="0">
+      <input type="radio" ${b.id === backend ? "checked" : ""} ${b.available ? "" : "disabled"} tabindex="-1">
+      <div><b>${esc(b.label)}</b><small>${esc(b.why)}</small></div></div>`).join("");
+  document.querySelectorAll(".backend").forEach((el) => el.onclick = () => {
+    const b = META.backends.find((x) => x.id === el.dataset.id);
+    if (!b.available) return;
+    backend = b.id; renderBackends(); renderPlanner();
+  });
+  renderPlanner();
+}
+
+function renderPlanner() {
+  const demo = backend === "demo";
+  if (demo) planner = "rules";
+  document.querySelectorAll("#planner button").forEach((b) => {
+    b.classList.toggle("sel", b.dataset.v === planner);
+    b.disabled = demo && b.dataset.v === "manager";
+    b.onclick = () => { planner = b.dataset.v; renderPlanner(); };
+  });
+}
+
+function entities() { return $("entities").value.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean); }
+
+function refreshForm(keep) {
+  const es = entities();
+  $("form").innerHTML = es.map((e) => `<option ${e === keep ? "selected" : ""}>${esc(e)}</option>`).join("");
+}
+
+function loadTemplate(i) {
+  if (i === "custom") { $("name").value = ""; $("entities").value = ""; refreshForm(); briefEdited = false; syncBrief(); return; }
+  const t = META.templates[i];
+  $("name").value = t.name; $("entities").value = t.entities.join(", "); $("oauth").checked = t.oauth;
+  refreshForm(t.form); briefEdited = false; $("brief").value = t.brief;
+}
+
+function syncBrief() {
+  if (briefEdited) return;
+  const es = entities(); if (!es.length) { $("brief").value = ""; return; }
+  const name = $("name").value || "custom app", form = $("form").value || es[0];
+  const plural = (e) => e.endsWith("s") ? e : e.endsWith("y") ? e.slice(0, -1) + "ies" : e + "s";
+  $("brief").value = `Build a ${name} (stack: fastapi+react+postgres).\n\nRequirements:\n`
+    + `- Database: one Postgres table per entity (${es.join(", ")}) plus a users table for accounts.\n`
+    + `- Auth: cookie sessions backed by the users table; ${$("oauth").checked ? "an OAuth sign-in hand-off plus" : "no OAuth (sessions only), plus"} a route guard so signed-out\n  users cannot reach any page.\n`
+    + `- Network: REST endpoints for every entity (list, create, fetch one) behind session auth, and a\n  typed TypeScript client for ${form}.\n`
+    + `- Frontend: a React page per entity (${es.map((e) => "/" + plural(e)).join(", ")}), one create form for ${form}, and an app shell that\n  links every page.\nSplit the work across the four specialists and return the plan.`;
+}
+
+$("tpl").onchange = (e) => loadTemplate(e.target.value === "custom" ? "custom" : +e.target.value);
+$("entities").oninput = () => { refreshForm($("form").value); syncBrief(); };
+["name", "form", "oauth"].forEach((id) => $(id).addEventListener("change", syncBrief));
+$("name").addEventListener("input", syncBrief);
+$("brief").oninput = () => { briefEdited = true; };
+
+$("go").onclick = async () => {
+  $("err").textContent = "";
+  const body = { backend, planner, brief: $("brief").value, parallel: $("parallel").checked,
+    spec: { name: $("name").value, entities: entities(), form: $("form").value, oauth: $("oauth").checked } };
+  $("go").disabled = true;
+  const r = await fetch("/api/runs", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body) });
+  const j = await r.json();
+  if (!r.ok) { $("err").textContent = j.error; $("go").disabled = false; return; }
+  run = { id: j.run_id }; events = []; sel = null;
+  $("viewer").textContent = ""; $("vpath").textContent = "Select a task or a file"; $("zip").hidden = true;
+  clearInterval(poll); poll = setInterval(tick, 300); tick();
+};
+
+async function tick() {
+  const s = await (await fetch(`/api/runs/${run.id}?since=${events.length}`)).json();
+  events = events.concat(s.events); run = { ...s, events };
+  render();
+  if (s.status !== "running") { clearInterval(poll); $("go").disabled = false; if (s.error) $("err").textContent = s.error; }
+}
+
+function taskState(tid) {
+  const t = events.filter((e) => e.task_id === tid);
+  const done = t.find((e) => e.kind === "task");
+  if (done) return { st: done.ok ? "ok" : "bad", ms: (done.t_end - done.t_start) * 1000, out: done.output };
+  if (t.some((e) => e.kind === "route")) return { st: "running" };
+  return { st: "pending" };
+}
+
+function render() {
+  const llm = events.filter((e) => e.kind === "llm");
+  const tasks = events.filter((e) => e.kind === "task");
+  const fin = events.find((e) => e.kind === "final");
+  const planEv = events.find((e) => e.kind === "plan");
+  const d = run.deliverable;
+  const status = run.status === "running" ? `<span class="pill run">running</span>`
+    : d ? `<span class="pill ${d.ok ? "ok" : "bad"}">${d.ok ? "PASS" : "FAIL"}</span>` : `<span class="pill bad">error</span>`;
+  const stat = (k, v) => `<div class="stat"><small>${k}</small><b>${v}</b></div>`;
+  $("stats").innerHTML = stat("Status", status) + stat("Wall clock", run.wall_s.toFixed(2) + " s")
+    + stat("Tasks ok", `${tasks.filter((e) => e.ok).length} / ${run.plan ? run.plan.tasks.length : "–"}`)
+    + stat("Levels", run.plan ? run.plan.levels.length : "–")
+    + stat("Model calls", llm.length) + stat("Tokens", llm.reduce((a, e) => a + (e.input_tokens || 0) + (e.output_tokens || 0), 0).toLocaleString());
+
+  const mgrSt = planEv ? (planEv.ok ? "ok" : "bad") : "running";
+  let html = `<div class="col"><h3>Plan</h3><div class="card d-manager ${mgrSt === "running" ? "running" : ""}" data-sel="plan">
+      <div class="top"><b>${run.request?.planner === "rules" || backend === "demo" ? "reference plan" : "manager"}</b><span class="dot ${mgrSt}"></span></div>
+      <div class="meta">${run.plan ? run.plan.tasks.length + " tasks" : planEv && !planEv.ok ? "plan failed" : "planning…"}</div></div></div>`;
+  if (run.plan) {
+    const byId = Object.fromEntries(run.plan.tasks.map((t) => [t.id, t]));
+    run.plan.levels.forEach((ids, lv) => {
+      html += `<div class="col"><h3>Level ${lv}</h3>` + ids.map((id) => {
+        const t = byId[id], s = taskState(id);
+        return `<div class="card d-${t.domain} ${s.st === "pending" || s.st === "running" ? s.st : ""}" data-sel="task:${id}" title="${esc(t.detail)}">
+          <div class="top"><b>${id} · ${t.domain}</b><span class="dot ${s.st}"></span></div>
+          <div>${esc(t.kind)} <span class="meta">${esc(t.target)}</span></div>
+          <div class="meta">${s.ms != null ? s.ms.toFixed(0) + " ms" : s.st}${t.deps.length ? " · needs " + t.deps.join(",") : ""}</div></div>`;
+      }).join("") + `</div>`;
+    });
+    const fst = fin ? (d && d.ok ? "ok" : "bad") : "pending";
+    html += `<div class="col"><h3>Integrate</h3><div class="card d-integrator ${fin ? "" : "pending"}" data-sel="checks">
+      <div class="top"><b>integrator</b><span class="dot ${fst}"></span></div>
+      <div class="meta">${d ? d.files.length + " files · " + d.checks.filter((c) => c.ok).length + "/" + d.checks.length + " checks" : "waiting"}</div></div></div>`;
+  }
+  $("graph").innerHTML = html;
+  document.querySelectorAll("#graph .card").forEach((c) => c.onclick = () => select(c.dataset.sel));
+
+  if (d) {
+    const order = [...d.checks].sort((a, b) => a.ok - b.ok);
+    $("checks").innerHTML = order.map((c) => `<li><span class="dot ${c.ok ? "ok" : "bad"}"></span><span>${esc(c.name)}${c.detail ? ` <span class="meta" style="color:var(--muted)">${esc(c.detail)}</span>` : ""}</span></li>`).join("");
+    $("files").innerHTML = d.files.map((f) => `<div data-sel="file:${esc(f.path)}" class="${sel === "file:" + f.path ? "sel" : ""}">${esc(f.path)}</div>`).join("");
+    document.querySelectorAll("#files div").forEach((x) => x.onclick = () => select(x.dataset.sel));
+    $("zip").hidden = false; $("zip").href = `/api/runs/${run.id}/zip`;
+  } else {
+    $("checks").innerHTML = `<li class="meta">${run.status === "running" ? "waiting for the integrator…" : "—"}</li>`;
+    $("files").innerHTML = "";
+  }
+  if (sel) select(sel, true);
+}
+
+function select(key, quiet) {
+  sel = key;
+  let path = "", text = "";
+  if (key === "plan") { path = "plan.json"; text = run.plan ? JSON.stringify({ name: run.plan.name, tasks: run.plan.tasks, levels: run.plan.levels }, null, 2) : "(no plan yet)"; }
+  else if (key === "checks") { path = "integration checks"; text = run.deliverable ? run.deliverable.checks.map((c) => `${c.ok ? "✓" : "✗"} ${c.name} ${c.detail || ""}`).join("\n") + "\n\nwiring:\n" + (run.deliverable.wiring || []).join("\n") : "(not integrated yet)"; }
+  else if (key.startsWith("task:")) {
+    const id = key.slice(5), t = run.plan.tasks.find((x) => x.id === id), a = run.artifacts[id], s = taskState(id);
+    path = `${id} [${t.domain}/${t.kind}] ${t.target}`;
+    text = `${t.detail}\nprovides: ${(run.plan.provides[id] || []).join(", ")}\nstatus: ${s.st}${s.out && s.out !== "ok" ? " (" + s.out + ")" : ""}\n\n`
+      + (a ? a.files.map((f) => `── ${f.path}\n${f.content}`).join("\n") + (a.summary ? `\n── summary: ${a.summary}` : "") : "(no artifact yet)");
+  } else if (key.startsWith("file:")) {
+    path = key.slice(5); text = (run.deliverable?.files.find((f) => f.path === path) || {}).content || "";
+  }
+  $("vpath").textContent = path; $("viewer").textContent = text;
+  if (!quiet) document.querySelectorAll("#files div").forEach((x) => x.classList.toggle("sel", x.dataset.sel === key));
+}
+
+init();
+</script>
+</body>
+</html>

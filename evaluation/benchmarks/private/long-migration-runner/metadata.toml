@@ -1,0 +1,10 @@
+id = "long-migration-runner"
+split = "dev"
+author = "claude-code-seed"
+independently_reviewed = false
+task_class = "long_horizon"
+capability = "long_horizon_reasoning"
+difficulty = "hard"
+group = "migrate"
+allowed_paths = ["migrate"]
+target_paths = ["migrate/runner.py"]

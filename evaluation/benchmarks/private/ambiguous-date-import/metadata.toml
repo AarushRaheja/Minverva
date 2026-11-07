@@ -1,0 +1,10 @@
+id = "ambiguous-date-import"
+split = "dev"
+author = "claude-code-seed"
+independently_reviewed = false
+task_class = "ambiguous"
+capability = "agentic_execution"
+difficulty = "medium"
+group = "dates"
+allowed_paths = ["importer"]
+target_paths = ["importer/dates.py"]

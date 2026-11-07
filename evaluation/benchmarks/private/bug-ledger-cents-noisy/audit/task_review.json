@@ -1,0 +1,17 @@
+{
+ "ok": true,
+ "problems": [],
+ "revision": "4e61dae848ecc662",
+ "fail_to_pass": [
+  "private::test_private_invoice.TestCents.test_float_price_keeps_its_cents",
+  "private::test_private_invoice.TestCents.test_tax_rounds_half_up",
+  "private::test_private_invoice.TestCents.test_total_end_to_end"
+ ],
+ "pass_to_pass": [
+  "public::test_public_invoice.TestInvoice.test_simple_tax",
+  "public::test_public_invoice.TestInvoice.test_whole_dollars"
+ ],
+ "reference_runs": 3,
+ "independently_reviewed": false,
+ "author": "claude-code-seed"
+}

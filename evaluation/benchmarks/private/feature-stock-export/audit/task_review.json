@@ -1,0 +1,16 @@
+{
+ "ok": true,
+ "problems": [],
+ "revision": "dce4a7c6443c2270",
+ "fail_to_pass": [
+  "private::test_private_export.TestExport.test_include_retired",
+  "private::test_private_export.TestExport.test_sorted_with_header_and_count"
+ ],
+ "pass_to_pass": [
+  "private::test_private_export.TestExport.test_list_items_unchanged",
+  "public::test_public_items.TestItems.test_list_hides_retired"
+ ],
+ "reference_runs": 3,
+ "independently_reviewed": false,
+ "author": "claude-code-seed"
+}

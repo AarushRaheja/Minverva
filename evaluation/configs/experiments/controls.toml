@@ -1,0 +1,9 @@
+# Must give null 0% and oracle 100%. Until it does, no other result means anything.
+[experiment]
+id = "controls"
+purpose = "Harness validity"
+regime = "none"
+agents = ["null", "oracle"]
+split = "dev"
+repeats = 1
+budget = "control"

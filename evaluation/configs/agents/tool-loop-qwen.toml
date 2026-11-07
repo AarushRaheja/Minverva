@@ -1,0 +1,20 @@
+agent_id = "tool-loop-qwen"
+adapter = "tool_loop"
+agent_architecture = "conventional single-agent tool loop, written for this harness; not mini-SWE-agent"
+model_id = "qwen3.5:4b"
+checkpoint_hash = "d8b0f5e9760cd168"
+seed_honored = true
+known_limits = ["same weights as the custom agent, which makes this the Regime A comparison"]
+
+[inference]
+temperature = 0
+seed = 0  # the custom agent's seed, with thinking off, so Regime A differs only in architecture
+max_output_tokens = 2048
+num_ctx = 8192
+
+[execution]
+network_access = false
+allowed_tools = ["shell", "read_file", "write_file", "edit_file"]
+
+[cost]
+amortized_usd_per_hour = 0.12  # ASSUMPTION: a $2,500 laptop over three years of full use, plus power. Replace with your real figure.

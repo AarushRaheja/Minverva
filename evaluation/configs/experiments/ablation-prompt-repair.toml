@@ -1,0 +1,16 @@
+# 2x2: exact-import prompts x run-check repair. The (prompt on, repair off) cell needs a new arm, so it is left out
+# until that arm exists; the report says a cell is missing rather than estimating the interaction without it.
+[experiment]
+backend = "modal"
+id = "ablation-prompt-repair"
+purpose = "Which part of the best arm's gain comes from the prompt, and which from repair?"
+regime = "ablation"
+agents = ["slm-mgr-G4", "slm-mgr-G4-runfix", "slm-mgr-G4-promptfix"]
+split = "dev"
+families = ["project_build"]
+repeats = 3
+budget = "project"
+
+[factorial]
+factors = ["exact_prompts", "repair"]
+cells = { "00" = "slm-mgr-G4", "01" = "slm-mgr-G4-runfix", "11" = "slm-mgr-G4-promptfix" }

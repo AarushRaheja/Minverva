@@ -1,0 +1,13 @@
+# The spend limit for running local models on Modal. Credits stood at $29.15 on 2026-11-05, after $0.85 of app use this
+# month, and the plan is to stop after $20 more. So the cap is $20.85 of app spend counted from 2026-11-01.
+# It keeps counting across months, because a monthly credit reset hasn't been confirmed. If it does reset, raise the cap
+# or move the start date on purpose.
+count_from = "2026-11-01"
+cap_usd = 20.85
+rate_usd_per_hour = 1.15        # L4 $0.80 + 4 CPU $0.19 + 16 GiB $0.13 from `modal billing rates`, rounded up
+reporting_lag_hours = 1.5       # Modal only reports finished hours, so assume this much spend isn't shown yet
+refresh_seconds = 300
+max_stale_seconds = 900         # if billing can't be read for this long, stop rather than spend blind
+app = "slm-ollama"
+model = "qwen3.5:4b"
+digest_prefix = "d8b0f5e9760c"  # the weights on the laptop: the same model on both, or the comparison is off

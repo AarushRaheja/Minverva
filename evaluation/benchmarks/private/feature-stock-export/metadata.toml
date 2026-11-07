@@ -1,0 +1,10 @@
+id = "feature-stock-export"
+split = "dev"
+author = "claude-code-seed"
+independently_reviewed = false
+task_class = "feature"
+capability = "software_engineering"
+difficulty = "medium"
+group = "stock"
+allowed_paths = ["stock"]
+target_paths = ["stock/items.py"]

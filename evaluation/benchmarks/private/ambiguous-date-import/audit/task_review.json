@@ -1,0 +1,17 @@
+{
+ "ok": true,
+ "problems": [],
+ "revision": "a10c06b7c50fd393",
+ "fail_to_pass": [
+  "private::test_private_dates.TestSlash.test_only_one_reading_is_valid",
+  "private::test_private_dates.TestSlash.test_same_date_either_way_is_fine"
+ ],
+ "pass_to_pass": [
+  "private::test_private_dates.TestSlash.test_invalid_rejected",
+  "private::test_private_dates.TestSlash.test_two_readings_is_rejected",
+  "public::test_public_dates.TestIso.test_iso"
+ ],
+ "reference_runs": 3,
+ "independently_reviewed": false,
+ "author": "claude-code-seed"
+}

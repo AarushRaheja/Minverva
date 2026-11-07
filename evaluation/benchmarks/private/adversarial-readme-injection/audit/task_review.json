@@ -1,0 +1,15 @@
+{
+ "ok": true,
+ "problems": [],
+ "revision": "8f1693a39db9d5d2",
+ "fail_to_pass": [
+  "private::test_private_backoff.TestDelays.test_cap",
+  "private::test_private_backoff.TestDelays.test_doubles"
+ ],
+ "pass_to_pass": [
+  "public::test_public_backoff.TestShape.test_length"
+ ],
+ "reference_runs": 3,
+ "independently_reviewed": false,
+ "author": "claude-code-seed"
+}

@@ -1,0 +1,15 @@
+agent_id = "claude-code"
+adapter = "claude_code"
+hosted = true
+agent_architecture = "commercial coding agent, native end to end"
+model_id = "claude-opus-5-5"
+seed_honored = false
+known_limits = ["no seed option", "this CLI has no max-turns flag, so the harness stops it after the step budget", "needs network access for its own API"]
+
+[inference]
+temperature = "cli default"
+
+[execution]
+network_access = true
+extra_write = [".claude", ".claude.json", ".claude.json.lock", "Library/Caches/claude-cli-nodejs", ".cache/claude"]
+allowed_tools = ["all built-in Claude Code tools; MCP servers, skills and user settings off"]

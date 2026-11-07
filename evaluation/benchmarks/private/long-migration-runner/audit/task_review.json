@@ -1,0 +1,18 @@
+{
+ "ok": true,
+ "problems": [],
+ "revision": "d78de756c4700c3d",
+ "fail_to_pass": [
+  "private::test_private_runner.TestRunner.test_stage1_orders_and_is_idempotent",
+  "private::test_private_runner.TestRunner.test_stage2_failure_rolls_back_only_that_one",
+  "private::test_private_runner.TestRunner.test_stage3_changed_sql_detected",
+  "private::test_private_runner.TestRunner.test_stage3_duplicates_run_nothing",
+  "private::test_private_runner.TestRunner.test_stage4_status"
+ ],
+ "pass_to_pass": [
+  "public::test_public_runner.TestStructure.test_error_type_exists"
+ ],
+ "reference_runs": 3,
+ "independently_reviewed": false,
+ "author": "claude-code-seed"
+}

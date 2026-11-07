@@ -1,0 +1,15 @@
+agent_id = "slm-mgr-G4-promptfix"
+adapter = "slm"
+arm = "mgr-G4-promptfix"
+agent_architecture = "manager + 4 specialists, exact-import prompts, run-check repair"
+model_id = "qwen3.5:4b"
+checkpoint_hash = "d8b0f5e9760cd168"
+seed_honored = true
+known_limits = ["its repair step runs the same run-check code as the grader, against its own plan; a hidden-test agent would not have that check"]
+
+[execution]
+network_access = false
+allowed_tools = []
+
+[cost]
+amortized_usd_per_hour = 0.12  # ASSUMPTION: see tool-loop-qwen.toml

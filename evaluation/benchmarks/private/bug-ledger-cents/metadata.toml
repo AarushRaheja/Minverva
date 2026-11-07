@@ -1,0 +1,10 @@
+id = "bug-ledger-cents"
+split = "dev"
+author = "claude-code-seed"
+independently_reviewed = false
+task_class = "bug_diagnosis"
+capability = "software_engineering"
+difficulty = "medium"
+group = "ledger"
+allowed_paths = ["ledger"]
+target_paths = ["ledger/money.py", "ledger/tax.py"]

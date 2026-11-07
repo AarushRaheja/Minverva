@@ -1,0 +1,3 @@
+agent_id = "oracle"
+adapter = "oracle"
+agent_architecture = "positive control: submits the reference"

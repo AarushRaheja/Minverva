@@ -1,0 +1,10 @@
+# The Phase III pilot: one attempt each. Results here are for fixing the harness, not for claims.
+[experiment]
+id = "pilot-lean"
+purpose = "Run the whole pipeline with real agents and estimate disagreement rates"
+regime = "C for claude-code; A for tool-loop-qwen vs slm-mgr-G4-promptfix, which can only be paired on project builds"
+agents = ["slm-mgr-G4-promptfix", "tool-loop-qwen", "claude-code"]
+split = "dev"
+families = ["repo"]
+repeats = 1
+budget = "low"

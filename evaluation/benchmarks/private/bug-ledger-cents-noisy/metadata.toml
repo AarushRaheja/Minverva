@@ -1,0 +1,12 @@
+id = "bug-ledger-cents-noisy"
+split = "dev"
+author = "claude-code-seed"
+independently_reviewed = false
+task_class = "bug_diagnosis"
+capability = "software_engineering"
+difficulty = "medium"
+group = "ledger"
+allowed_paths = ["ledger"]
+target_paths = ["ledger/money.py", "ledger/tax.py"]
+control_of = "bug-ledger-cents"
+perturbation = "irrelevant_files_and_noisy_log"

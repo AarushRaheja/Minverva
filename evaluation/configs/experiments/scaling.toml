@@ -1,0 +1,9 @@
+[experiment]
+id = "scaling"
+purpose = "Does success rise with budget, and for which agent first?"
+regime = "C"
+agents = ["tool-loop-qwen", "claude-code"]
+split = "dev"
+families = ["repo"]
+repeats = 1
+budgets = ["low", "medium", "high"]

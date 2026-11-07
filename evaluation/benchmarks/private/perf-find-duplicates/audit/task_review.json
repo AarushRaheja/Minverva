@@ -1,0 +1,15 @@
+{
+ "ok": true,
+ "problems": [],
+ "revision": "d76417112b09412b",
+ "fail_to_pass": [
+  "private::test_private_core.TestSpeed.test_comparisons_stay_linear"
+ ],
+ "pass_to_pass": [
+  "public::test_public_core.TestBehaviour.test_no_duplicates",
+  "public::test_public_core.TestBehaviour.test_order_and_uniqueness"
+ ],
+ "reference_runs": 3,
+ "independently_reviewed": false,
+ "author": "claude-code-seed"
+}

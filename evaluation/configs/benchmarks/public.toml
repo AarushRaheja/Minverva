@@ -1,0 +1,43 @@
+# External benchmarks: what was checked against a primary source, and whether this harness can run them today.
+# `requires` is why not: every one needs an agent that works inside an existing repo or terminal.
+[terminal-bench]
+version = "2.1"
+tasks = 89
+source = "https://www.tbench.ai/news/terminal-bench-2-1"
+checked = "2026-11-05: 2.1 revises 28 of the 89 tasks in 2.0"
+harness = "harbor"
+requires = ["docker", "tens of GB of disk", "terminal agent"]
+status = "not run"
+planned_tasks = 89
+
+[swe-bench-pro]
+version = "default config (the plan's V2)"
+tasks = 642
+hard_subset = 51
+source = "https://huggingface.co/datasets/ScaleAI/SWE-bench_Pro"
+checked = "2026-11-05: dataset card lists default 642, hard 51, v1 731. The label V2 isn't confirmed by the name"
+harness = "official docker images"
+requires = ["docker", "large disk", "repo-editing agent"]
+status = "not run"
+caveat = "A May 2026 audit reported about a third of grader verdicts wrong; Scale AI hadn't confirmed that. Track disputed tasks below."
+disputed_tasks = []
+
+[swe-bench-multilingual]
+checked = "NOT VERIFIED: named in the plan, and I found no primary source. Confirm before relying on it."
+status = "not run"
+requires = ["repo-editing agent"]
+
+[swe-bench-multimodal]
+checked = "NOT VERIFIED: named in the plan, and I found no primary source. Confirm before relying on it."
+status = "not run"
+requires = ["repo-editing agent", "image input"]
+
+[livecodebench]
+checked = "A harness exists on branch claude-1/r3-lcb; it isn't merged here, and this suite hasn't re-verified it"
+status = "not run"
+requires = ["single-file code generation mode"]
+
+[aider-polyglot]
+checked = "Not re-verified"
+status = "not run"
+requires = ["repo-editing agent"]

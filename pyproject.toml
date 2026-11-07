@@ -1,0 +1,30 @@
+[project]
+name = "slm"
+version = "0.1.0"
+description = "A manager SLM that splits a project across four domain-specialist SLMs and integrates their output"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.7",   # every schema, and response validation
+    "typer>=0.12",     # CLI
+    "httpx>=0.27",     # async HTTP to the vLLM server (sibling tasks fire concurrently)
+]
+
+[project.scripts]
+slm = "slm.cli:app"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "modal>=1.5",      # deploy/run Modal apps; GPU deps live only inside Modal images
+]
+teacher = ["anthropic>=0.70"]  # optional: hosted teacher plans + Haiku baseline
+tui = ["textual[syntax]>=8,<9"]  # optional: `slm code`, the terminal workbench
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "evaluation/tests"]
+pythonpath = ["."]
