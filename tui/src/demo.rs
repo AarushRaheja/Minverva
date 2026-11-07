@@ -132,8 +132,7 @@ impl Demo {
         self.offset = 0.0;
     }
 
-    /// Jump ahead (tests and screenshots).
-    #[allow(dead_code)]
+    /// Jump ahead (tests, screenshots and `--print`).
     pub fn skip(&mut self, secs: f64) {
         self.offset += secs;
     }

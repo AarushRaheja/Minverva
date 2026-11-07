@@ -18,7 +18,7 @@ pub fn draw(f: &mut Frame, area: Rect, app: &App) {
         Row::new(vec![
             Cell::from(Span::styled(status_icon(t.status), Style::new().fg(sc))),
             Cell::from(Span::styled(format!("L{}", t.level), dim())),
-            Cell::from(t.id.clone()),
+            Cell::from(app.task_label(&t.id)),
             Cell::from(Line::from(vec![
                 Span::styled(format!("{} ", domain_icon(&t.domain)), Style::new().fg(c)),
                 Span::styled(t.domain.clone(), Style::new().fg(c)),
@@ -58,7 +58,7 @@ pub fn draw(f: &mut Frame, area: Rect, app: &App) {
         None => vec![Line::from(Span::styled("no tasks in this run yet", dim()))],
         Some(t) => vec![
             Line::from(vec![
-                Span::styled(t.id.clone(), title()),
+                Span::styled(app.task_label(&t.id), title()),
                 Span::styled(format!("  {} → {}  level {}", t.domain, t.adapter, t.level), dim()),
             ]),
             Line::from(vec![
@@ -66,7 +66,10 @@ pub fn draw(f: &mut Frame, area: Rect, app: &App) {
                 Span::styled(t.status.label(), Style::new().fg(status_color(t.status)).bold()),
                 Span::styled(t.secs().map(|s| format!("   took {s:.3}s")).unwrap_or_default(), dim()),
             ]),
-            Line::default(),
+            Line::from(Span::styled(
+                app.task_info.get(&t.id).map(|(_, d)| d.clone()).unwrap_or_default(),
+                Style::new().fg(TEXT),
+            )),
             Line::from(Span::styled(
                 if t.detail.is_empty() || t.detail == "ok" { "all contract checks passed".to_string() } else { t.detail.clone() },
                 Style::new().fg(if t.detail.is_empty() || t.detail == "ok" { OK } else { FAIL }),

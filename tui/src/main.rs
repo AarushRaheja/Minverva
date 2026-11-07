@@ -25,15 +25,21 @@ struct Args {
     root: PathBuf,
     trace: Option<PathBuf>,
     demo: bool,
+    /// `--print <view|all>`: render once as plain text and exit (CI, agents, bug reports)
+    print: Option<String>,
+    /// `--size WxH` for --print
+    size: Option<(u16, u16)>,
 }
 
 fn usage() -> ! {
     println!(
         "nova-tui: watch and drive the NOVA SLM pipeline\n\n\
-         usage: nova-tui [--root <repo root>] [--trace <trace.jsonl>] [--demo]\n\n\
+         usage: nova-tui [--root <repo root>] [--trace <trace.jsonl>] [--demo] [--print <view|all>]\n\n\
          --root   repo root holding .slm/traces and out/deliverable (default: auto-detect)\n\
          --trace  open one trace file instead of the newest\n\
-         --demo   replay a synthetic run (no python needed)"
+         --demo   replay a synthetic run (no python needed)\n\
+         --print  render pipeline|tasks|timeline|deliverable|log|arms|all as text and exit\n\
+         --size   frame size for --print, e.g. 80x24 (default: 150x44 or the terminal, if larger)"
     );
     std::process::exit(0)
 }
@@ -50,7 +56,7 @@ fn find_root() -> PathBuf {
 }
 
 fn parse_args() -> Args {
-    let mut args = Args { root: PathBuf::new(), trace: None, demo: false };
+    let mut args = Args { root: PathBuf::new(), trace: None, demo: false, print: None, size: None };
     let mut root = None;
     let mut it = std::env::args().skip(1);
     while let Some(a) = it.next() {
@@ -58,6 +64,13 @@ fn parse_args() -> Args {
             "--root" => root = it.next().map(PathBuf::from),
             "--trace" => args.trace = it.next().map(PathBuf::from),
             "--demo" => args.demo = true,
+            "--print" => args.print = Some(it.next().unwrap_or_else(|| "all".into())),
+            "--size" => {
+                args.size = it.next().and_then(|v| {
+                    let (w, h) = v.split_once('x')?;
+                    Some((w.parse().ok()?, h.parse().ok()?))
+                })
+            }
             "-h" | "--help" => usage(),
             other => {
                 eprintln!("unknown argument {other:?}");
@@ -76,6 +89,13 @@ fn parse_args() -> Args {
 fn main() -> Result<()> {
     let args = parse_args();
     let mut app = App::new(args.root, args.trace, args.demo);
+    if let Some(view) = &args.print {
+        if let Some(d) = &mut app.demo {
+            d.skip(60.0); // show the finished demo run, not frame zero
+        }
+        app.refresh();
+        return print_views(&mut app, view, args.size);
+    }
     let mut terminal = ratatui::init();
     let res = run(&mut terminal, &mut app);
     ratatui::restore();
@@ -103,4 +123,37 @@ fn run(terminal: &mut ratatui::DefaultTerminal, app: &mut App) -> Result<()> {
         }
     }
     Ok(())
+}
+
+/// Render views to stdout without a terminal, e.g. `nova-tui --print arms`.
+fn print_views(app: &mut App, view: &str, size: Option<(u16, u16)>) -> Result<()> {
+    use ratatui::{Terminal, backend::TestBackend};
+    let tabs: Vec<app::Tab> = app::Tab::ALL
+        .into_iter()
+        .filter(|t| view == "all" || t.title().eq_ignore_ascii_case(view))
+        .collect();
+    if tabs.is_empty() {
+        anyhow::bail!("unknown view {view:?}; use pipeline, tasks, timeline, deliverable, log, arms or all");
+    }
+    // at least 150x44 so a report is readable; larger if the terminal running it is larger
+    let (w, h) = size.unwrap_or_else(|| crossterm_size().map(|(w, h)| (w.max(150), h.max(44))).unwrap_or((150, 44)));
+    use std::io::Write;
+    let mut out = std::io::stdout().lock();
+    for tab in tabs {
+        app.tab = tab;
+        let mut t = Terminal::new(TestBackend::new(w, h))?;
+        t.draw(|f| ui::draw(f, app))?;
+        let buf = t.backend().buffer();
+        for y in 0..h {
+            let line: String = (0..w).map(|x| buf[(x, y)].symbol()).collect();
+            if writeln!(out, "{}", line.trim_end()).is_err() {
+                return Ok(()); // reader went away (`| head`), not an error
+            }
+        }
+    }
+    Ok(())
+}
+
+fn crossterm_size() -> Option<(u16, u16)> {
+    ratatui::crossterm::terminal::size().ok()
 }

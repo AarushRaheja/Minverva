@@ -28,7 +28,9 @@ pub fn draw(f: &mut Frame, app: &App) {
     draw_header(f, header, app);
     draw_tabs(f, tabs, app);
 
-    let [side, main] = Layout::horizontal([Constraint::Length(30), Constraint::Min(40)]).areas(body);
+    // narrow terminals (80 cols) get a slimmer sidebar so the main view stays readable
+    let side_w = if body.width < 120 { 20 } else { 30 };
+    let [side, main] = Layout::horizontal([Constraint::Length(side_w), Constraint::Min(40)]).areas(body);
     draw_runs(f, side, app);
     match app.tab {
         Tab::Pipeline => pipeline::draw(f, main, app),
@@ -75,9 +77,24 @@ fn draw_header(f: &mut Frame, area: Rect, app: &App) {
         .border_style(Style::new().fg(BORDER));
     let inner = block.inner(area);
     f.render_widget(block, area);
-    let [left, right] = Layout::horizontal([Constraint::Min(30), Constraint::Length(60)]).areas(inner);
+    let run = &app.run;
+    let id = if run.id.is_empty() { "—".to_string() } else { run.id.clone() };
+    let narrow = inner.width < 120;
+    let id = if narrow { clip(&id, (inner.width as usize).saturating_sub(34).max(8)) } else { id };
+    let mut info = vec![Span::styled(id, theme::title())];
+    if !narrow {
+        info.push(Span::styled(format!("  {}", run.mode()), dim()));
+    }
+    info.push(Span::styled(format!("  {:.2}s  ", run.wall_secs()), dim()));
+    info.push(verdict_span(app));
+    let info = Line::from(info).alignment(Alignment::Right);
+    let right_w = (info.width() as u16 + 1).min(inner.width.saturating_sub(10));
+    let [left, right] = Layout::horizontal([Constraint::Min(10), Constraint::Length(right_w)]).areas(inner);
 
-    let logo = Line::from(vec![
+    let logo = if left.width < 70 {
+        Line::from(Span::styled(" ✦ NOVA ", Style::new().fg(TEXT).bg(BG_ACCENT).bold()))
+    } else {
+        Line::from(vec![
         Span::styled(" ✦ NOVA ", Style::new().fg(TEXT).bg(BG_ACCENT).bold()),
         Span::raw("  "),
         Span::styled("manager SLM", Style::new().fg(domain_color("manager")).bold()),
@@ -88,18 +105,9 @@ fn draw_header(f: &mut Frame, area: Rect, app: &App) {
         Span::styled("▣", Style::new().fg(domain_color("frontend"))),
         Span::styled(" 4 specialists", dim()),
         Span::styled(" → integrator", dim()),
-    ]);
+        ])
+    };
     f.render_widget(Paragraph::new(vec![logo, Line::default()]), left);
-
-    let run = &app.run;
-    let id = if run.id.is_empty() { "—".to_string() } else { run.id.clone() };
-    let info = Line::from(vec![
-        Span::styled(id, theme::title()),
-        Span::styled(format!("  {}  ", run.mode()), dim()),
-        Span::styled(format!("{:.2}s  ", run.wall_secs()), dim()),
-        verdict_span(app),
-    ])
-    .alignment(Alignment::Right);
     f.render_widget(Paragraph::new(info), right);
 }
 

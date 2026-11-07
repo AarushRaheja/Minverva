@@ -10,6 +10,8 @@ cd tui
 cargo run --release -- --demo        # synthetic run, no python needed
 cargo run --release                  # watch ../.slm/traces, press r to run a project
 cargo run --release -- --trace ../.slm/traces/cli-dev-0000.jsonl
+cargo run --release -- --print all              # render every view as text and exit (no TTY needed)
+cargo run --release -- --print arms --size 80x24
 ```
 
 The repo root is auto-detected (walks up to the folder with `pyproject.toml` + `slm/`), or pass
@@ -63,8 +65,12 @@ also writes each view as colored HTML, handy for screenshots.
 - Tests: trace parsing (including pydantic's null-everywhere lines), task/verdict derivation,
   arms summary + paired deltas, run-check rescoring, arch trace → files mapping, and every view
   rendered at two sizes.
-- Not yet tried by a human against a live `uv run slm run` / `slm.arch run`; parsing follows
-  `slm/trace.py` and `slm/arch/runner.py::Result` field for field.
+- Checked against real output: traces from `uv run slm run --project 0` and `--project 2 --no-parallel`,
+  and `results.jsonl` rows produced by `slm.arch.__main__.grade_tree` (8 rows, gold-G4 vs a mono arm with
+  the network files removed). Not yet tried against a full `slm.arch run` with a live model.
+- Real plans name tasks `t1..tN`; the views label them with their kind (`t4 session`) and show the spec,
+  read from the integrator's `README.md` in the deliverable.
+- Works down to 80x24: narrower sidebar, one-line stage list instead of boxes, no timings in lanes.
 - Relation to `slm code` (Textual workbench on `free-compute-ui`): that one is for writing a brief
   and editing the files; this one is a read-only monitor for traces and experiment results. They
   don't share code.

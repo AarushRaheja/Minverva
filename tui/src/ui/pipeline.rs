@@ -104,6 +104,20 @@ fn draw_flow(f: &mut Frame, area: Rect, app: &App) {
         },
     ];
 
+    // too narrow for five boxes: one status line per stage instead
+    if area.width < 100 {
+        let mut lines = Vec::new();
+        for s in &stages {
+            lines.push(Line::from(vec![
+                Span::styled(format!(" {:<12}", s.name), Style::new().fg(s.color).bold()),
+                Span::styled(format!("{}  ", s.lines[0]), title()),
+                Span::styled(s.lines[1].clone(), dim()),
+            ]));
+        }
+        f.render_widget(Paragraph::new(lines), area);
+        return;
+    }
+
     let mut cons = Vec::new();
     for i in 0..stages.len() {
         cons.push(Constraint::Fill(1));
@@ -155,7 +169,9 @@ fn draw_lanes(f: &mut Frame, area: Rect, app: &App) {
             .border_style(Style::new().fg(if running { color } else { BORDER }))
             .title(title)
             .title_bottom(Span::styled(format!(" {} ", adapter_of(d)), dim()));
-        let w = cols[i].width.saturating_sub(12) as usize;
+        // border (2) + status icon (3) + optional " 1.2s" (5)
+        let show_time = cols[i].width >= 24;
+        let w = (cols[i].width as usize).saturating_sub(if show_time { 10 } else { 5 }).max(4);
         let mut lines = Vec::new();
         let mut last_level = None;
         for t in &mine {
@@ -171,8 +187,8 @@ fn draw_lanes(f: &mut Frame, area: Rect, app: &App) {
             }
             lines.push(Line::from(vec![
                 Span::styled(format!(" {icon} "), Style::new().fg(sc)),
-                Span::styled(clip(&t.id, w), style),
-                Span::styled(t.secs().map(|s| format!(" {s:.1}s")).unwrap_or_default(), dim()),
+                Span::styled(clip(&app.task_label(&t.id), w), style),
+                Span::styled(if show_time { t.secs().map(|s| format!(" {s:.1}s")).unwrap_or_default() } else { String::new() }, dim()),
             ]));
         }
         if mine.is_empty() {

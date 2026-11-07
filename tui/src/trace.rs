@@ -198,7 +198,7 @@ impl Run {
                 }
             }
         }
-        rows.sort_by(|a, b| a.level.cmp(&b.level).then(a.id.cmp(&b.id)));
+        rows.sort_by(|a, b| a.level.cmp(&b.level).then_with(|| natural_cmp(&a.id, &b.id)));
         rows
     }
 
@@ -234,6 +234,35 @@ impl Run {
     pub fn wall_secs(&self) -> f64 {
         self.span().map(|(a, b)| b - a).unwrap_or(0.0)
     }
+}
+
+/// "t2" before "t12": compare runs of digits as numbers (real plans use ids like t1..t13).
+pub fn natural_cmp(a: &str, b: &str) -> std::cmp::Ordering {
+    fn chunks(s: &str) -> Vec<(bool, String)> {
+        let mut out: Vec<(bool, String)> = Vec::new();
+        for c in s.chars() {
+            let d = c.is_ascii_digit();
+            match out.last_mut() {
+                Some((kind, buf)) if *kind == d => buf.push(c),
+                _ => out.push((d, c.to_string())),
+            }
+        }
+        out
+    }
+    let (ca, cb) = (chunks(a), chunks(b));
+    for (x, y) in ca.iter().zip(cb.iter()) {
+        let o = match (x.0, y.0) {
+            (true, true) => {
+                let (xs, ys) = (x.1.trim_start_matches('0'), y.1.trim_start_matches('0'));
+                xs.len().cmp(&ys.len()).then_with(|| xs.cmp(ys))
+            }
+            _ => x.1.cmp(&y.1),
+        };
+        if o.is_ne() {
+            return o;
+        }
+    }
+    ca.len().cmp(&cb.len())
 }
 
 /// Every `*.jsonl` under the trace dir, newest first.
@@ -281,5 +310,12 @@ mod tests {
         let t = run.tasks();
         assert_eq!((t[0].id.as_str(), t[0].level, t[0].status), ("auth-session", 1, Status::Running));
         assert_eq!(run.project_id(), Some("proj-dev-0"));
+    }
+
+    #[test]
+    fn task_ids_sort_naturally() {
+        let mut ids = vec!["t12", "t5", "t1", "auth-b", "auth-a"];
+        ids.sort_by(|a, b| natural_cmp(a, b));
+        assert_eq!(ids, ["auth-a", "auth-b", "t1", "t5", "t12"]);
     }
 }

@@ -66,7 +66,7 @@ pub fn draw(f: &mut Frame, area: Rect, app: &App) {
         let s = scale(t.t_start.unwrap_or(t0));
         let e = scale(t.t_end.unwrap_or(now)).max(s + 1);
         lines.push(bar_line(
-            &t.id,
+            &app.task_label(&t.id),
             domain_color(&t.domain),
             s,
             e,
