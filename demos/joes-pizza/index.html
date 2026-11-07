@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Joe's Pizza · Order online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ffffff;--fg:#09090b;--muted:#f4f4f5;--mfg:#71717a;--border:#e4e4e7;--primary:#18181b;--pfg:#fafafa;--ring:#a1a1aa;--accent:#f4f4f5;--destructive:#ef4444;--green:#16a34a;--r:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.5;font-size:14px;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,textarea{font:inherit;color:inherit}
+input:focus,textarea:focus,button:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+header{background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
+.bar{display:flex;align-items:center;gap:16px;height:56px}
+.logo{font-weight:600;font-size:16px;display:flex;align-items:center;gap:8px}
+.logo .dot{width:24px;height:24px;border-radius:6px;background:var(--primary);color:var(--pfg);display:grid;place-items:center;font-size:12px;font-weight:700}
+.tabs{margin-left:auto;display:inline-flex;gap:2px;background:var(--muted);padding:3px;border-radius:var(--r)}
+.tabs button{padding:5px 12px;border-radius:6px;font-weight:500;font-size:13px;color:var(--mfg)}
+.tabs button.on{background:#fff;color:var(--fg);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.cartbtn{border:1px solid var(--border);padding:6px 12px;border-radius:var(--r);font-weight:500;display:none}
+.cartbtn .n{background:var(--primary);color:var(--pfg);border-radius:999px;padding:0 7px;margin-left:6px;font-size:12px}
+.hero{padding:32px 0 16px;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;flex-wrap:wrap}
+.hero h1{font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1.2}
+.hero p{color:var(--mfg);margin-top:6px;font-size:15px}
+.status{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1px solid var(--border);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:500;background:#fff}
+.pill b{color:var(--green);font-weight:600}
+.cats{display:flex;gap:6px;overflow-x:auto;padding:8px 0 12px;position:sticky;top:56px;background:#fff;z-index:10;border-bottom:1px solid var(--border);margin-bottom:16px}
+.cats button{padding:5px 12px;border-radius:var(--r);border:1px solid var(--border);font-weight:500;font-size:13px;white-space:nowrap}
+.cats button:hover{background:var(--accent)}
+.cats button.on{background:var(--primary);color:var(--pfg);border-color:var(--primary)}
+.layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;padding-bottom:48px}
+.section h2{font-size:18px;font-weight:600;margin:8px 0 12px;letter-spacing:-.01em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:20px}
+.item{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;text-align:left;transition:border-color .15s,box-shadow .15s}
+.item:hover{border-color:#d4d4d8;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.item .emoji{width:100%;aspect-ratio:16/10;background:var(--muted);display:grid;place-items:center;font-size:40px;overflow:hidden}
+.item .emoji img{width:100%;height:100%;object-fit:cover;display:block}
+.item .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px;flex:1}
+.item h3{font-size:14px;font-weight:600}
+.item p{font-size:13px;color:var(--mfg);flex:1}
+.item .row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.price{font-weight:600}
+.add{background:var(--primary);color:var(--pfg);border-radius:6px;padding:5px 10px;font-weight:500;font-size:12px}
+.tag{font-size:11px;font-weight:500;color:var(--fg);background:var(--muted);border:1px solid var(--border);padding:0 6px;border-radius:6px;align-self:flex-start}
+aside.cart{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;position:sticky;top:112px;max-height:calc(100vh - 130px);display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+aside h2{font-size:16px;font-weight:600;margin-bottom:12px}
+.lines{overflow:auto;flex:1;display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.line{display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid var(--border);padding-bottom:10px}
+.line .info{flex:1}
+.line .info small{display:block;color:var(--mfg);font-size:12px}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);font-weight:500}
+.qty button:hover{background:var(--accent)}
+.empty{color:var(--mfg);text-align:center;padding:28px 0;font-size:13px}
+.empty div{display:none}
+.totals{border-top:1px solid var(--border);padding-top:10px;font-size:13px;display:flex;flex-direction:column;gap:4px;color:var(--mfg)}
+.totals .r{display:flex;justify-content:space-between}
+.totals .big{font-weight:600;font-size:15px;margin-top:4px;color:var(--fg)}
+.mode{display:flex;background:var(--muted);border-radius:var(--r);padding:3px;margin-bottom:12px}
+.mode button{flex:1;padding:5px;border-radius:6px;font-weight:500;font-size:13px;color:var(--mfg)}
+.mode button.on{background:#fff;color:var(--fg);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.cta{background:var(--primary);color:var(--pfg);width:100%;height:40px;border-radius:var(--r);font-weight:500;font-size:14px;margin-top:12px}
+.cta:hover{background:#27272a}
+.cta:disabled{opacity:.5;cursor:not-allowed}
+.promo{display:flex;gap:6px;margin-top:10px}
+.promo input{flex:1;border:1px solid var(--border);border-radius:var(--r);height:36px;padding:0 10px;font-size:13px}
+.promo button{border:1px solid var(--border);border-radius:var(--r);padding:0 12px;font-weight:500;font-size:13px}
+.promo button:hover{background:var(--accent)}
+.note{font-size:12px;color:var(--mfg);margin-top:6px}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.scrim.open{display:flex}
+.modal{background:#fff;border:1px solid var(--border);border-radius:12px;width:100%;max-width:500px;max-height:92vh;overflow:auto;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.15)}
+.modal h3{font-size:18px;font-weight:600}
+.modal .sub{color:var(--mfg);font-size:13px;margin:4px 0 12px}
+.opt h4{font-size:13px;font-weight:500;margin:14px 0 8px}
+.choices{display:flex;flex-wrap:wrap;gap:6px}
+.choice{border:1px solid var(--border);border-radius:var(--r);padding:6px 10px;font-size:13px;font-weight:500}
+.choice:hover{background:var(--accent)}
+.choice.on{border-color:var(--primary);background:var(--primary);color:var(--pfg)}
+.choice small{color:inherit;opacity:.7;margin-left:4px}
+.modal textarea,.field input,.field textarea{width:100%;border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;font-size:13px}
+.mfoot{display:flex;gap:10px;align-items:center;margin-top:18px}
+.mfoot .qty button{width:36px;height:36px}
+.mfoot .cta{margin:0;flex:1}
+.x{float:right;font-size:20px;color:var(--mfg);line-height:1}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.err{color:var(--destructive);font-size:12px;margin-top:4px;display:none}
+.field.bad input,.field.bad textarea{border-color:var(--destructive)}
+.field.bad .err{display:block}
+.page{display:none;padding:28px 0 48px}
+.page.on{display:block}
+.track{background:#fff;border:1px solid var(--border);border-radius:12px;padding:24px;max-width:680px}
+.steps{display:flex;gap:6px;margin:18px 0}
+.step{flex:1;font-size:12px;color:var(--mfg)}
+.step .b{height:6px;border-radius:999px;background:var(--muted);margin-bottom:8px;transition:background .4s}
+.step.done .b{background:var(--primary)}
+.step.done{color:var(--fg);font-weight:500}
+.eta{font-size:26px;font-weight:700;letter-spacing:-.02em}
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.col{background:var(--muted);border-radius:12px;padding:10px;min-height:240px}
+.col h3{font-size:13px;font-weight:600;margin-bottom:10px;display:flex;justify-content:space-between;color:var(--mfg)}
+.ticket{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:8px;font-size:13px}
+.ticket .top{display:flex;justify-content:space-between;font-weight:600;margin-bottom:4px}
+.ticket ul{padding-left:16px;color:var(--mfg);margin:4px 0 8px}
+.ticket .adv{background:var(--primary);color:var(--pfg);border-radius:6px;padding:6px 10px;font-weight:500;font-size:12px;width:100%}
+.toast{position:fixed;bottom:20px;right:20px;background:#fff;color:var(--fg);border:1px solid var(--border);box-shadow:0 4px 12px rgba(0,0,0,.1);padding:12px 16px;border-radius:var(--r);font-weight:500;transform:translateY(120px);transition:transform .25s;z-index:60}
+.toast.show{transform:translateY(0)}
+footer{color:var(--mfg);font-size:12px;padding:20px 0 40px;border-top:1px solid var(--border)}
+@media (max-width:900px){.layout{grid-template-columns:1fr}aside.cart{position:static;max-height:none}.cartbtn{display:inline-block}.kgrid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header><div class="wrap bar">
+  <div class="logo"><span class="dot">J</span>Joe's Pizza</div>
+  <nav class="tabs" aria-label="Views">
+    <button class="on" data-view="menu">Order</button>
+    <button data-view="track">My order</button>
+    <button data-view="kitchen">Kitchen</button>
+  </nav>
+  <button class="cartbtn" id="cartJump">Cart<span class="n" id="cartCount">0</span></button>
+</div></header>
+
+<main class="wrap">
+<section class="page on" id="v-menu">
+  <div class="hero">
+    <div><h1>Order online</h1><p>Hand-stretched dough, made every morning. Order ahead and skip the line.</p></div>
+    <div class="status"><span class="pill" id="openPill"></span><span class="pill">Pickup ~15 min</span><span class="pill">Delivery ~35 min</span></div>
+  </div>
+  <div class="cats" id="cats"></div>
+  <div class="layout">
+    <div id="menu"></div>
+    <aside class="cart" id="cart">
+      <h2>Your order</h2>
+      <div class="mode" id="mode"><button class="on" data-m="pickup">Pickup</button><button data-m="delivery">Delivery</button></div>
+      <div class="lines" id="lines"></div>
+      <div class="totals" id="totals"></div>
+      <div class="promo"><input id="promo" placeholder="Promo code (try SLICE10)"><button id="applyPromo">Apply</button></div>
+      <div class="note" id="promoNote"></div>
+      <button class="cta" id="checkout" disabled>Checkout</button>
+    </aside>
+  </div>
+</section>
+
+<section class="page" id="v-track"><div id="trackBody"></div></section>
+
+<section class="page" id="v-kitchen">
+  <div class="hero" style="padding-top:0"><div><h1 style="font-size:34px">Kitchen board</h1><p>Every order placed shows up here. Move tickets along as you cook.</p></div>
+  <div class="status"><button class="pill" id="autoBtn">Auto-advance: on</button><button class="pill" id="clearBtn">Clear done</button></div></div>
+  <div class="kgrid" id="kgrid"></div>
+</section>
+</main>
+
+<div class="wrap"><footer>Joe's Pizza · 123 Main St · Open 11am to 11pm daily · Payment is taken at pickup or delivery.<br><span style="opacity:.8">Photos: Andrew The Professor (CC BY 2.0), Kim Scarborough (CC BY-SA 2.0), Muffet (CC BY 2.0), TheHungryDudes (CC BY 2.0), avlxyz (CC BY-SA 2.0), floluong (CC BY 2.0), j.reed (CC BY-SA 2.0), jeffreyw (CC BY 2.0), kudumomo (CC BY 2.0), sebilden (CC BY 2.0), via Openverse.</span></footer></div>
+
+<div class="scrim" id="itemModal"><div class="modal" role="dialog" aria-modal="true" id="itemBody"></div></div>
+<div class="scrim" id="checkoutModal"><div class="modal" role="dialog" aria-modal="true" id="checkoutBody"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const money = n => '$' + n.toFixed(2);
+const store = { get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+                set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+
+const SIZES = [{ id: 's', label: 'Slice', mult: 0.22 }, { id: 'm', label: '14" Medium', mult: 0.85 }, { id: 'l', label: '18" Large', mult: 1 }];
+const TOPPINGS = [['Pepperoni', 2], ['Mushrooms', 1.5], ['Sausage', 2], ['Onions', 1], ['Green peppers', 1], ['Black olives', 1.5], ['Fresh basil', 1], ['Extra cheese', 2], ['Jalapeños', 1], ['Pineapple', 1.5]];
+const MENU = [
+  { cat: 'Pizzas', items: [
+    { id: 'cheese', name: 'Classic Cheese', desc: 'Tomato sauce, whole-milk mozzarella, oregano.', price: 19, emoji: '🍕', pizza: true, tag: 'Best seller' },
+    { id: 'pep', name: 'Pepperoni', desc: 'Cup-and-char pepperoni, mozzarella, red sauce.', price: 23, emoji: '🍕', pizza: true, tag: 'Fan favorite' },
+    { id: 'marg', name: 'Margherita', desc: 'Fresh mozzarella, San Marzano tomato, basil, olive oil.', price: 22, emoji: '🌿', pizza: true },
+    { id: 'white', name: 'White Pie', desc: 'Ricotta, mozzarella, garlic, black pepper. No sauce.', price: 24, emoji: '🧄', pizza: true },
+    { id: 'veg', name: 'Garden Veggie', desc: 'Mushrooms, peppers, onions, olives, mozzarella.', price: 24, emoji: '🫑', pizza: true },
+    { id: 'meat', name: "Joe's Meat Lover", desc: 'Pepperoni, sausage, meatball, bacon.', price: 27, emoji: '🥓', pizza: true, tag: 'Hearty' },
+    { id: 'hot', name: 'Hot Honey', desc: 'Soppressata, mozzarella, chili-infused honey drizzle.', price: 25, emoji: '🍯', pizza: true, tag: 'New' },
+  ]},
+  { cat: 'Sides', items: [
+    { id: 'knots', name: 'Garlic Knots (6)', desc: 'Baked to order, garlic butter, parmesan, marinara for dipping.', price: 6.5, emoji: '🥖' },
+    { id: 'wings', name: 'Wings (8)', desc: 'Buffalo or BBQ, with ranch or blue cheese.', price: 12, emoji: '🍗', opts: { name: 'Sauce', choices: ['Buffalo', 'BBQ', 'Garlic parm'] } },
+    { id: 'salad', name: 'Caesar Salad', desc: 'Romaine, parmesan, croutons, house dressing.', price: 9, emoji: '🥗' },
+    { id: 'mozz', name: 'Mozzarella Sticks', desc: 'Six sticks with warm marinara.', price: 8, emoji: '🧀' },
+  ]},
+  { cat: 'Drinks', items: [
+    { id: 'soda', name: 'Fountain Soda', desc: 'Coke, Diet Coke, Sprite or root beer.', price: 2.75, emoji: '🥤', opts: { name: 'Flavor', choices: ['Coke', 'Diet Coke', 'Sprite', 'Root beer'] } },
+    { id: 'lemon', name: 'Fresh Lemonade', desc: 'Squeezed in house daily.', price: 3.5, emoji: '🍋' },
+    { id: 'water', name: 'Bottled Water', desc: 'Still, 500 ml.', price: 2, emoji: '💧' },
+  ]},
+  { cat: 'Desserts', items: [
+    { id: 'cannoli', name: 'Cannoli (2)', desc: 'Crisp shells, sweet ricotta, chocolate chips.', price: 7, emoji: '🍰' },
+    { id: 'tira', name: 'Tiramisu', desc: 'Espresso-soaked ladyfingers, mascarpone, cocoa.', price: 8, emoji: '☕' },
+  ]},
+];
+const IMG = {"cheese": "https://api.openverse.org/v1/images/d6811775-954a-4bd4-bce5-36a798626ce4/thumb/", "pep": "https://api.openverse.org/v1/images/9e178e1e-06fb-4914-9b4c-a0654c55d02b/thumb/", "marg": "https://api.openverse.org/v1/images/8717e15a-4b70-4f80-83a7-df7f89cc77ce/thumb/", "white": "https://api.openverse.org/v1/images/343cf493-5825-42f4-b802-e510ef15abe0/thumb/", "veg": "https://api.openverse.org/v1/images/25d54faf-dc55-4cf9-a420-601cecc3ac58/thumb/", "meat": "https://api.openverse.org/v1/images/3727d62e-9f62-4412-883c-9e89badc0a9d/thumb/", "hot": "https://api.openverse.org/v1/images/a439ef46-d492-4764-a607-a5f47fa1cf74/thumb/", "mozz": "https://api.openverse.org/v1/images/36d7114d-e4c5-4d51-98e0-fe9711605946/thumb/", "soda": "https://api.openverse.org/v1/images/9879bc30-229f-48d9-bb43-19ef9de435d7/thumb/", "lemon": "https://api.openverse.org/v1/images/24455019-eedd-4638-9a19-c8edc0c8f32c/thumb/", "water": "https://api.openverse.org/v1/images/2062d69a-3a52-4b6d-a78a-f2c3837ae24a/thumb/", "cannoli": "https://api.openverse.org/v1/images/2b5f00d1-3180-4840-bff7-21be6febba20/thumb/", "tira": "https://api.openverse.org/v1/images/864bfd17-660f-49cb-af43-d831288c3261/thumb/"};
+MENU.forEach(c => c.items.forEach(i => { if (IMG[i.id]) i.img = IMG[i.id]; }));
+const ITEMS = Object.fromEntries(MENU.flatMap(c => c.items).map(i => [i.id, i]));
+const TAX = 0.08875, DELIVERY_FEE = 3.99, FREE_DELIVERY = 40;
+const STAGES = ['Received', 'In the oven', 'Ready', 'Done'];
+
+let cart = store.get('jp_cart', []);
+let mode = store.get('jp_mode', 'pickup');
+let promo = store.get('jp_promo', null);
+let orders = store.get('jp_orders', []);
+let lastOrderId = store.get('jp_last', null);
+let auto = store.get('jp_auto', true);
+const save = () => { store.set('jp_cart', cart); store.set('jp_mode', mode); store.set('jp_promo', promo); store.set('jp_orders', orders); store.set('jp_last', lastOrderId); store.set('jp_auto', auto); };
+
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('show'), 1800); }
+
+// open/closed pill
+(function () { const h = new Date().getHours(); $('#openPill').innerHTML = (h >= 11 && h < 23) ? '<b>● Open now</b> until 11pm' : '<b style="color:#ef4444">● Closed</b> · order ahead for 11am'; })();
+
+// categories + menu
+function renderMenu() {
+  $('#cats').innerHTML = MENU.map((c, i) => `<button class="${i ? '' : 'on'}" data-cat="${i}">${c.cat}</button>`).join('');
+  $('#menu').innerHTML = MENU.map((c, i) => `<div class="section" id="cat-${i}"><h2>${c.cat}</h2><div class="grid">${c.items.map(it => `
+    <button class="item" data-id="${it.id}">
+      <div class="emoji">${it.img ? `<img src="${it.img}" alt="${it.name}" loading="lazy">` : `<span style="font-size:15px;font-weight:600;color:#71717a">${it.name}</span>`}</div><div class="body">${it.tag ? `<span class="tag">${it.tag}</span>` : ''}
+      <h3>${it.name}</h3><p>${it.desc}</p>
+      <div class="row"><span class="price">${it.pizza ? 'from ' + money(it.price * SIZES[0].mult) : money(it.price)}</span><span class="add">Add</span></div></div>
+    </button>`).join('')}</div></div>`).join('');
+}
+$('#cats').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
+  document.querySelectorAll('#cats button').forEach(x => x.classList.toggle('on', x === b));
+  const el = $('#cat-' + b.dataset.cat); window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - 130, behavior: 'smooth' }); });
+$('#menu').addEventListener('click', e => { const b = e.target.closest('.item'); if (b) openItem(b.dataset.id); });
+
+// item modal
+let draft = null;
+function unitPrice(d) { const it = ITEMS[d.id]; let p = it.pizza ? it.price * SIZES.find(s => s.id === d.size).mult : it.price;
+  if (it.pizza) p += d.toppings.reduce((a, t) => a + TOPPINGS.find(x => x[0] === t)[1] * (d.size === 's' ? 0.35 : 1), 0); return Math.round(p * 100) / 100; }
+function openItem(id) { const it = ITEMS[id]; draft = { id, size: it.pizza ? 'l' : null, toppings: [], opt: it.opts ? it.opts.choices[0] : null, note: '', qty: 1 }; renderItem(); $('#itemModal').classList.add('open'); }
+function renderItem() { const it = ITEMS[draft.id];
+  $('#itemBody').innerHTML = `<button class="x" data-close aria-label="Close">×</button><h3>${it.name}</h3><div class="sub">${it.desc}</div>
+  ${it.pizza ? `<div class="opt"><h4>Size</h4><div class="choices">${SIZES.map(s => `<button class="choice ${draft.size === s.id ? 'on' : ''}" data-size="${s.id}">${s.label}<small>${money(it.price * s.mult)}</small></button>`).join('')}</div></div>
+  <div class="opt"><h4>Toppings</h4><div class="choices">${TOPPINGS.map(([t, p]) => `<button class="choice ${draft.toppings.includes(t) ? 'on' : ''}" data-top="${t}">${t}<small>+${money(p * (draft.size === 's' ? 0.35 : 1))}</small></button>`).join('')}</div></div>` : ''}
+  ${it.opts ? `<div class="opt"><h4>${it.opts.name}</h4><div class="choices">${it.opts.choices.map(c => `<button class="choice ${draft.opt === c ? 'on' : ''}" data-opt="${c}">${c}</button>`).join('')}</div></div>` : ''}
+  <div class="opt"><h4>Special instructions</h4><textarea id="note" rows="2" placeholder="Well done, cut in squares, no oregano...">${draft.note}</textarea></div>
+  <div class="mfoot"><div class="qty"><button data-q="-1" aria-label="Fewer">−</button><b>${draft.qty}</b><button data-q="1" aria-label="More">+</button></div>
+  <button class="cta" data-addcart>Add ${draft.qty} to order · ${money(unitPrice(draft) * draft.qty)}</button></div>`; }
+$('#itemBody').addEventListener('input', e => { if (e.target.id === 'note') draft.note = e.target.value; });
+$('#itemBody').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
+  if (b.hasAttribute('data-close')) return closeModals();
+  if (b.dataset.size) draft.size = b.dataset.size;
+  if (b.dataset.top) { const t = b.dataset.top; draft.toppings = draft.toppings.includes(t) ? draft.toppings.filter(x => x !== t) : [...draft.toppings, t]; }
+  if (b.dataset.opt) draft.opt = b.dataset.opt;
+  if (b.dataset.q) draft.qty = Math.max(1, Math.min(20, draft.qty + +b.dataset.q));
+  if (b.hasAttribute('data-addcart')) { addToCart(draft); closeModals(); return; }
+  renderItem(); });
+function describe(d) { const it = ITEMS[d.id]; const bits = [];
+  if (it.pizza) bits.push(SIZES.find(s => s.id === d.size).label); if (d.toppings && d.toppings.length) bits.push('+ ' + d.toppings.join(', '));
+  if (d.opt) bits.push(d.opt); if (d.note) bits.push('“' + d.note + '”'); return bits.join(' · '); }
+function addToCart(d) { const key = JSON.stringify([d.id, d.size, [...d.toppings].sort(), d.opt, d.note]);
+  const ex = cart.find(l => l.key === key);
+  if (ex) ex.qty += d.qty; else cart.push({ key, id: d.id, size: d.size, toppings: [...d.toppings], opt: d.opt, note: d.note, qty: d.qty, price: unitPrice(d) });
+  save(); renderCart(); toast(`Added ${ITEMS[d.id].name}`); }
+
+// cart
+function calc() { const sub = cart.reduce((a, l) => a + l.price * l.qty, 0);
+  const disc = promo === 'SLICE10' ? Math.round(sub * 0.10 * 100) / 100 : 0;
+  const del = mode === 'delivery' && sub > 0 ? (sub - disc >= FREE_DELIVERY ? 0 : DELIVERY_FEE) : 0;
+  const tax = Math.round((sub - disc) * TAX * 100) / 100; return { sub, disc, del, tax, total: sub - disc + del + tax }; }
+function renderCart() {
+  const n = cart.reduce((a, l) => a + l.qty, 0); $('#cartCount').textContent = n;
+  document.querySelectorAll('#mode button').forEach(b => b.classList.toggle('on', b.dataset.m === mode));
+  $('#lines').innerHTML = cart.length ? cart.map((l, i) => `<div class="line"><div class="info"><b>${ITEMS[l.id].name}</b><small>${describe(l)}</small><small>${money(l.price)} each</small></div>
+    <div class="qty"><button data-i="${i}" data-d="-1" aria-label="Remove one">−</button><b>${l.qty}</b><button data-i="${i}" data-d="1" aria-label="Add one">+</button></div></div>`).join('')
+    : '<div class="empty"><div>🍕</div>Your cart is empty.<br>Pick something tasty.</div>';
+  const c = calc();
+  $('#totals').innerHTML = `<div class="r"><span>Subtotal</span><span>${money(c.sub)}</span></div>
+    ${c.disc ? `<div class="r" style="color:var(--green)"><span>SLICE10 (10% off)</span><span>−${money(c.disc)}</span></div>` : ''}
+    ${mode === 'delivery' ? `<div class="r"><span>Delivery ${c.sub && !c.del ? '(free over $40)' : ''}</span><span>${money(c.del)}</span></div>` : ''}
+    <div class="r"><span>Tax</span><span>${money(c.tax)}</span></div><div class="r big"><span>Total</span><span>${money(c.total)}</span></div>`;
+  $('#checkout').disabled = !cart.length;
+  $('#checkout').textContent = cart.length ? `Checkout · ${money(c.total)}` : 'Checkout';
+  $('#promoNote').textContent = promo ? `Code ${promo} applied.` : (mode === 'delivery' ? 'Free delivery on orders over $40.' : ''); }
+$('#lines').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const l = cart[+b.dataset.i];
+  l.qty += +b.dataset.d; if (l.qty <= 0) cart.splice(+b.dataset.i, 1); save(); renderCart(); });
+$('#mode').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; mode = b.dataset.m; save(); renderCart(); });
+$('#applyPromo').onclick = () => { const v = $('#promo').value.trim().toUpperCase();
+  if (v === 'SLICE10') { promo = v; toast('10% off applied'); } else if (v) { promo = null; toast('That code isn’t valid'); } save(); renderCart(); };
+$('#cartJump').onclick = () => $('#cart').scrollIntoView({ behavior: 'smooth' });
+
+// checkout
+$('#checkout').onclick = () => { const c = calc(); const prev = store.get('jp_cust', {});
+  $('#checkoutBody').innerHTML = `<button class="x" data-close aria-label="Close">×</button><h3>Checkout</h3><div class="sub">${mode === 'pickup' ? 'Pickup at 123 Main St' : 'Delivery to your door'} · ${cart.reduce((a, l) => a + l.qty, 0)} items · ${money(c.total)}</div>
+  <div class="field" id="f-name"><label>Name</label><input id="cName" value="${prev.name || ''}" autocomplete="name"><div class="err">Please add your name.</div></div>
+  <div class="field" id="f-phone"><label>Phone</label><input id="cPhone" value="${prev.phone || ''}" inputmode="tel" autocomplete="tel" placeholder="(555) 123-4567"><div class="err">Enter a 10-digit phone number.</div></div>
+  ${mode === 'delivery' ? `<div class="field" id="f-addr"><label>Delivery address</label><textarea id="cAddr" rows="2" autocomplete="street-address">${prev.addr || ''}</textarea><div class="err">We need an address to deliver.</div></div>` : ''}
+  <div class="field"><label>When</label><div class="choices" id="when"><button class="choice on" data-w="asap">ASAP</button><button class="choice" data-w="30">In 30 min</button><button class="choice" data-w="60">In 1 hour</button></div></div>
+  <div class="field"><label>Tip for the crew</label><div class="choices" id="tip">${[0, 10, 15, 20].map(p => `<button class="choice ${p === 15 ? 'on' : ''}" data-tip="${p}">${p ? p + '%' : 'None'}</button>`).join('')}</div></div>
+  <div class="note">You'll pay ${mode === 'pickup' ? 'at the counter' : 'the driver'} by card or cash.</div>
+  <button class="cta" id="place">Place order</button>`;
+  $('#checkoutModal').classList.add('open'); };
+let when = 'asap', tipPct = 15;
+$('#checkoutBody').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
+  if (b.hasAttribute('data-close')) return closeModals();
+  if (b.dataset.w) { when = b.dataset.w; document.querySelectorAll('#when .choice').forEach(x => x.classList.toggle('on', x === b)); }
+  if (b.dataset.tip) { tipPct = +b.dataset.tip; document.querySelectorAll('#tip .choice').forEach(x => x.classList.toggle('on', x === b)); }
+  if (b.id === 'place') placeOrder(); });
+function placeOrder() { const name = $('#cName').value.trim(), phone = $('#cPhone').value.replace(/\D/g, ''), addrEl = $('#cAddr'), addr = addrEl ? addrEl.value.trim() : '';
+  let ok = true; const flag = (id, bad) => { $(id).classList.toggle('bad', bad); if (bad) ok = false; };
+  flag('#f-name', !name); flag('#f-phone', phone.length !== 10); if (addrEl) flag('#f-addr', addr.length < 5); if (!ok) return;
+  store.set('jp_cust', { name, phone: $('#cPhone').value, addr });
+  const c = calc(); const tip = Math.round((c.sub - c.disc) * tipPct) / 100;
+  const id = 'J' + String(1000 + orders.length + 1);
+  const mins = (mode === 'pickup' ? 15 : 35) + (when === 'asap' ? 0 : +when);
+  orders.push({ id, name, phone, mode, addr, items: cart.map(l => ({ n: ITEMS[l.id].name, d: describe(l), q: l.qty })), total: c.total + tip, tip,
+    stage: 0, placed: Date.now(), ready: Date.now() + mins * 60000 });
+  lastOrderId = id; cart = []; promo = null; $('#promo').value = ''; save(); closeModals(); renderCart(); show('track'); toast(`Order ${id} placed!`); }
+
+// tracking
+function renderTrack() { const o = orders.find(x => x.id === lastOrderId);
+  if (!o) { $('#trackBody').innerHTML = `<div class="track"><h2 class="eta">No order yet</h2><p class="sub" style="color:var(--muted)">Place an order and track it here.</p><button class="cta" style="max-width:240px" onclick="show('menu')">Start an order</button></div>`; return; }
+  const left = Math.max(0, Math.round((o.ready - Date.now()) / 60000));
+  const msg = o.stage >= 2 ? (o.mode === 'pickup' ? 'Ready for pickup!' : 'Out for delivery!') : `About ${left} min`;
+  $('#trackBody').innerHTML = `<div class="track"><div class="sub" style="color:var(--mfg)">Order ${o.id} · ${o.mode === 'pickup' ? 'Pickup' : 'Delivery'} for ${o.name}</div>
+    <div class="eta">${o.stage >= 3 ? 'Enjoy your pizza' : msg}</div>
+    <div class="steps">${STAGES.map((s, i) => `<div class="step ${o.stage >= i ? 'done' : ''}"><div class="b"></div>${i === 2 && o.mode === 'delivery' ? 'On the way' : s}</div>`).join('')}</div>
+    ${o.items.map(i => `<div class="line"><div class="info"><b>${i.q} × ${i.n}</b><small>${i.d}</small></div></div>`).join('')}
+    <div class="totals"><div class="r big"><span>Total${o.tip ? ' incl. tip' : ''}</span><span>${money(o.total)}</span></div></div>
+    <button class="cta" style="max-width:240px" onclick="show('menu')">Order more</button></div>`; }
+
+// kitchen board
+function renderKitchen() { $('#autoBtn').textContent = 'Auto-advance: ' + (auto ? 'on' : 'off');
+  $('#kgrid').innerHTML = STAGES.map((s, si) => { const list = orders.filter(o => o.stage === si);
+    return `<div class="col"><h3>${s}<span>${list.length}</span></h3>${list.map(o => `<div class="ticket"><div class="top"><span>${o.id} · ${o.name}</span><span>${o.mode === 'pickup' ? 'Pickup' : 'Delivery'}</span></div>
+      <ul>${o.items.map(i => `<li>${i.q} × ${i.n}${i.d ? ' (' + i.d + ')' : ''}</li>`).join('')}</ul>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>${money(o.total)}</span><span>${new Date(o.placed).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</span></div>
+      ${si < 3 ? `<button class="adv" data-adv="${o.id}">Move to ${STAGES[si + 1]} →</button>` : ''}</div>`).join('') || '<div style="color:var(--muted);font-size:13px">Nothing here</div>'}</div>`; }).join(''); }
+$('#kgrid').addEventListener('click', e => { const b = e.target.closest('[data-adv]'); if (!b) return; const o = orders.find(x => x.id === b.dataset.adv); o.stage = Math.min(3, o.stage + 1); save(); refresh(); });
+$('#autoBtn').onclick = () => { auto = !auto; save(); renderKitchen(); };
+$('#clearBtn').onclick = () => { orders = orders.filter(o => o.stage < 3); save(); refresh(); };
+
+// simulated kitchen progress so tracking feels live
+setInterval(() => { if (!auto) return; let changed = false;
+  orders.forEach(o => { const age = (Date.now() - o.placed) / 1000; const target = age > 45 ? 3 : age > 25 ? 2 : age > 8 ? 1 : 0;
+    if (o.stage < target && o.stage < 3) { o.stage++; changed = true; if (o.id === lastOrderId) toast(`${o.id}: ${o.stage === 2 && o.mode === 'delivery' ? 'On the way' : STAGES[o.stage]}`); } });
+  if (changed) { save(); refresh(); } else if (current === 'track') renderTrack(); }, 2000);
+
+// views
+let current = 'menu';
+function show(v) { current = v; document.querySelectorAll('.page').forEach(p => p.classList.toggle('on', p.id === 'v-' + v));
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.view === v)); refresh(); scrollTo({ top: 0 }); }
+document.querySelector('.tabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) show(b.dataset.view); });
+function refresh() { renderCart(); renderTrack(); renderKitchen(); }
+function closeModals() { document.querySelectorAll('.scrim').forEach(s => s.classList.remove('open')); }
+document.querySelectorAll('.scrim').forEach(s => s.addEventListener('click', e => { if (e.target === s) closeModals(); }));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
+
+renderMenu(); refresh();
+</script>
+</body>
+</html>
