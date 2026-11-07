@@ -1,0 +1,12 @@
+{"ts": 1794081600.0, "event": "run_start", "engine": "modal", "resumed": false, "budget_usd": 3.0, "max_repairs": 1, "spent_usd": 0.0}
+{"ts": 1794081601.0, "event": "stage_start", "stage": "plan", "estimate_usd": 0.35}
+{"ts": 1794081602.0, "event": "run_end", "status": "stopped", "usd": 0.0}
+{"ts": 1794081660.0, "event": "run_start", "engine": "modal", "resumed": true, "budget_usd": 3.0, "max_repairs": 1, "spent_usd": 0.42}
+{"ts": 1794081660.0, "event": "stage_end", "stage": "plan", "ok": true, "cached": true, "seconds": 0.0}
+{"ts": 1794081660.0, "event": "stage_end", "stage": "backend", "ok": true, "cached": true, "seconds": 0.0}
+{"ts": 1794081660.0, "event": "stage_start", "stage": "seams"}
+{"ts": 1794081660.1, "event": "stage_end", "stage": "seams", "ok": true, "cached": false, "seconds": 0.1}
+{"ts": 1794081660.1, "event": "stage_end", "stage": "preflight", "ok": true, "cached": true, "seconds": 0.0}
+{"ts": 1794081660.1, "event": "stage_end", "stage": "intent", "ok": true, "cached": true, "seconds": 0.0}
+{"ts": 1794081660.2, "event": "stage_start", "stage": "architect", "round": 0, "estimate_usd": 0.3}
+{"ts": 1794081700.0, "event": "stage_e

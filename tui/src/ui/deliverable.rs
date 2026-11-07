@@ -1,4 +1,5 @@
-//! The file tree `slm run` wrote to out/deliverable/<project_id>/ with a code preview.
+//! The files a run wrote, with a preview: a Minerva build's REPORT.md, project/ and screenshots, or the tree
+//! `slm run` wrote to out/deliverable/<project_id>/.
 
 use super::theme::*;
 use super::{clip, panel};
@@ -10,7 +11,10 @@ use ratatui::text::{Line, Span};
 use ratatui::widgets::{List, ListItem, ListState, Paragraph};
 
 fn file_color(path: &str) -> Color {
-    if path.starts_with("src/database") || path.ends_with(".sql") {
+    let path = path.strip_prefix("project/").unwrap_or(path);
+    if path.ends_with(".png") {
+        Color::Rgb(255, 200, 70)
+    } else if path.starts_with("src/database") || path.ends_with(".sql") {
         domain_color("database")
     } else if path.starts_with("src/auth") {
         domain_color("auth")
@@ -32,7 +36,7 @@ pub fn draw(f: &mut Frame, area: Rect, app: &App) {
             Line::from(Span::styled("no files on disk for this run", dim())),
             Line::default(),
             Line::from(Span::styled(format!("looked in {dir}"), dim())),
-            Line::from(vec![Span::styled("r", key()), Span::styled(" runs `slm run` which writes the tree there", dim())]),
+            Line::from(vec![Span::styled("r", key()), Span::styled(" starts a build; its project appears here when it ends", dim())]),
         ];
         f.render_widget(Paragraph::new(msg).block(panel("Deliverable", app.focus == Focus::Main)), area);
         return;
@@ -43,9 +47,11 @@ pub fn draw(f: &mut Frame, area: Rect, app: &App) {
         .iter()
         .map(|p| {
             let s = p.to_string_lossy().into_owned();
-            let depth = p.components().count().saturating_sub(1);
-            let name = p.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
-            let parent = p.parent().map(|x| x.to_string_lossy().into_owned()).unwrap_or_default();
+            // a build's project files are shown relative to project/
+            let shown = p.strip_prefix("project").unwrap_or(p);
+            let depth = shown.components().count().saturating_sub(1);
+            let name = shown.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
+            let parent = shown.parent().map(|x| x.to_string_lossy().into_owned()).unwrap_or_default();
             ListItem::new(Line::from(vec![
                 Span::styled("  ".repeat(depth.min(3)), dim()),
                 Span::styled("▪ ", Style::new().fg(file_color(&s))),
@@ -63,7 +69,13 @@ pub fn draw(f: &mut Frame, area: Rect, app: &App) {
     f.render_stateful_widget(list, list_area, &mut st);
 
     let rel = app.files.get(app.file_sel).map(|p| p.to_string_lossy().into_owned()).unwrap_or_default();
-    let text = app.selected_file_text().unwrap_or_else(|| "(binary or unreadable)".into());
+    let text = app.selected_file_text().unwrap_or_else(|| {
+        if rel.ends_with(".png") {
+            "(screenshot: press O to open it in your image viewer)".into()
+        } else {
+            "(binary, too large or unreadable: press O to open it)".into()
+        }
+    });
     let lines: Vec<Line> = text
         .lines()
         .enumerate()

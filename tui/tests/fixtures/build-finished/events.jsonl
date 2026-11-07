@@ -1,0 +1,24 @@
+{"ts": 1794074197.0, "event": "run_start", "engine": "modal", "brief": "A back-of-house tool where a restaurant owner tracks inventory items, suppliers and supplier invoices", "look": "Clean and practical, high contrast, easy to read in a busy kitchen", "resumed": false, "budget_usd": 3.0, "max_repairs": 1, "spent_usd": 0.0, "pid": 4242}
+{"ts": 1794074197.0, "event": "stage_start", "stage": "plan", "estimate_usd": 0.35}
+{"ts": 1794074317.8, "event": "stage_end", "stage": "plan", "ok": true, "cached": false, "seconds": 120.8, "usd": 0.133}
+{"ts": 1794074317.8, "event": "stage_start", "stage": "backend", "estimate_usd": 0.05}
+{"ts": 1794074355.8999999, "event": "stage_end", "stage": "backend", "ok": true, "cached": false, "seconds": 38.1, "usd": 0.012}
+{"ts": 1794074355.8999999, "event": "stage_start", "stage": "seams"}
+{"ts": 1794074355.9199998, "event": "stage_end", "stage": "seams", "ok": true, "cached": false, "seconds": 0.02}
+{"ts": 1794074355.9199998, "event": "stage_start", "stage": "preflight"}
+{"ts": 1794074364.0199997, "event": "stage_end", "stage": "preflight", "ok": true, "cached": false, "seconds": 8.1, "detail": ""}
+{"ts": 1794074364.0199997, "event": "stage_start", "stage": "intent", "estimate_usd": 0.06}
+{"ts": 1794074393.1709998, "event": "stage_end", "stage": "intent", "ok": true, "cached": false, "seconds": 29.151, "usd": 0.025}
+{"ts": 1794074393.1709998, "event": "stage_start", "stage": "architect", "round": 0, "estimate_usd": 0.3}
+{"ts": 1794074760.1069999, "event": "stage_end", "stage": "architect", "round": 0, "ok": true, "cached": false, "seconds": 366.936, "usd": 0.233}
+{"ts": 1794074760.1069999, "event": "stage_start", "stage": "audit", "round": 0, "estimate_usd": 0.02}
+{"ts": 1794074769.507, "event": "stage_end", "stage": "audit", "round": 0, "ok": false, "cached": false, "seconds": 9.4, "usd": 0.02, "detail": "the build failed"}
+{"ts": 1794074769.507, "event": "stage_start", "stage": "architect", "round": 1, "estimate_usd": 0.3}
+{"ts": 1794074982.408, "event": "stage_end", "stage": "architect", "round": 1, "ok": true, "cached": false, "seconds": 212.901, "usd": 0.138}
+{"ts": 1794074982.408, "event": "stage_start", "stage": "audit", "round": 1, "estimate_usd": 0.02}
+{"ts": 1794074991.108, "event": "stage_end", "stage": "audit", "round": 1, "ok": false, "cached": false, "seconds": 8.7, "usd": 0.02, "detail": "the build failed"}
+{"ts": 1794074991.108, "event": "stage_start", "stage": "verify"}
+{"ts": 1794075010.5080001, "event": "stage_end", "stage": "verify", "ok": true, "cached": false, "seconds": 19.4, "detail": "sign-up journey passed on the reference UI"}
+{"ts": 1794075010.5080001, "event": "stage_start", "stage": "project"}
+{"ts": 1794075010.5180001, "event": "stage_end", "stage": "project", "ok": true, "cached": false, "seconds": 0.01}
+{"ts": 1794075010.5180001, "event": "run_end", "status": "fallback_ui", "detail": "no generated UI worked, so the plain reference UI shipped", "usd": 0.581, "exit_code": 20}

@@ -1,0 +1,8 @@
+{
+ "brief": "A back-of-house tool where a restaurant owner tracks inventory items, suppliers and supplier invoices",
+ "look": "Clean and practical, high contrast, easy to read in a busy kitchen",
+ "engine": "modal",
+ "started_at": "2026-11-07T12:56:37-0500",
+ "max_repairs": 1,
+ "budget_usd": 3.0
+}

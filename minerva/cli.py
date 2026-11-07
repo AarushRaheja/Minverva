@@ -1,7 +1,10 @@
-"""`minerva build "<brief>"`: run the pipeline. Exit codes: 0 verified, 10 works with defects, 20 fallback UI, 30 failed."""
+"""`minerva build "<brief>"`: run the pipeline. Exit codes: 0 verified, 10 works with defects, 20 fallback UI, 30 failed,
+130 stopped (Ctrl-C or SIGTERM; the run resumes with --out)."""
 
 from __future__ import annotations
 
+import json
+import signal
 from pathlib import Path
 
 import typer
@@ -26,6 +29,15 @@ def _engine(name: str, architect: str):
     raise typer.BadParameter("engine must be offline or modal")
 
 
+def _stop_on_sigterm() -> None:
+    """Treat SIGTERM like Ctrl-C, so `app.run()` contexts close and ephemeral Modal apps stop."""
+
+    def interrupt(signum, frame):  # noqa: ARG001
+        raise KeyboardInterrupt
+
+    signal.signal(signal.SIGTERM, interrupt)
+
+
 @app.command("build")
 def build_command(
     brief: str = typer.Argument(..., help="What do you want? Goes to the manager, which plans the backend"),
@@ -39,8 +51,17 @@ def build_command(
     no_fallback: bool = typer.Option(False, help="Fail rather than ship the reference UI"),
 ) -> None:
     run_dir = out or default_run_dir(Path("runs"), brief)
-    result: Result = build(brief, _engine(engine, architect), run_dir, Options(
-        max_repairs=max_repairs, budget_usd=budget_usd, stop_after=stop_after, allow_fallback=not no_fallback), look=look)
+    engine_impl = _engine(engine, architect)
+    # First line, flushed: a UI can follow the run directory (events.jsonl) from the start.
+    typer.echo(f"run: {run_dir}")
+    _stop_on_sigterm()
+    try:
+        result: Result = build(brief, engine_impl, run_dir, Options(
+            max_repairs=max_repairs, budget_usd=budget_usd, stop_after=stop_after, allow_fallback=not no_fallback),
+            look=look)
+    except KeyboardInterrupt:
+        typer.echo(f"stopped. Resume with: --out {run_dir}")
+        raise typer.Exit(130)
     typer.echo(f"{result.status}{f' ({result.stage})' if result.stage else ''}")
     if result.detail:
         typer.echo(result.detail)
@@ -48,6 +69,26 @@ def build_command(
     if result.project:
         typer.echo(f"Project: {result.project}")
     raise typer.Exit(result.exit_code)
+
+
+@app.command()
+def engines(
+    as_json: bool = typer.Option(False, "--json", help="Machine-readable, for UIs"),
+    max_repairs: int = typer.Option(1, min=0, max=3),
+    architect: str = typer.Option("thinking", help="thinking or instruct"),
+) -> None:
+    """List the engines: where each sends your data, what it costs, and whether it can run here. No network call."""
+    from minerva.engines import as_json as engines_json
+
+    rows = engines_json(max_repairs, architect)
+    if as_json:
+        typer.echo(json.dumps(rows, indent=1))
+        return
+    for row in rows:
+        state = "ready" if row["available"] else "not ready"
+        typer.echo(f"{row['name']:8} {state:9} est. ${row['estimate_total_usd']:.2f}  {row['label']}")
+        typer.echo(f"{'':8} data: {row['data_goes_to']}")
+        typer.echo(f"{'':8} {row['why']}")
 
 
 @app.command("reassemble")

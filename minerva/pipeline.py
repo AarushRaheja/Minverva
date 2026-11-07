@@ -7,6 +7,7 @@ An Engine supplies the models and the sandbox: OfflineEngine for gold fixtures, 
 from __future__ import annotations
 
 import json
+import os
 import re
 import shutil
 import tempfile
@@ -25,6 +26,7 @@ from minerva.bridge.case import build_case
 from minerva.bridge.contract import AppContract, contract_from_plan, prepare_spec
 from minerva.bridge.reference_ui import render_reference_ui
 from minerva.bridge.tests import CompiledTests, compile_tests, journey_tests
+from minerva.events import NO_EVENTS, Events
 from minerva.integrator.assemble import assemble, write_tree
 from minerva.verify.audit import make_task, stack_failures
 from slm.contracts import Artifact
@@ -112,6 +114,24 @@ def _load(path: Path) -> dict | None:
     return json.loads(path.read_text()) if path.exists() else None
 
 
+AUDIT_DONE = "audit-complete"  # written after an audit returns; evidence.json without it is a stopped audit's partial
+
+
+def _load_audit(out_dir: Path) -> dict | None:
+    """Evidence from a finished audit in out_dir, or None. A harness stopped mid-run leaves a partial evidence.json,
+    which must be audited again on resume rather than scored. Runs from before the marker existed audit again too."""
+    if not (out_dir / AUDIT_DONE).exists():
+        return None
+    return _load(out_dir / "evidence.json")
+
+
+def _audit(engine: "Engine", files: dict, task: dict, out_dir: Path) -> dict:
+    evidence = engine.audit(files, task, out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / AUDIT_DONE).write_text(time.strftime("%Y-%m-%dT%H:%M:%S%z"))
+    return evidence
+
+
 def _save(path: Path, value: dict) -> dict:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
@@ -120,16 +140,20 @@ def _save(path: Path, value: dict) -> dict:
     return value
 
 
-def _stage(run_dir: Path, ledger: Ledger, engine: Engine, name: str, fn) -> dict:
+def _stage(run_dir: Path, ledger: Ledger, engine: Engine, name: str, fn, events: Events = NO_EVENTS) -> dict:
     """Reuse a finished stage. Otherwise check the budget, run it, and save the result before anything else happens."""
     path = run_dir / "stages" / f"{name}.json"
     done = _load(path)
     if done is not None:
+        events.cached(name)
         return done
-    ledger.check(name, engine.cost_estimate(name))
-    result = fn()
-    _save(path, result)
-    ledger.add(name, result)
+    estimate = engine.cost_estimate(name)
+    ledger.check(name, estimate)
+    with events.step(name, estimate=estimate) as outcome:
+        result = fn()
+        _save(path, result)
+        ledger.add(name, result)
+        outcome.update(usd=result.get("usd"), seconds=result.get("seconds"), detail=result.get("error"))
     return result
 
 
@@ -156,8 +180,24 @@ class Result:
         return EXIT_CODES[self.status]
 
 
+def _has_source(generation: dict) -> bool:
+    return bool(((generation.get("manifest") or {}).get("files") or {}).get("src/App.tsx"))
+
+
+def _audit_detail(evidence: dict) -> str:
+    """The failed gates of an audit, or the reason it could not run, for a progress event."""
+    if evidence.get("harness_error"):
+        return f"harness: {evidence['harness_error']}"[:300]
+    build = evidence.get("build")
+    if build is not None and not build.get("passed"):
+        return "the build failed"
+    score = score_round(evidence)
+    failed = [k for k, v in score.items() if v is False and k != "audit_pass"]
+    return ("failed: " + ", ".join(failed)) if failed else "passed"
+
+
 def _frontend_loop(engine: Engine, run_dir: Path, ledger: Ledger, contract: AppContract, assemble_with, case_base: dict,
-                   options: Options) -> dict:
+                   options: Options, events: Events = NO_EVENTS) -> dict:
     """Generate, assemble, audit and critique; repair from measured failures. Keeps the best round by measured results."""
     history: list[dict] = []
     best: dict | None = None
@@ -174,10 +214,16 @@ def _frontend_loop(engine: Engine, run_dir: Path, ledger: Ledger, contract: AppC
         row_path = round_dir / "generation.json"
         generation = _load(row_path)
         if generation is None:
-            ledger.check("architect", engine.cost_estimate("architect"))
-            generation = engine.architect(job, f"{run_dir.name}/round-{round_number}")
-            _save(row_path, generation)
-            ledger.add("architect", generation)
+            estimate = engine.cost_estimate("architect")
+            ledger.check("architect", estimate)
+            with events.step("architect", round_=round_number, estimate=estimate) as outcome:
+                generation = engine.architect(job, f"{run_dir.name}/round-{round_number}")
+                _save(row_path, generation)
+                ledger.add("architect", generation)
+                outcome.update(usd=generation.get("usd"), seconds=generation.get("seconds"),
+                               ok=_has_source(generation), detail=generation.get("error"))
+        else:
+            events.cached("architect", round_=round_number, ok=_has_source(generation), detail=generation.get("error"))
         entry = {"round": round_number, "generation_error": generation.get("error"), "seconds": generation.get("seconds"),
                  "output_tokens": generation.get("output_tokens")}
         source = ((generation.get("manifest") or {}).get("files") or {}).get("src/App.tsx")
@@ -195,13 +241,21 @@ def _frontend_loop(engine: Engine, run_dir: Path, ledger: Ledger, contract: AppC
         last_source = source
         entry["unchanged_from_previous"] = unchanged
         evidence_path = round_dir / "render" / "evidence.json"
-        evidence = _load(evidence_path)
+        evidence = _load_audit(evidence_path.parent)
+        cached_audit = evidence is not None
         if evidence is None:
             built = assemble_with(source)
             task = make_task("audit", contract, compiled.bound, compiled.seed_sql, salt)
-            ledger.check("audit", engine.cost_estimate("audit"))
-            evidence = engine.audit(built.files, task, round_dir / "render")
-            ledger.add("audit", {"usd": engine.cost_estimate("audit"), "seconds": None})
+            estimate = engine.cost_estimate("audit")
+            ledger.check("audit", estimate)
+            with events.step("audit", round_=round_number, estimate=estimate) as outcome:
+                evidence = _audit(engine, built.files, task, round_dir / "render")
+                ledger.add("audit", {"usd": estimate, "seconds": None})
+                outcome.update(usd=estimate, ok=bool(score_round(evidence)["audit_pass"]),
+                               detail=_audit_detail(evidence))
+        if cached_audit:
+            events.cached("audit", round_=round_number, ok=bool(score_round(evidence)["audit_pass"]),
+                          detail=_audit_detail(evidence))
         score = score_round(evidence)
         entry["score"] = score
         if evidence.get("build") and not evidence["build"].get("passed"):
@@ -213,11 +267,19 @@ def _frontend_loop(engine: Engine, run_dir: Path, ledger: Ledger, contract: AppC
             critique_path = round_dir / "critique.json"
             critique = _load(critique_path)
             if critique is None:
-                ledger.check("critic", engine.cost_estimate("critic"))
-                critique = engine.critic({**case, "id": "frontend"}, round_dir / "render", f"{run_dir.name}/round-{round_number}")
-                if critique is not None:
-                    _save(critique_path, critique)
-                    ledger.add("critic", critique)
+                estimate = engine.cost_estimate("critic")
+                ledger.check("critic", estimate)
+                with events.step("critic", round_=round_number, estimate=estimate) as outcome:
+                    critique = engine.critic({**case, "id": "frontend"}, round_dir / "render", f"{run_dir.name}/round-{round_number}")
+                    if critique is not None:
+                        _save(critique_path, critique)
+                        ledger.add("critic", critique)
+                    verdict = (critique or {}).get("effective_verdict")
+                    # ok means the Critic gave a verdict; whether it accepted is in the detail (and decides `verified`)
+                    outcome.update(usd=(critique or {}).get("usd"), ok=verdict is not None, detail=f"verdict: {verdict}")
+            else:
+                events.cached("critic", round_=round_number, ok=critique.get("effective_verdict") is not None,
+                              detail=f"verdict: {critique.get('effective_verdict')}")
         entry["critic_verdict"] = (critique or {}).get("effective_verdict")
         history.append(entry)
         rank = (bool(score["audit_pass"]), _works(score), sum(bool(v) for v in score.values() if isinstance(v, bool)))
@@ -249,18 +311,24 @@ def build(brief: str, engine: Engine, run_dir: Path, options: Options | None = N
     elif meta["brief"] != brief or meta.get("look", "") != look or meta["engine"] != engine.name:
         raise ValueError(f"{run_dir} belongs to another run: brief, look or engine differs")
     ledger = Ledger(run_dir / "ledger.jsonl", options.budget_usd)
+    events = Events(run_dir)
+    events.emit("run_start", engine=engine.name, brief=brief, look=look, resumed=meta is not None,
+                budget_usd=options.budget_usd, max_repairs=options.max_repairs, spent_usd=round(ledger.spent, 3),
+                pid=os.getpid())
 
     def finish(status: str, stage: str | None = None, detail: str = "", project: Path | None = None,
                summary: dict | None = None) -> Result:
         result = Result(status, stage, detail, run_dir, project, summary or {})
         _write_report(run_dir, brief, look, engine, result, ledger)
+        events.emit("run_end", status=status, stage=stage, detail=detail[:500], usd=round(ledger.spent, 3),
+                    exit_code=result.exit_code)
         return result
 
     def stopped(stage: str) -> bool:
         return options.stop_after == stage
 
     try:
-        planned = _stage(run_dir, ledger, engine, "plan", lambda: engine.plan(brief))
+        planned = _stage(run_dir, ledger, engine, "plan", lambda: engine.plan(brief), events)
         try:
             spec: ProjectSpec = prepare_spec(planned["spec"])
             plan = to_plan(spec)
@@ -270,32 +338,40 @@ def build(brief: str, engine: Engine, run_dir: Path, options: Options | None = N
         if stopped("plan"):
             return finish(FAILED, "stopped", "stopped after plan, as requested")
 
-        written = _stage(run_dir, ledger, engine, "backend", lambda: engine.backend(spec.model_dump_json(), brief))
+        written = _stage(run_dir, ledger, engine, "backend", lambda: engine.backend(spec.model_dump_json(), brief), events)
         artifacts = {k: Artifact.model_validate_json(v) for k, v in written["artifacts"].items()}
 
         def assemble_with(app_tsx: str):
             return assemble(run_dir.name, plan, spec, artifacts, contract, app_tsx, FIXED_CSS)
 
-        placeholder = assemble_with(render_reference_ui(contract))
-        seam_failures = placeholder.deliverable.failures
+        with events.step("seams") as outcome:
+            placeholder = assemble_with(render_reference_ui(contract))
+            seam_failures = placeholder.deliverable.failures
+            outcome.update(ok=not seam_failures, detail="; ".join(seam_failures[:8]))
         if seam_failures:
             _save(run_dir / "stages" / "seams.json", {"failures": seam_failures})
             return finish(FAILED, "backend", "the backend's parts do not connect: " + "; ".join(seam_failures[:8]))
 
         compiled = compile_tests(contract, "preflight")
-        preflight_evidence = engine.audit(placeholder.files, make_task("preflight", contract, [], compiled.seed_sql, "preflight"),
-                                          run_dir / "preflight") if _load(run_dir / "preflight" / "evidence.json") is None \
-            else _load(run_dir / "preflight" / "evidence.json")
-        faults = stack_failures(preflight_evidence)
+        preflight_evidence = _load_audit(run_dir / "preflight")
+        if preflight_evidence is None:
+            with events.step("preflight") as outcome:
+                preflight_evidence = _audit(engine, placeholder.files, make_task("preflight", contract, [], compiled.seed_sql,
+                                                                                 "preflight"), run_dir / "preflight")
+                faults = stack_failures(preflight_evidence)
+                outcome.update(ok=not faults, detail="; ".join(faults[:3]))
+        else:
+            faults = stack_failures(preflight_evidence)
+            events.cached("preflight", ok=not faults, detail="; ".join(faults[:3]) or None)
         if faults:
             return finish(FAILED, "preflight", "the generated backend does not work, so no frontend was attempted: "
                           + "; ".join(faults[:8]))
         if stopped("backend"):
             return finish(FAILED, "stopped", "stopped after backend preflight, as requested")
 
-        intent = _stage(run_dir, ledger, engine, "intent", lambda: engine.intent(brief, look))
+        intent = _stage(run_dir, ledger, engine, "intent", lambda: engine.intent(brief, look), events)
         case_base = build_case(contract, compile_tests(contract, "base"), run_dir.name, intent.get("intent"))
-        loop = _frontend_loop(engine, run_dir, ledger, contract, assemble_with, case_base, options)
+        loop = _frontend_loop(engine, run_dir, ledger, contract, assemble_with, case_base, options, events)
         best = loop["best"]
         status_source = "model"
         if best is None or not _works(best["score"]):
@@ -311,13 +387,17 @@ def build(brief: str, engine: Engine, run_dir: Path, options: Options | None = N
         verify_task = make_task("verify", contract, journey, compile_tests(contract, "verify").seed_sql, "verify",
                                 views=["desktop", "mobile"], test_views=["desktop", "mobile"])
         verify_task["api_probes"] = {"entities": [], "guarded_pages": list(contract.guarded_pages)}
-        verify_evidence = engine.audit(final.files, verify_task, run_dir / "verify")
-        journey_ok = bool((verify_evidence.get("build") or {}).get("passed")) and bool(verify_evidence.get("tests")) \
-            and all(t["passed"] for t in verify_evidence["tests"]) and not stack_failures_ignoring_probes(verify_evidence)
+        with events.step("verify") as outcome:
+            verify_evidence = engine.audit(final.files, verify_task, run_dir / "verify")
+            journey_ok = bool((verify_evidence.get("build") or {}).get("passed")) and bool(verify_evidence.get("tests")) \
+                and all(t["passed"] for t in verify_evidence["tests"]) and not stack_failures_ignoring_probes(verify_evidence)
+            outcome.update(ok=journey_ok, detail="sign-up journey " + ("passed" if journey_ok else "failed")
+                           + (" on the reference UI" if status_source == "reference" else ""))
 
         project = run_dir / "project"
-        shutil.rmtree(project, ignore_errors=True)
-        write_tree(final.files, project)
+        with events.step("project"):
+            shutil.rmtree(project, ignore_errors=True)
+            write_tree(final.files, project)
 
         summary = {"frontend_source": status_source, "best_round": best["round"] if best else None,
                    "rounds": loop["history"], "journey_ok": journey_ok, "entities": [e.slug for e in contract.entities],
@@ -334,6 +414,13 @@ def build(brief: str, engine: Engine, run_dir: Path, options: Options | None = N
         return finish(VERIFIED if accepted else FUNCTIONAL, None, "", project, summary)
     except BudgetExceeded as error:
         return finish(FAILED, "budget", str(error))
+    except KeyboardInterrupt:
+        events.emit("run_end", status="stopped", detail="stopped before it finished; run it again with --out to resume",
+                    usd=round(ledger.spent, 3))
+        raise
+    except Exception as error:
+        events.emit("run_end", status="error", detail=f"{type(error).__name__}: {error}"[:500], usd=round(ledger.spent, 3))
+        raise
 
 
 def reassemble(run_dir: Path) -> Path:

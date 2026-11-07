@@ -1,0 +1,7 @@
+{"stage": "plan", "usd": 0.133, "seconds": 120.8}
+{"stage": "backend", "usd": 0.012, "seconds": 38.1}
+{"stage": "intent", "usd": 0.025, "seconds": 29.151}
+{"stage": "architect", "usd": 0.233, "seconds": 366.936}
+{"stage": "audit", "usd": 0.02, "seconds": null}
+{"stage": "architect", "usd": 0.138, "seconds": 212.901}
+{"stage": "audit", "usd": 0.02, "seconds": null}

@@ -1,0 +1,48 @@
+{
+ "rounds": [
+  {
+   "round": 0,
+   "generation_error": null,
+   "seconds": 366.936,
+   "output_tokens": 10807,
+   "score": {
+    "build_pass": false,
+    "complete_render": false,
+    "interaction_pass": false,
+    "no_overflow": false,
+    "no_serious_a11y": false,
+    "no_runtime_failures": true,
+    "nonempty": false,
+    "audit_pass": false
+   },
+   "build_errors": [
+    "src/App.tsx(94,30): error TS2345: Argument of type '{ message: string; status: number; }' is not assignable to parameter of type 'SetStateAction<ApiError | null>'."
+   ],
+   "failed_tests": [],
+   "backend_faults": [],
+   "critic_verdict": null
+  },
+  {
+   "round": 1,
+   "generation_error": null,
+   "seconds": 212.901,
+   "output_tokens": 5796,
+   "score": {
+    "build_pass": false,
+    "complete_render": false,
+    "interaction_pass": false,
+    "no_overflow": false,
+    "no_serious_a11y": false,
+    "no_runtime_failures": true,
+    "nonempty": false,
+    "audit_pass": false
+   },
+   "build_errors": [
+    "src/App.tsx(17,66): error TS2304: Cannot find name 'ApiError'."
+   ],
+   "failed_tests": [],
+   "backend_faults": [],
+   "critic_verdict": null
+  }
+ ]
+}

@@ -24,6 +24,7 @@ if modal.is_local():
     from minerva import vendored
     from minerva.integrator.assemble import HOST_KINDS
     from minerva.integrator.host_files import REQUIREMENTS
+    from minerva.engines import MODAL_ARCHITECT_USD, MODAL_STAGE_USD
     from modal_apps import manager_app, specialist_eval_app
 
     FRONTEND = vendored.FRONTEND
@@ -32,7 +33,7 @@ ADAPTER_SEED = 901
 MANAGER_RUN = "m-spec"
 L40S_USD_PER_SECOND = 0.00060  # GPU, 2 cores and 16 GiB at Modal's listed rates; an estimate, see docs/consolidation
 SCREENSHOTS = {f"{v}.png" for v in ("desktop", "mobile", "tablet", "stress", "wide", "desktop-after", "mobile-after")}
-ESTIMATES = {"plan": 0.35, "backend": 0.05, "intent": 0.06, "critic": 0.06, "audit": 0.02}
+# Stage cost estimates live in minerva/engines.py (MODAL_STAGE_USD), so UIs and the budget check agree.
 
 app = modal.App("minerva-frontend")
 weights = modal.Volume.from_name("frontendslm-model-cache", create_if_missing=True)
@@ -134,8 +135,8 @@ class ModalEngine:
 
     def cost_estimate(self, stage: str) -> float:
         if stage == "architect":
-            return 0.30 if self.architect_profile == "thinking" else 0.08
-        return ESTIMATES[stage]
+            return MODAL_ARCHITECT_USD[self.architect_profile]
+        return MODAL_STAGE_USD[stage]
 
     def _prepare_models(self) -> None:
         if not self.models_ready:

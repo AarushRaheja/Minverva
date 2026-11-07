@@ -1,0 +1,17 @@
+{
+ "status": "fallback_ui",
+ "stage": null,
+ "detail": "no generated UI worked, so the plain reference UI shipped",
+ "usd": 0.581,
+ "frontend_source": "reference",
+ "best_round": 0,
+ "journey_ok": true,
+ "entities": [
+  "inventory_item",
+  "supplier",
+  "supplier_invoice"
+ ],
+ "critic": null,
+ "intent_questions": [],
+ "plan_name": "back-of-house tool"
+}

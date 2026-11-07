@@ -1,4 +1,4 @@
-//! stdout/stderr of the `uv run slm run` job started with `r`.
+//! stdout/stderr of the job started from the TUI (`minerva build` with `r`, `slm run` with `T`).
 
 use super::panel;
 use super::theme::*;
@@ -15,7 +15,8 @@ pub fn draw(f: &mut Frame, area: Rect, app: &App) {
     if app.log.is_empty() {
         let p = Paragraph::new(vec![
             Line::from(Span::styled("nothing yet", dim())),
-            Line::from(vec![Span::styled("r", key()), Span::styled(format!(" runs: {}", app.opts.command_line()), dim())]),
+            Line::from(vec![Span::styled("r", key()), Span::styled(" starts a Minerva build; its output appears here", dim())]),
+            Line::from(vec![Span::styled("T", key()), Span::styled(" runs the older `slm run` with the footer's options", dim())]),
         ])
         .block(block);
         f.render_widget(p, area);
