@@ -47,6 +47,35 @@ integrator ──► Deliverable (one tree + glue + seam checks) ──► end u
 - **Design + prior work:** [`reports/`](reports/), notes in [`research_notes/`](research_notes/)
 - **Agent task files:** [`tasks/`](tasks/) (start with `PROTOCOL.md`)
 
+## Results (measured 2026-11-07)
+
+Same project briefs for every model; apps are started and used in a sandbox (real Postgres, real API calls,
+rendered pages), not judged by reading the code.
+
+| What | Minerva | Comparison |
+|---|---|---|
+| Cost per working app | **4.5¢** (GPU time) | Claude Opus 15.6¢ list → **3.5× cheaper**; Opus team of agents $1.12–7.04 → **25×+ cheaper** |
+| Output tokens per build | **2,937** | Opus 7,183 (**2.4× fewer**), Haiku 10,600 (3.6×), Opus team 41,963 (**14×**) |
+| Generation time per working app, batched on one GPU | **21.5 s** | Opus 56 s (**2.6× faster**), Haiku 46 s; batching alone gives a 9.6× speedup |
+| Peak memory | **5.2 GB** RAM on a 16 GB laptop, offline; 3.2 GB GPU batched | Opus and Haiku run only on the provider's servers |
+| Specialist size | **19 MB** LoRA per specialist on one shared base | n/a |
+| Retraining | all four specialists in **21 min** on one GPU for **$0.30** | Opus cannot be retrained by you |
+
+**Architecture beats the loop (same weights).** With the same `qwen3.5:4b` model, the manager + specialists
+layout (`mgr-G4-promptfix`) scores **0.70** average run score vs **0.24** for a conventional tool-calling agent
+loop, **2.9×** higher, on every project (invoice_tracker 0.83 vs 0.33, issue_board 0.63 vs 0.24,
+stock_room 0.63 vs 0.14; 3 repeats each).
+
+**Verify and repair lifts small models.** On LiveCodeBench (n = 454), checking and repairing its own
+answer takes a 1.7B model from **14.3% to 24.0%**, ahead of best-of-5 sampling (18.1%, paired p ≈ 0.000007)
+and of a 4B model answering once (22.9%).
+
+**Restaurant ops dashboard (inventory, supply, billing) vs Claude.** Minerva built the full stack (React
+front end, FastAPI, SQL, sign-up) in **49 files** for **$0.86**; Claude built a front end only (10 files)
+for $2.91. That is **3.4× cheaper**, **2.2× fewer output tokens** (30,992 vs 67,813) and 36% fewer lines.
+
+Raw rows and per-project scores: `slm/arch/` reports and [`docs/STATUS.md`](docs/STATUS.md).
+
 ## Run from a fresh clone
 
 Requires [uv](https://docs.astral.sh/uv/). GPU work runs on [Modal](https://modal.com); nothing
